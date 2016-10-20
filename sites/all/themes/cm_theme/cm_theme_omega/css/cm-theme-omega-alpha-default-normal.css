@@ -1,0 +1,35 @@
+/*------------------------------------*\
+	NORMAL
+\*------------------------------------*/
+
+/* This file will hold styles that are loaded using the same media query as the normal grid. */
+/* If you are using the default media queries provided by Omega, these styles will also
+ *  apply to the widescreen layout unless they are overridden by the widescreen styles. */
+
+html {
+  font-size: 100%;
+}
+
+body {
+  font-size: 1em;
+}
+
+#region-header-first {
+  width: 960px;
+}
+
+#region-footer-first .region-inner, #region-footer-second .region-inner {
+  width: 960px;
+}
+
+#section-content .region {
+  margin: 0 10px;
+}
+
+/* Staff page */
+
+.view-staff img {
+  width: 180px;
+  height: 180px;
+}
+

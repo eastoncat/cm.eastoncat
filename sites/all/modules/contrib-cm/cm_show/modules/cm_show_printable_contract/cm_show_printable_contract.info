@@ -1,0 +1,20 @@
+name = Show Printable Contract
+package = Community Media
+description = "Adds a printable contract option to Show nodes."
+
+core = 7.x
+
+dependencies[] = cm_show
+
+
+configure = admin/config/communitymedia/show/contract
+
+files[] = cm_show-printable-contract.tpl.php
+files[] = cm_show_printable_contract.module
+
+; Information added by Drupal.org packaging script on 2014-07-08
+version = "7.x-1.0-beta1+0-dev"
+core = "7.x"
+project = "cm_show"
+datestamp = "1404854028"
+

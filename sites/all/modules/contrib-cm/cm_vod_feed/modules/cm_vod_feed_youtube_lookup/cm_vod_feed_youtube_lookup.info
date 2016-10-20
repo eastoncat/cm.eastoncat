@@ -1,0 +1,15 @@
+name = "VOD Feed: YouTube Lookup"
+package = "Community Media"
+core = "7.x"
+dependencies[] = "cm_show_vod"
+dependencies[] = "media_youtube"
+description = "Helper module to relate YouTube Media Entities to Show Nodes when tag matches field value"
+
+
+
+; Information added by Drupal.org packaging script on 2014-07-08
+version = "7.x-2.0-beta2"
+core = "7.x"
+project = "cm_vod_feed"
+datestamp = "1404858828"
+

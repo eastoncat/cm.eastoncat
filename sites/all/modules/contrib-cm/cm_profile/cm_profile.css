@@ -1,0 +1,104 @@
+/* User profile */
+
+.view-staff .views-row {
+   width: 10em;
+   min-height: 20em;
+}
+
+  
+@media all and (min-width: 740px) and (min-device-width: 740px), (max-device-width: 800px) and (min-width: 740px) and (orientation:landscape) {
+
+  .view-staff .views-row {
+     width: 10em;
+     min-height: 19.5em;
+  }
+}
+ 
+@media all and (min-width: 980px) and (min-device-width: 980px), all and (max-device-width: 1024px) and (min-width: 1024px) and (orientation:landscape) {
+
+  .view-staff .views-row {
+     width: 11.5em;
+     min-height: 20em;
+  }
+
+}
+
+@media all and (min-width: 1220px) {
+  
+  .view-staff .views-row {
+     width: 11.3em;
+     min-height: 20em;
+  }
+  
+}
+
+ 
+.view-staff .views-row {
+  float: left;
+  margin: 0 0.813em 1.438em 0;
+  overflow: hidden;
+  position: relative;
+  background: #f2f2f2;
+  border: 1px solid #E3E3E3;
+  padding: 0.5em;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+
+.view-staff .views-field {
+  margin-bottom: 0.5em;
+  line-height: 1.2em;
+}
+
+.view-staff .views-field-last-name {
+  font-weight: bold;  
+}
+
+#user-contact-links a {
+  padding-left: 1.25em;
+}
+
+#user-profile .facebook a {
+  background: url(images/icon_facebook.png) no-repeat scroll top left transparent;
+}
+
+#user-profile .twitter a {
+  background: url(images/icon_twitter.png) no-repeat scroll top left transparent;
+}
+
+#user-profile .linkedin a {
+  background: url(images/icon_linkedin.png) no-repeat scroll top left transparent;
+}
+
+#user-profile .other a {
+  background: url(images/icon_external.png) no-repeat scroll top left transparent;
+}
+
+#user-picture {
+  float: left;
+  margin: 0.3em 1em 0 0;
+}
+ 
+#user-job-title {
+  font-weight: bold;
+}
+
+#user-contact-links { 
+  float: left;
+}
+
+#user-bio { 
+  clear: both;
+}
+
+#block-views-cm-profile-member-since-block, #block-views-cm-profile-projects-block-1, #block-views-cm-profile-certifications-block {
+  float: left;
+  width: 30%;
+  margin-top: 1em;
+  margin-right: 1%;
+}
+
+.page-user .item-list ul li {
+  margin: 0;
+}

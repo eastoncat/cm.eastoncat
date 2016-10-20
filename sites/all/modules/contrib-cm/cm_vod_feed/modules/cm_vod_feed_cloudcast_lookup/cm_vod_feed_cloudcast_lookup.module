@@ -1,0 +1,57 @@
+<?php
+/**
+ * @file
+ * Code for the VOD Feed: Cloudcast Lookup.
+ */
+
+
+/**
+ * Implements hook_entity_insert().
+ */
+function cm_vod_feed_cloudcast_lookup_entity_insert($entity, $type) {
+  //dsm($entity);
+  //dsm($type);
+  
+  if ($entity->filemime == 'video/cloudcast') {
+    // look for a show with matching root filename
+    
+    // entity presave is only populating field_title on items being inserted w/ a feed
+    // http://vp.telvue.com/player?id=T02123&mini=1&video=199448
+    // Without the additional data in the RSS, the filename is the uid of the video 199448
+    
+    //dsm($entity); 
+    $result = db_query('SELECT entity_id FROM {field_data_field_expected_filename} WHERE field_expected_filename_value LIKE :filename', array(':filename' => $entity->filename . '%'));
+
+    if ($result->rowCount() == 1) {  
+      foreach ($result as $record) {
+        $node = node_load($record->entity_id);
+        //update show node
+        $file = file_load($entity->fid);
+        $node->field_cm_show_vod[LANGUAGE_NONE][0] = array(
+          'fid' => $entity->fid,
+          'display' => 1,
+          'description' => '', 
+        );
+        node_save($node);
+      }
+      
+      //check to see if the fid was sucessfully added
+      // reload the node
+      
+      $node = node_load($record->entity_id);
+      if (isset($node->field_cm_show_vod[LANGUAGE_NONE][0]['fid'])) {
+        watchdog('cm_vod_feed_cloudcast_lookup', 'Lookup for %filename matched to Show node # %nid', array('%filename' => $entity->filename, '%nid' => $node->nid), WATCHDOG_NOTICE, $link = NULL);
+      }  else {
+        watchdog('cm_vod_feed_cloudcast_lookup', 'Lookup for %filename failed to resave to Show node # %nid', array('%filename' => $entity->filename, '%nid' => $node->nid), WATCHDOG_WARNING, $link = NULL);
+      }
+    }
+    
+    if ($result->rowCount() == 0) {  
+      watchdog('cm_vod_feed_cloudcast_lookup', 'Lookup for %filename failed to find matching Show', array('%filename' => $entity->filename), WATCHDOG_WARNING, $link = NULL);
+    }
+    
+    if ($result->rowCount() > 1) {  
+      watchdog('cm_vod_feed_cloudcast_lookup', 'Lookup for %filename returned multiple Shows', array('%filename' => $entity->filename), WATCHDOG_WARNING, $link = NULL);
+    }
+  }
+}

@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * Implements hook_uninstall().
+ */
+function cm_airing_type_uninstall() {
+  field_delete_instance('field_airing_duration');
+  field_delete_field('field_airing_duration');
+}
+
+/**
+ * Implements hook_install().
+ */
+function cm_airing_type_install() {
+  _cm_airing_duration_add_airing_duration_field();
+}
+
+/**
+ * Creates airing_duration field if it doesn't exist
+ */
+function _cm_airing_duration_add_airing_duration_field() {
+  
+  //Changes structure to use Features export
+  $fields['airing-airing-field_airing_duration'] = array(
+    'field_config' => array(
+      'active' => '1',
+      'cardinality' => '1',
+      'deleted' => '0',
+      'entity_types' => array(),
+      'field_name' => 'field_airing_duration',
+      'foreign keys' => array(),
+      'indexes' => array(),
+      'locked' => '0',
+      'module' => 'hms_field',
+      'settings' => array(
+        'profile2_private' => FALSE,
+      ),
+      'translatable' => '0',
+      'type' => 'hms_field',
+    ),
+    'field_instance' => array(
+      'bundle' => 'airing',
+      'default_value' => NULL,
+      'deleted' => '0',
+      'description' => '',
+      'display' => array(
+        'default' => array(
+          'label' => 'above',
+          'module' => 'hms_field',
+          'settings' => array(
+            'format' => 'h:mm',
+            'leading_zero' => TRUE,
+          ),
+          'type' => 'hms_default_formatter',
+          'weight' => 16,
+        ),
+      ),
+      'entity_type' => 'airing',
+      'field_name' => 'field_airing_duration',
+      'label' => 'Duration',
+      'required' => 0,
+      'settings' => array(
+        'format' => 'h:mm:ss',
+        'user_register_form' => FALSE,
+      ),
+      'widget' => array(
+        'active' => 0,
+        'module' => 'hms_field',
+        'settings' => array(),
+        'type' => 'hms_default_widget',
+        'weight' => '16',
+      ),
+    ),
+  );
+       
+ field_create_field($fields['airing-airing-field_airing_duration']['field_config']);
+ field_create_instance($fields['airing-airing-field_airing_duration']['field_instance']);
+  
+}

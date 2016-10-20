@@ -1,0 +1,101 @@
+/** Skills Section of Profile **/
+
+ul#MySkills {
+  padding: 0;
+}
+
+#MySkills li.MySkill {
+  display: block;
+  clear: both;
+  margin-bottom: 1em;
+  padding: 0;
+  width: 100%;  
+  height: 15px;
+}
+
+#MySkills span {
+  display: block;
+  float: left;
+  line-height: 20px;
+}
+
+#MySkills .MySkill-name {
+  font-weight: bold;
+  padding: 0.1em 0.2em 0.2em 0.5em;
+  position: absolute;
+  color: white;
+  z-index: 10;
+}
+
+#MySkills .MySkill-level {
+  background-color: #CB726B;
+  color: #ffffff;
+  display: block;
+  font-size: 0.9em;
+  height: 20px;
+  position: relative;
+  width: 100%;
+  padding: 0.2em 0;
+}
+#MySkills.G-Skills .MySkill-level {
+  background-color: #7e8083;
+}
+
+#MySkills .MySkill-level .l-name,
+#MySkills .MySkill-level .l-graph {
+  position: absolute;
+  height: 20px;
+  left: 0;
+  top: 0;
+}
+
+#MySkills .MySkill-level .l-name {
+  color: #eecccc;
+  padding-left: 6px;
+  text-align: center;
+  width: 100px;
+}
+#MySkills.G-Skills .MySkill-level .l-name {
+  color: #565759;
+  color: #b3b4b7;
+}
+#MySkills .MySkill-level .l-graph {
+  background-color: #a3d17d; /* Standard Site Red */
+  background-color: #660000; /* a darker red for the graph? */
+  display: block;
+  padding: 0.2em 0;
+}
+#MySkills.G-Skills .MySkill-level .l-graph {
+  background-color: #3d3d3f;
+}
+#MySkills.G-Skills .skill-level-1 .l-graph {
+  background-color: transparent;
+}
+#MySkills .skill-level-1 .l-graph {
+  background-color: transparent;
+  color: #000000;
+}
+#MySkills .skill-level-2 .l-graph {
+  width: 40%;
+}
+#MySkills .skill-level-3 .l-graph {
+  width: 60%;
+}
+#MySkills .skill-level-4 .l-graph {
+  width: 80%;
+}
+#MySkills .skill-level-5 .l-graph {
+  width: 100%;
+}
+
+.MySkill {
+  background-color: #fff;
+}
+
+.view-om-crew-connect-find .ui-widget-content {
+  border: 1px solid #aaaaaa;
+}
+
+.view-om-crew-connect-find .ui-state-default, .view-om-crew-connect-find .ui-widget-content .ui-state-default, .view-om-crew-connect-find .ui-widget-header .ui-state-default {
+  border: 1px solid #d3d3d3;
+}

@@ -1,0 +1,722 @@
+/**
+ * general styles for zenbase
+ * see _init.scss for variables such as colors and fonts
+ */
+ 
+ 
+ /**
+ * Amherst Media Specific
+ * most of amhersy media styles here
+ */
+ 
+ // had to override this from the slideshow css in the CM slideshow module 
+.front #main { 
+  //margin-top: -6em;
+  margin-top: 1em;
+}
+
+#header {
+	margin-bottom: 20px;
+}
+
+#search-block-form {
+	margin-top: 10px;
+	input {
+		vertical-align: top;
+	}
+	.form-type-textfield {
+		//display: inline-block;
+		//margin-top: -5px;
+	}
+	#edit-actions {
+		//display: inline-block;
+		//margin-top: 5px;
+	}
+	.form-item {
+		margin: 0;
+	}
+}
+
+
+#navigation {
+	position: relative;  // override the usual zen nav on bottom
+	padding: 0;
+	.region-navigation {
+		max-width: 1200px;
+		margin: auto;
+		clear: both;
+	}
+}
+
+.navigation-top {
+	//max-width: 1200px;
+	//height: 90px;
+	@media all and (min-width: 768px) { 
+	// height: 40px;
+
+		}
+	background-color: #444;
+	color: #999;
+	font-size: 12px;
+	float: left;
+	width: 100%;
+	
+	.navigation-top-inner {
+		max-width: 1200px;
+		margin: auto;
+		background-color: #444;
+		//float: left;
+		width: 100%;
+	}
+	.top-nav-right {
+		text-align: right;
+		padding-right: 30px;
+		
+		// @include zen-grid-item(6, 7); 
+		// @include zen-grid-item-base();
+		float: right;
+	}
+	
+	#block-search-form {
+		// @include zen-grid-item(6, 1); 
+		// @include zen-grid-item-base();
+		float: left;
+	}
+	
+	#block-system-user-menu {
+		float: right;
+		.menu {
+			padding: 7px;
+		}
+	}
+	
+	p {
+		margin: 0;
+		//vertical-align: middle;
+		span.text {
+		display: inline-block;
+		padding: 7px;
+		vertical-align: top;
+		}
+	}
+
+	// social icon stuff
+	a.twitter,
+	a.facebook,
+	a.youtube,
+	a.flickr {
+		display: inline-block;
+	    line-height: 0; 
+	    font-size: 0;
+	    color: transparent; 
+		padding: 10px;
+		margin-top: 7px;
+		vertical-align: middle;
+	 }
+	 
+	a.twitter {
+	background-image: url(../images/twitter-icon.png);
+	}
+	a.facebook {
+	background-image: url(../images/facebook-icon.png);
+	} 
+	a.flickr {
+	background-image: url(../images/flickr-icon.png);
+	padding: 10px 12px;
+	} 
+	a.youtube {
+	background-image: url(../images/youtube-icon.png);
+	padding: 12px 20px 10px 20px;
+	margin-left: 10px;
+	} 
+}
+
+// home page button styling
+
+.button-home {
+	display: inline-block;
+	color: #FFFFFF;
+	text-align: center;
+	padding: 0px 10px;
+	background-color: #6eb857;
+	border-radius: 10px;
+	width: 25%;
+	margin: 1%;
+	height: 80px;
+	//float: left;
+	vertical-align: middle;
+	a,
+	a.visited,
+	a.hover,
+	a:hover {
+		color: #FFFFFF;
+		display: block;
+		width: 100%;
+		// height: 80px;
+		vertical-align: middle;
+		text-align: center;
+		margin: auto;
+		margin-top: 5px;
+	}
+	a.one-line {
+		margin-top: 25px;
+	}
+	a.two-line {
+		margin-top: 16px;
+	}
+}
+
+.region-highlighted {
+	width: 100%;
+	clear: both;
+	.block {
+		margin-bottom: 0;
+	}
+	.highlight-left {
+		float: none;
+		width: 100%;
+		img {
+			width: 100%;
+		}
+	}
+	.highlight-right {
+		float: none;
+		width: 100%;
+		padding: 1%;
+		h2 {
+			margin: 0;
+			color: $amherst-medium-orange;
+		}	
+	}
+	
+	//slideshow
+	.view-am-slideshow {
+		.views-field-field-cm-sub-head {
+			position: absolute;
+			bottom: 10%;
+			left: 10%;
+		}
+	}
+	@media all and (min-width: 768px) { 
+		.highlight-left {
+			float: left;
+			width: 60%;
+			img {
+				width: 100%;
+			}
+		}	
+		.highlight-right {
+			float: left;
+			width: 37.9%;
+			padding: 1%;
+			h2 {
+				margin: 0;
+			}
+		}
+	}
+}
+
+
+// news block on home page
+
+.view-news {
+	.views-row {
+		margin-bottom: 20px;
+	}
+	.news-image-container {
+		width: 30%;
+		float: left;
+		img {
+			width: 100%;
+		}
+	}
+	.news-text-container {
+		width: 60%;
+		float: left;
+		.news-text-container-inner {
+			padding-left: 10px;
+		}
+		h3 {
+			margin-top: 0px;
+			padding-top: 0px;
+		}
+	}
+	.news-link-container {
+		text-align: right;
+	}
+}
+
+.clear-fix {
+	clear:both;
+	width: 100%;
+}
+
+#block-cm-starterkit-moderate-cm-theme-logo {
+	img {
+	margin-top: 15px;
+	}
+}
+
+#block-block-8 {
+/*
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.2);
+  -webkit-box-shadow: 0 1px 4px rgba(0,0,0,.2);
+*/
+}
+
+.clearing-div {
+	clear: both;
+}
+
+#footer {
+	background-color: $amherst-dark-gray;
+	color: #FFF;
+	padding: 20px;
+	h2 {
+		color: #FFF;
+	}
+	ul {
+		margin: 0;
+		li {
+			list-style: none;
+		}
+	}
+
+	a {
+		color: #FFF;
+	}
+	
+}
+
+.region-bottom {
+	padding: 15px 0px;
+	background-color: $amherst-dark-green;
+	color: #fff;
+	text-align: center;
+	a,
+	a.visited {
+		color: #fff;   //note need to remove inline color on link  
+	}
+}
+
+// below is needed in part due to the nav-top region 40px high
+html body.admin-menu {
+  //margin-top: 29px !important;
+  // margin-top: 79px !important;
+  #navigation {
+	  // top: 29px;
+  }
+}
+
+
+ /**
+ * Amherst Media Specific End
+ */ 
+ 
+
+
+
+.not-logged-in {
+	.contextual-links-wrapper {
+		display: none;
+	}
+}
+
+#main {
+	//	default of 3em not enough
+	padding-top: 0em;  //override of usual Zen
+}
+
+h1.title {
+	color: $amherst-dark-green;
+}
+h2 {
+	color: $amherst-medium-orange;
+}
+h2.title {
+	color: $amherst-medium-orange;
+}
+
+h2.pane-title {
+	color: $drupal-medium-blue;
+}
+a {
+	color: $amherst-dark-green;
+	text-decoration: none;
+}
+a:hover {
+	color: $amherst-dark-green;
+	text-decoration: underline;
+}
+
+
+.breadcrumb {
+	color: $drupal-medium-blue;
+	padding: 1em 0;
+}
+
+
+// general image styling
+.pane-node-field-image {
+	.field-item {
+		margin-bottom: 1em;
+	}
+}
+.field-name-field-caption {
+	color: $drupal-medium-blue;
+	text-align: center;
+	padding: 1em;
+	font-size: .9em;
+}
+
+// general field styling 
+.pane-node-field-date {
+	color: $drupal-medium-blue;
+	padding: 1em 0 1em 0;
+}
+.pane-node-field-tags {
+	color: $drupal-medium-blue;
+	padding: 1em 0 1em 0;
+}
+
+
+
+// slideshow 
+
+.text-title {
+	color: $amherst-dark-green;
+}
+
+ 
+/**
+ * this is for images with captions 
+ * see:  http://www.58bits.com/blog/2013/03/06/how-to-add-captions-to-images-in-drupal 
+ */ 
+
+.media-image_left, .media-image_right {   
+  width: 490px;
+  margin-bottom: 2px;
+}
+.media-image_left { 
+	float: left; 
+	margin-right: 10px;
+}
+.media-image_right { 
+	float: right; 
+	 margin-left: 10px;
+	}
+.media-image_left .field-name-field-caption, 
+.media-image_right .field-name-field-caption {
+  margin-left: 10px;
+  font-size: 12px;
+  line-height: normal;
+  float: left;
+}
+.media-image_right .field-name-field-caption {
+  margin-left: 10px;
+  float: right;
+}
+.file-image-left {
+  float: left;
+  margin-top: 5px;
+  margin-right: 10px;
+  margin-bottom: 5px;
+  width: 490px;
+}
+.file-image-right {
+  float: right;
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-bottom: 5px;
+  width: 490px;
+}
+
+/**
+ * normal page styling using the zenbasethreeregions panels layout
+ * 
+ */
+
+.panel-zenbase,
+.panel-zenbase-a,
+.panel-zenbase-b,
+.panel-zenbase-c {
+	width: 100%;
+	.inside {
+		  margin: 0 .5em 1em 0;
+	}	
+}
+
+@media all and (min-width: 768px) { 
+	.panel-zenbase-a {
+		width: 39.9%;	
+		float: right;
+	}	
+	.panel-zenbase-b {
+		width: 60%;	
+		float: left;
+	}	
+	.panel-zenbase-c {
+		width: 60%;	
+		float: left;	
+	}	
+	.pane-node-field-image {
+		margin: 0 0 1em 0;
+	}
+	.pane-node-field-video {
+		margin: 0 0 1em 0;
+	}
+	.pane-node-body {
+		margin: 0 0 1em 0;
+	}
+    .pane-node-field-title {
+	    color: $drupal-medium-blue;
+    }
+}
+
+/**
+ * front page styling using the zenbasethreeregions panels layout
+ * 
+ */
+
+@media all and (min-width: 768px) { 
+	.front {
+		.panel-zenbase-a {
+			width: 100%;	
+			float: none;
+		}	
+		.panel-zenbase-b {
+			width: 100%;	
+			float: none;
+		}	
+		.panel-zenbase-c {
+			width: 100%;	
+			float: none;	
+		}	
+	}
+}
+
+/**
+ *  news styling using the zenbasethreeregions panels layout
+ * 
+ */
+ 
+@media all and (min-width: 768px) { 
+	#news {
+		.panel-zenbase-a {
+			width: 100%;	
+			float: none;
+		}	
+		.panel-zenbase-b{
+			width: 100%;	
+			float: none;
+		}	
+		.panel-zenbase-c {
+			width: 100%;	
+			float: none;	
+		}	
+		.view-news {
+			.views-row {
+				clear: both;
+				margin-bottom: 1em;
+				.views-news-item {
+					clear: both;
+					h2.title {
+						margin-top: 0;
+						margin-bottom: 0;
+					}
+					.views-news-item-image {
+						float: left;
+						width: 30%;
+						margin: 0 1em 1em 0;
+						img {
+							width: 100%;
+						}
+					}
+					.views-news-item-date {
+						color: $drupal-medium-blue;
+						padding: 0 0 1em 0;
+					}
+				}
+			}
+		}
+	} // #news
+} // @media
+
+/**
+ *  events styling using the zenbasethreeregions panels layout
+ * 
+ */
+ 
+@media all and (min-width: 768px) { 
+	#events {	
+		.panel-zenbase-a {
+			width: 100%;	
+			float: none;
+		}	
+		.panel-zenbase-b {
+			width: 60%;	
+			float: left;
+		}	
+		.panel-zenbase-c {
+			width: 37.9%;	
+			float: right;
+			margin-left: 2%;
+		}	
+		.view-events {
+			.views-row {
+				clear: both;
+				margin-bottom: 1em;
+				.views-events-item {
+					clear: both;
+					h2.title {
+						margin-top: 0;
+						margin-bottom: 0;
+					}
+					.views-events-item-image {
+						float: left;
+						clear: left;
+						width: 30%;
+						margin: 0 1em 0 0;
+						img {
+							width: 100%;
+						}
+					}
+					.views-events-item-view-node {
+						text-align: right;
+					}
+					.views-events-item-date {
+						color: $drupal-medium-blue;
+						padding: 0 0 1em 0;
+					}
+				}
+			}
+		}
+	} // #events
+} // @media
+
+
+/**
+ *  news styling using the zenbasethreeregions panels layout
+ * 
+ */
+ 
+@media all and (min-width: 768px) { 
+	#profiles {	
+		.panel-zenbase-a {
+			width: 100%;	
+			float: none;
+		}	
+		.panel-zenbase-b {
+			width: 100%;	
+			float: none;
+		}	
+		.panel-zenbase-c {
+			width: 100%;	
+			float: none;	
+		}	
+		.view-profiles {
+			.views-row {
+				clear: both;
+				margin-bottom: 1em;
+				.views-profile-item {
+					clear: both;
+					h2.title {
+						margin-top: 0;
+						margin-bottom: 0;
+					}
+					.views-profile-item-image {
+						float: left;
+						width: 30%;
+						margin: 0 1em 1em 0;
+						img {
+							width: 100%;
+						}
+					}
+					.views-profile-item-field-title {
+						color: $drupal-medium-blue;
+						padding: 0 0 1em 0;
+					}
+				}
+			}
+		}
+	} // #profiles
+} // @media
+
+
+/**
+ *  news styling using the zenbasethreeregions panels layout
+ * 
+ */
+ 
+@media all and (min-width: 768px) { 
+	#news {
+		.panel-zenbase-a {
+			width: 100%;	
+			float: none;
+		}	
+		.panel-zenbase-b {
+			width: 100%;	
+			float: none;
+		}	
+		.panel-zenbase-c {
+			width: 100%;	
+			float: none;	
+		}	
+		.view-related-news {
+			.views-row {
+				clear: both;
+				margin-bottom: 1em;
+				.views-news-item {
+					clear: both;
+					h2.title {
+						margin-top: 0;
+						margin-bottom: 0;
+					}
+					.views-news-item-image {
+						float: left;
+						width: 30%;
+						margin: 0 1em 1em 0;
+						img {
+							width: 100%;
+						}
+					}
+					.views-news-item-date {
+						color: $drupal-medium-blue;
+						padding: 0 0 1em 0;
+					}
+				}
+			}
+		}
+	} // #news
+} // @media
+
+
+// styling for project pages 
+
+.node-cm-project {
+	.field-name-field-project-logo {
+		float: left;
+		width: 20%;
+		margin-right: 2%;
+		img	{
+			width: 100% !important; 
+		}
+	}
+	.field-name-field-public-twitter,
+	.field-name-field-public-email,
+	.field-name-field-public-website,
+	.field-name-field-description,
+	.field-name-field-public-contact {
+		clear: none;
+		float: right;
+		width: 78%;
+	}
+	.field-name-field-description {
+		margin-top: 1em;
+	}
+}
+

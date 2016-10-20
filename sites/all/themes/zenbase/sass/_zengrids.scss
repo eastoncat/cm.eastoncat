@@ -1,0 +1,99 @@
+// general styles for zengrids used on this site
+
+/*
+Here's a simple example: a content column with a sidebar on each side, aligned
+to a 12 column grid.
+*/
+// @import 	"zen";  note not needed here as it is in _init.scss
+
+$zen-column-count: 12;  
+$zen-gutter-width: 20px;  
+
+#content {
+    @include zen-grid-container();  // Define the container for your grid items.
+}
+
+/*
+.block-6-1 {
+width: 100%;
+clear: both;
+    }
+.block-6-7 {
+width: 100%;
+clear: both;
+}
+*/
+
+@media all and (min-width: 1000px) {
+	.block-main {  // main content block
+      @include zen-grid-item(12, 1);  // Span 12 columns starting in 1st column.
+	  @include zen-clear();
+    }
+    .block-3-1 {
+      @include zen-grid-item(3, 1);   // Span 3 columns starting in 1st column.
+      @include zen-grid-item-base();  // this is needed to make the gutter width work, not sure why, see comment below
+    }
+    .block-3-4 {
+      @include zen-grid-item(3, 4);   // Span 3 columns starting in 4th column.
+      @include zen-grid-item-base();
+    }
+    .block-4-1 {
+      @include zen-grid-item(4, 1);   
+      @include zen-grid-item-base();
+    }
+    .block-6-1 {
+      @include zen-grid-item(6, 1);  // Span 6 columns starting in 7th column.
+      @include zen-grid-item-base();
+    }
+    .block-6-7 {
+      @include zen-grid-item(6, 7);  // Span 6 columns starting in 7th column.
+      @include zen-grid-item-base();
+    }
+    .block-9-4 {
+      @include zen-grid-item(9, 4);  // 
+      @include zen-grid-item-base();
+    }
+    .block-8-5 {
+      @include zen-grid-item(8, 5);  // 
+      @include zen-grid-item-base();
+    }
+    .block-12-1 {  // info block about mydrupalbase
+      @include zen-grid-item(12, 1);  // Span 12 columns starting in 1st column.
+	  @include zen-clear();
+    }
+    .block-12-1 {  // info block about mydrupalbase
+      @include zen-grid-item(12, 1);  // Span 12 columns starting in 1st column.
+	  @include zen-clear();
+    }
+  }
+  
+// commnet on making gutter width work
+// see commnet on comment at bottom of this:  http://zengrids.com/help/  “Try including "@include zen-grid-item-base();" after your $zen-gutter-width declaration.”   
+// see also this:  https://www.drupal.org/node/2046029#comment-7697037
+
+  
+// See bottom of this page for examples: http://zengrids.com/help/
+// below is example 1
+
+/*
+$zen-column-count: 7; // Set the total number of columns in the grid.
+$zen-gutter-width: 10px;
+
+#content {
+  @include zen-grid-container; // Apply this mixin to the container.
+}
+.block-a {
+  @include zen-grid-item(4, 1);
+}
+.block-b {
+  @include zen-grid-item(3, 1, right);
+}
+.block-c {
+  @include zen-clear(right);
+  @include zen-grid-item(3, 1, right);
+}
+  
+*/
+
+
+

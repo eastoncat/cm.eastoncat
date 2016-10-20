@@ -1,0 +1,19 @@
+name = Cloudcast Show Integration
+description = Adds an Upload to Cloudcast field to Show and [CC] to description when pushed to Telvue
+core = 7.x
+package = Community Media
+php = 5.2.4
+dependencies[] = cm_show
+dependencies[] = features
+dependencies[] = list
+dependencies[] = media_cloudcast
+dependencies[] = telvue
+features[features_api][] = api:1
+features[field][] = node-cm_show-field_cloudcast
+
+; Information added by  packaging script on 2013-11-21
+version = "7.x-2.0-beta1"
+core = "7.x"
+project = "media_cloudcast"
+datestamp = "1385065409"
+

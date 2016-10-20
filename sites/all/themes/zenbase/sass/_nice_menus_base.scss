@@ -1,0 +1,324 @@
+/*
+  This is the default layout template for nice menus, and will provide
+  a starting point for the look of your menus. To customize, it's
+  recommended to create a custom CSS file using this file as a template,
+  then configure the module to use your custom CSS file
+  (this is done in the global settings tab of the theme administration.)
+
+  See README.txt and the handbook page (http://drupal.org/node/185543)
+  for more information on using the CSS.
+*/
+
+/*
+ Added variables
+*/
+
+$font_size: .85em;
+$padding-top: .7em;
+$padding-top-large: 2em;
+$padding-left: 1em;
+$padding-left-small: .4em;
+
+
+@function calculate-top($font_size, $padding){
+  @return $font_size + $padding-top
+}
+$top: calculate-top;
+
+$width: $font_size * 10;
+
+/******************************
+ Global CSS for ALL menu types
+******************************/
+
+a.active {
+	background-color: $amherst-medium-green;
+	color: #FFF;
+}
+
+ul.nice-menu,
+ul.nice-menu ul {
+  top:auto;  // added this for amherst media
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  // border-top: 1px solid #FFF;
+  border-top: 0px solid #FFF;
+  a {
+	  color: #000;
+	  text-decoration: none;
+  }
+  a.active {
+	  color: #FFF;
+  }
+  a.hover,
+  a:hover  {
+	  color: #FFF;
+  }
+  .active-trail > a {
+	  	background-color: $amherst-medium-green;
+	  	color: #FFF; 
+  }
+}
+
+
+
+ul.nice-menu li {
+  // border: 1px solid #FFF;
+  border: 0px solid #FFF;
+  border-top: 0;
+  float: left; /* LTR */
+  background-color: #FFF;
+}
+
+ul.nice-menu li:hover  {
+  border-color: #6eb857;
+  background-color: #6eb857;
+}
+
+ul.nice-menu a {
+  font-size: $font_size;
+  // padding: 0.3em 5px 0.3em 5px;
+  padding-left: $padding-left-small;
+  padding-top: $padding-top-large;
+  padding-right: $padding-left-small;
+  padding-bottom: $padding-top-large;
+}
+@media all and (min-width: 960px) { 
+	ul.nice-menu a {
+	  padding-left: $padding-left;
+	  padding-right: $padding-left;
+	}
+}
+
+ul.nice-menu li li a {
+  font-size: $font_size;
+  // padding: 0.3em 5px 0.3em 5px;
+  padding-left: $padding-left-small;
+  padding-top: $padding-top;
+  padding-right: $padding-left-small;
+  padding-bottom: $padding-top;
+}
+
+@media all and (min-width: 960px) { 
+	ul.nice-menu li li a {
+	padding-left: $padding-left;
+	padding-right: $padding-left;
+	}
+}
+
+ul.nice-menu ul {
+  //top: 2.6em;
+  top: $top;
+  left: -1px; /* LTR */
+  border: 0;
+  //border-top: 1px solid transparent;
+  margin-right: 0; /* LTR */
+  a {
+  	color: #FFF;
+  }
+}
+
+ul.nice-menu ul li {
+  // width: 12.5em; 
+  width: $width;
+}
+ul.nice-menu ul li {
+  background-color: #666;
+}
+ul.nice-menu ul li:hover {
+  background-color: #6eb857;
+}
+
+/******************************
+ VERTICAL (left/right) menus
+******************************/
+
+/* This is the default width of all vertical menus. */
+ul.nice-menu-right,
+ul.nice-menu-left,
+ul.nice-menu-right li,
+ul.nice-menu-left li {
+  //width: 12.5em;
+  width: $width;
+}
+
+/* VERTICAL menus where submenus pop RIGHT (default). */
+ul.nice-menu-right ul {
+  //width: 12.5em;
+  //left: 12.5em;
+  top: -1px;
+  width: $width;
+  left: $width;
+}
+
+ul.nice-menu-right ul ul {
+ // width: 12.5em;
+  //left: 12.5em;
+  top: -1px;
+  width: $width;
+  left: $width;
+}
+
+ul.nice-menu-right li.menuparent,
+ul.nice-menu-right li li.menuparent {
+  background: #FFF;
+}
+
+ul.nice-menu-right li.menuparent:hover,
+ul.nice-menu-right li li.menuparent:hover {
+  background: #6eb857;
+}
+
+/* VERTICAL menus where submenus pop LEFT. */
+ul.nice-menu-left li ul {
+ // width: 12.5em;
+  //left: -12.65em;
+  top: -1px;
+  width: $width;
+  left: $width;  
+}
+
+ul.nice-menu-left li ul li ul {
+ // width: 12.5em;
+ // left: -12.65em;
+  top: -1px;
+  width: $width;
+  left: 20em;  
+}
+
+ul.nice-menu-left li.menuparent,
+ul.nice-menu-left li li.menuparent {
+  background: #666;
+}
+
+ul.nice-menu-left li.menuparent:hover,
+ul.nice-menu-left li li.menuparent:hover {
+  background: #6eb857;
+}
+
+ul.nice-menu-left a,
+ul.nice-menu-left ul a {
+  padding-left: 14px;
+}
+
+/******************************
+ HORIZONTAL (down) menus
+******************************/
+
+ul.nice-menu-down {
+  float: left; /* LTR */
+  float: right;
+  border: 0;
+}
+
+ul.nice-menu-down li {
+  // border-top: 1px solid #FFF;
+  border-top: 0px solid #FFF;
+}
+
+ul.nice-menu-down li li {
+  border-top: 0;
+}
+
+ul.nice-menu-down ul {
+  left: 0; /* LTR */
+}
+
+ul.nice-menu-down ul li {
+  clear: both;
+}
+
+ul.nice-menu-down li ul li ul {
+  //left: 12.5em; /* LTR */
+  left: $width;
+  top: -1px;
+}
+
+ul.nice-menu-down .menuparent a {
+  //padding-right: 25px; /* LTR */
+}
+
+ul.nice-menu-down li.menuparent {
+   background: #FFF;  // url("../images/nice-menus/arrow-down-white.png") right center no-repeat; /* LTR */
+}
+
+ul.nice-menu-down li.menuparent:hover {
+   background: #6eb857;  // url("../images/nice-menus/arrow-down-white.png") right center no-repeat; /* LTR */
+}
+
+ul.nice-menu-down li li.menuparent {
+  background: #666; // url("../images/nice-menus/arrow-right-white.png") right center no-repeat; /* LTR */
+}
+
+ul.nice-menu-down li li.menuparent:hover {
+  background: #6eb857; // url("../images/nice-menus/arrow-right-white.png") right center no-repeat; /* LTR */
+}
+
+/******************************
+ Garland-specific CSS
+******************************/
+
+/**
+ * Global CSS for ALL menu types
+ */
+ul.nice-menu li {
+  margin: 0;
+  padding-left: 0; /* LTR */
+  background-image: none;
+}
+
+#header-region ul.nice-menu li {
+  margin: 0;
+  /* Padding rules are needed to deal with Garland's header line-height. */
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+  background: #eee;
+}
+
+#header-region ul.nice-menu ul {
+  top: 1.8em;
+  left: -1px; /* LTR */
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin-right: 0; /* LTR */
+}
+
+#header-region ul.nice-menu ul {
+  top: 1.7em;
+}
+
+/******************************
+ Bartik-specific CSS
+******************************/
+/**
+ * Global CSS for ALL menu types
+ */
+.block ul.nice-menu,
+.block ul.nice-menu ul {
+  padding: 0;
+}
+
+/**
+ * HORIZONTAL (down) menus
+ */
+#header-region ul.nice-menu-down li ul li ul {
+  left: 12.5em; /* LTR */
+  top: -1px;
+}
+
+#header-region ul.nice-menu-down li.menuparent {
+  background: #eee url("../images/arrow-down.png") right center no-repeat; /* LTR */
+}
+
+#header-region ul.nice-menu-down li.menuparent:hover {
+  background: #ccc url("../images/arrow-down.png") right center no-repeat; /* LTR */
+}
+
+#header-region ul.nice-menu-down li li.menuparent {
+  background: #eee url("../images/arrow-right.png") right center no-repeat; /* LTR */
+}
+
+#header-region ul.nice-menu-down li li.menuparent:hover {
+  background: #ccc url("../images/arrow-right.png") right center no-repeat; /* LTR */
+}

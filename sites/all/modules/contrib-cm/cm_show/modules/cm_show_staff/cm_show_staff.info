@@ -1,0 +1,19 @@
+name = Show Staff
+package = Community Media
+description = "Alters Show form to moving Author to the top."
+
+core = 7.x
+
+dependencies[] = cm_show
+
+files[] = cm_show_staff.module
+
+configure = admin/config/communitymedia/show/staff
+
+
+; Information added by Drupal.org packaging script on 2014-07-08
+version = "7.x-1.0-beta1+0-dev"
+core = "7.x"
+project = "cm_show"
+datestamp = "1404854028"
+

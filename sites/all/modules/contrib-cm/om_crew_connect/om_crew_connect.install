@@ -1,0 +1,57 @@
+<?php
+/**
+ * Implementation of hook_enable()
+ */
+function om_crew_connect_enable() {
+
+  // New module weights in core: put om_crew_connect towards to end of the list.
+  db_update('system')
+    ->fields(array(
+      'weight' => 87,
+    ))
+    ->condition('type', 'module')
+    ->condition('name', 'om_crew_connect')
+    ->execute();
+}
+
+/**
+ * Implements hook_requirements
+ */
+function om_crew_connect_requirements($phase) {
+  $t = get_t();
+  $message = $t("As of 4/28/2014, Crew Connect is being deprecated in favor of integrating similar features into the CiviVolunteer CiviCRM Extension. The new CiviVolunteer features are being developed by Ginko Street Labs and funded by Manhattan Neighborhood Network.");
+  $install_message = $t('To enable Crew Connect move it outside the Community Media Starterkit Profile to your site\'s module folder which is typically located at: <i>sites/all</i>.');
+  $requirements['om_crew_connect'] = array(
+    'title' => $t('Crew Connect'),
+    'description' => $message . '<br>' . $install_message,
+    'severity' => REQUIREMENT_ERROR,
+  );
+  $status = _om_crew_connect_check_status();
+
+  // If om_crew_connect exists outside of profile, allow installation.
+  if ($status) {
+    $requirements['om_crew_connect']['description'] = $message;
+    $requirements['om_crew_connect']['severity'] = REQUIREMENT_OK;
+    $requirements['om_crew_connect']['value'] = 'Located outside of profile.';
+  }
+
+  // if om_crew_connect is already installed, warn the user they should move it.
+  if (!$status && $phase == 'runtime') {
+    $runtime_message = $t('You should move Crew Connect outside the Community Media Starterkit profile to your Sites\'s module folder, which is typically located at: <i>sites/all</i>.');
+    $requirements['om_crew_connect']['value'] = 'Located within profile.';
+    $requirements['om_crew_connect']['description'] = $message  . '<br>' .  $runtime_message;
+    $requirements['om_crew_connect']['severity'] = REQUIREMENT_WARNING;
+  }
+  return $requirements;
+}
+
+/**
+ * Retrieves the status of om_crew_connect which is determined by path.
+ */
+function _om_crew_connect_check_status() {
+  $path = drupal_get_path('module', 'om_crew_connect');
+  if (preg_match('/^profiles/', $path)) {
+    return FALSE;
+  }
+  return TRUE;
+}

@@ -1,0 +1,12 @@
+name = Taxonomy term searcher
+description = Implements the Tags API to help link entities to terms already present on a site.
+core = 7.x
+files[] = autotag.module
+package = Tags
+php = 5.2
+; Information added by Drupal.org packaging script on 2014-05-09
+version = "7.x-3.0"
+core = "7.x"
+project = "autotag"
+datestamp = "1399653913"
+

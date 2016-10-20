@@ -1,0 +1,267 @@
+/**
+ * @file
+ * Positioning for responsive layout .
+ *
+ * Define CSS classes to create a table-free, 3-column, 2-column, or single
+ * column layout depending on whether blocks are enabled in the left or right
+ * columns.
+ *
+ * This layout uses the Zen Grids plugin for Compass: http://zengrids.com
+ */
+
+@import "base";
+
+
+
+// We are going to create a 980px wide, 12 column grid with 20px gutters between
+// columns (applied as 10px of left/right padding on each column).
+$zen-column-count:  12;
+$zen-gutter-width:  2em;
+$zen-grid-container:  1em;
+@mixin zen-grid-container () {
+  padding-left: 1em;
+  padding-right: 1em;
+
+  @include respond-to(37.5em) {
+    padding-left: 2em;
+    padding-right: 2em;
+  }
+}
+
+
+
+// IE6-7 don't support box-sizing: border-box. We can fix this in 1 of 3 ways:
+// - Drop support for IE 6/7. :-) In the _base.scss, set $legacy-support-for-ie6
+//   and $legacy-support-for-ie7 to false.
+// - (Preferred) Install the box-sizing polyfill and set the variable below to
+//   the absolute path URL to the boxsizing.htc file.
+//   @see https://github.com/Schepp/box-sizing-polyfill
+//   $box-sizing-polyfill-path: "/path/to/boxsizing.htc";
+// - Use the same CSS unit for grid width and gutter width (use px for both or
+//   use % for both, etc.) and set the box-sizing variable to content-box.
+//   $zen-box-sizing: content-box;
+
+
+// You can generate more efficient CSS if you manually apply the
+// zen-grid-item-base mixin to all grid items from within a single ruleset.
+$zen-auto-include-item-base: false;
+// $zen-auto-include-flow-item-base: false;
+
+
+/*
+ * Center the page.
+ */
+
+#page,
+.region-bottom {
+  /* For screen sizes larger than 1200px, prevent excessively long lines of text
+     by setting a max-width. */
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 1200px;
+  width: 96%;
+}
+
+/*
+ * Apply the shared properties of grid items in a single, efficient ruleset.
+ */
+// See the note about $zen-auto-include-item-base above.
+
+#header,
+#content,
+#navigation,
+.region-sidebar-first,
+.region-sidebar-second,
+#footer {
+  @include zen-grid-item-base();
+}
+
+
+.no-sidebars #content {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.sidebar-first #content, .sidebar-second .region-sidebar-second {
+  padding-right: 0;
+}
+
+.sidebar-second #content {
+  padding-left: 0;
+}
+
+/*
+ * Containers for grid items and flow items.
+ */
+
+ #header {
+   padding: 0;
+ }
+
+ .page-frontpage #header {
+
+ }
+
+ #main,
+#footer {
+  @include zen-grid-container();
+  overflow: hidden;
+}
+
+
+
+/*
+ * Navigation bar
+ */
+
+@media all and (min-width: 48.25em) {
+  #main {
+    padding-top: 1em; /* Move all the children of #main down to make room. */
+    position: relative;
+    overflow: hidden;
+    padding-bottom: 1em;
+    clear: both;
+    margin: {
+
+	  }
+  }
+
+  #block-system-main-menu { /* "Main menu" block */
+
+  }
+  #block-search-form {
+    float: right;
+    margin: 0;
+  }
+  .region-navigation {
+    position: relative;
+    z-index: 500;
+  }
+}
+
+@media all and (min-width: 480px) and (max-width: 959px) {
+  /*
+   * Use 3 grid columns for smaller screens.
+   */
+  $zen-column-count: 3;
+
+  /*
+   * The layout when there is only one sidebar, the left one.
+   */
+
+  .sidebar-first {
+    #content { /* Span 2 columns, starting in 2nd column from left. */
+      @include zen-grid-item(2, 2);
+    }
+
+    .region-sidebar-first { /* Span 1 column, starting in 1st column from left. */
+      @include zen-grid-item(1, 1);
+    }
+  }
+
+  /*
+   * The layout when there is only one sidebar, the right one.
+   */
+
+  .sidebar-second {
+    #content { /* Span 2 columns, starting in 1st column from left. */
+      @include zen-grid-item(2, 1);
+
+    }
+
+    .region-sidebar-second { /* Span 1 column, starting in 3rd column from left. */
+      @include zen-grid-item(1, 3);
+    }
+  }
+
+  /*
+   * The layout when there are two sidebars.
+   */
+
+  .two-sidebars {
+    #content { /* Span 2 columns, starting in 2nd column from left. */
+      @include zen-grid-item(2, 2);
+    }
+
+    .region-sidebar-first { /* Span 1 column, starting in 1st column from left. */
+      @include zen-grid-item(1, 1);
+    }
+
+    .region-sidebar-second { /* Start a new row and span all 3 columns. */
+      @include zen-grid-item(3, 1);
+      @include zen-nested-container(); // Since we're making every block in this region be a grid item.
+      @include zen-clear();
+
+      .block {
+        @include zen-grid-item-base();
+      }
+      .block:nth-child(3n+1) { /* Span 1 column, starting in the 1st column from left. */
+        @include zen-grid-item(1, 1);
+        @include zen-clear();
+      }
+      .block:nth-child(3n+2) { /* Span 1 column, starting in the 2nd column from left. */
+        @include zen-grid-item(1, 2);
+      }
+      .block:nth-child(3n) { /* Span 1 column, starting in the 3rd column from left. */
+        @include zen-grid-item(1, 3);
+      }
+    }
+  }
+}
+
+
+/*
+ * 960px and wider
+ */
+@media all and (min-width: 60em) {
+  /*
+   * Use 12 grid columns for larger screens.
+   */
+  $zen-column-count: 12;
+
+  /*
+   * The layout when there is only one sidebar, the left one.
+   */
+
+  .sidebar-first {
+    #content { /* Span 9 columns, starting in 4th column from left. */
+      @include zen-grid-item(9, 4);
+    }
+
+    .region-sidebar-first { /* Span 2 columns, starting in 1st column from left. */
+      @include zen-grid-item(3, 1);
+    }
+  }
+
+  /*
+   * The layout when there is only one sidebar, the right one.
+   */
+
+  .sidebar-second {
+    #content { /* Span 9 columns, starting in 1st column from left. */
+      @include zen-grid-item(9, 1);
+    }
+
+    .region-sidebar-second { /* Span 3 columns, starting in 10th column from left. */
+      @include zen-grid-item(3, 10);
+    }
+  }
+
+  /*
+   * The layout when there are two sidebars.
+   */
+
+  .two-sidebars {
+    #content { /* Span 6 columns, starting in 4th column from left. */
+      @include zen-grid-item(6, 4);
+    }
+
+    .region-sidebar-first { /* Span 3 columns, starting in 1st column from left. */
+      @include zen-grid-item(3, 1);
+    }
+
+    .region-sidebar-second { /* Span 3 columns, starting in 10th column from left. */
+      @include zen-grid-item(3, 10);
+    }
+  }
+}

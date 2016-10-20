@@ -1,0 +1,38 @@
+name = VOD Feed
+description = VOD Feed Content Type, Fields, and Importers
+core = 7.x
+package = Community Media
+php = 5.2.4
+dependencies[] = ctools
+dependencies[] = features
+dependencies[] = feeds
+dependencies[] = media
+dependencies[] = entity
+dependencies[] = feeds_mediarss
+dependencies[] = feeds_ui
+dependencies[] = strongarm
+dependencies[] = views
+features[ctools][] = feeds:feeds_importer_default:1
+features[ctools][] = strongarm:strongarm:1
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[node][] = cm_vod_feed
+features[variable][] = comment_anonymous_cm_vod_feed
+features[variable][] = comment_cm_vod_feed
+features[variable][] = comment_default_mode_cm_vod_feed
+features[variable][] = comment_default_per_page_cm_vod_feed
+features[variable][] = comment_form_location_cm_vod_feed
+features[variable][] = comment_preview_cm_vod_feed
+features[variable][] = comment_subject_field_cm_vod_feed
+features[variable][] = menu_options_cm_vod_feed
+features[variable][] = menu_parent_cm_vod_feed
+features[variable][] = node_options_cm_vod_feed
+features[variable][] = node_preview_cm_vod_feed
+features[variable][] = node_submitted_cm_vod_feed
+
+; Information added by Drupal.org packaging script on 2014-07-08
+version = "7.x-2.0-beta2"
+core = "7.x"
+project = "cm_vod_feed"
+datestamp = "1404858828"
+

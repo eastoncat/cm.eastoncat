@@ -1,0 +1,54 @@
+diff --git a/modules/reservations_printable_contract/reservations_printable_contract.module b/modules/reservations_printable_contract/reservations_printable_contract.module
+index ac5ad1e..8c340b7 100755
+--- a/modules/reservations_printable_contract/reservations_printable_contract.module
++++ b/modules/reservations_printable_contract/reservations_printable_contract.module
+@@ -136,22 +136,35 @@ function reservations_preprocess_reservations_printable_contract(&$variables) {
+   $user     = user_load($node->uid);
+   $username = $user->name;
+   $email    = $user->mail;
+-  if (module_exists('civicrm')) {
+-
+-    civicrm_initialize(TRUE);
+-    global $civicrm_root;
+-
+-    require_once $civicrm_root . '/CRM/Core/BAO/UFMatch.php';
+-    $userID = CRM_Core_BAO_UFMatch::getContactId( $user->uid );
+ 
+-    $cg = array('contact_id' => $userID);
+-    include_once $civicrm_root . '/api/v2/Contact.php';
+-    $ob = civicrm_contact_get($cg);
+-    //update username
+-    $username = $ob[$userID]['display_name'];
+-    $phone = $ob[$userID]['phone'];
++  if (module_exists('civicrm')) {
++	
++    civicrm_initialize();
++
++    //find the contact record
++    try
++    {      
++      $userID = civicrm_api3( 'uf_match','getsingle', array(
++   	    'uf_id' => $user->uid,
++      ));
++   	  
++	  $contacts = civicrm_api3('contact', 'getsingle', array(
++        'contact_id'  =>  $userID['contact_id'],
++      ));
++	  
++      // Set username and phone based on Civi information
++      $username = $contacts['display_name'];
++      $phone = $contacts['phone'];    
++    }
++   		
++    catch (CiviCRM_API3_Exception $e) 
++    {   
++      $error = $e->getMessage();
++      drupal_set_message($error, 'error');
++    }
++	
+   }
+-
++  
+   $items = $node->reservations_reservation_items;
+ 
+   $langcode = $node->language;

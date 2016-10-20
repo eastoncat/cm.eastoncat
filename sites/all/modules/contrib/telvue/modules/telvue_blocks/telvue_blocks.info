@@ -1,0 +1,15 @@
+name = Telvue Blocks
+package = Community Media
+description = "Defines Blocks to Display Now Playing, Playing Next, and Now and Next blocks populated from a Telvue."
+core = 7.x
+dependencies[] = "telvue"
+
+configure = admin/structure/block
+
+
+; Information added by drupal.org packaging script on 2013-07-16
+version = "7.x-1.0-alpha4"
+core = "7.x"
+project = "telvue"
+datestamp = "1374012368"
+

@@ -1,0 +1,42 @@
+/*------------------------------------*\
+	NARROW
+\*------------------------------------*/
+
+/* This file will hold styles that are loaded using the same media query as the narrow grid. */
+/* If you are using the default media queries provided by Omega, these styles will also
+ *  apply to the normal and widescreen layouts. You may override these styles in the normal 
+ *  and widescreen CSS files as appropriate. */
+
+
+html, body{
+  font-size: 93.8%;  /* 15px */
+}
+
+body{
+  font-size: 0.938em;  /* 15px */
+}
+
+#region-header-first {
+  width: 720px;
+}
+
+#zone-menu ul.menu li a, #zone-menu ul.main-menu li a {
+
+}
+
+#region-footer-first .region-inner, #region-footer-second .region-inner {
+  width: 720px;
+}
+
+#section-content .region {
+  margin: 0 10px;
+}
+
+
+/* Staff page */
+
+.view-staff img {
+  width: 140px;
+  height: 140px;
+}
+

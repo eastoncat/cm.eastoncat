@@ -1,0 +1,17 @@
+name = "Airing Duration"
+description = "Provides and Populates Airing Duration Field."
+package = "Community Media"
+php = "5.2.4"
+core = "7.x"
+
+dependencies[] = "cm_airing"
+dependencies[] = "hms_field"
+
+
+
+; Information added by Drupal.org packaging script on 2014-09-23
+version = "7.x-3.0-alpha4+2-dev"
+core = "7.x"
+project = "cm_airing"
+datestamp = "1411512834"
+

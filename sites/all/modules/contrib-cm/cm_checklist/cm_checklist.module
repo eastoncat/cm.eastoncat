@@ -1,0 +1,185 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Provides Community Media Checklist functions
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function cm_checklist_menu() {
+  
+  // Adds Community Media Section to Admin Interface
+  // Duplicated in cm_show and cm_project, first module installed creates the link
+  $items['admin/config/communitymedia'] = array(
+    'title' => 'Community Media',
+    'description' => 'Configuration options for Community Media modules',
+    'position' => 'right',
+    'page callback' => 'system_admin_menu_block_page',
+    'access arguments' => array('access administration pages'),
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+    'weight' => -99,
+  );
+  
+  $items['admin/reports/communitymedia-checklist'] = array(
+    'title' => 'Community Media Checklist',
+    'description' => 'Display configuration status',
+    'page callback' => 'cm_checklist_main',
+    'access arguments' => array('access administration pages'),
+    'weight' => -99,
+    'file' => 'cm_checklist.report.inc',
+  );
+    
+  $items['admin/config/communitymedia/checklist'] = array(
+    'title' => 'Checklist Configuration',
+    'description' => 'Configuration options for the Community Media Checklist.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cm_checklist_admin_settings'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $items;
+}
+
+/**
+ * Implements hook_help().
+ */
+function cm_checklist_help($path, $arg) {
+  switch ($path) {
+    case 'admin/configure/communitymedia/checklist':
+      $output = '<p>' . t('The modules developed for Community Media are designed to be implemented incrementally based on each station\'s needs.  This is not an exhaustive checklist, but designed to help you work through the configuration process.') . '</p>';
+      
+      return $output;
+  }
+}
+
+/**
+ * Builds the cm_checklist administration settings form.
+ */
+function cm_checklist_admin_settings($form, &$form_state) {
+  $form = array();
+  
+  if (!variable_get('cm_checklist_drupal_uid', 0)) {
+    $form['cm_checklist_markup'] = array(
+      '#type' => 'item',
+      '#title' => t('Getting Involved'),
+      '#markup' => 'If you already have a Drupal.org account, here is how you find the user id.  If you do not have account, you can create one now.',
+    );
+  
+    $form['cm_checklist_drupal_uid'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Drupal User ID'),
+      '#default_value' => variable_get('cm_checklist_drupal_uid', 0),
+      '#description' => t(''),
+    );
+  } else {
+    $form['cm_checklist_markup'] = array(
+      '#type' => 'item',
+      '#title' => t('Congratulations!'),
+      '#markup' => 'You\'ve already registered your Drupal ID.  ' . l('Let\'s look at the next step in the Checklist Report.', 'admin/reports/communitymedia-checklist'),
+    );
+  }
+  return system_settings_form($form);
+}
+
+
+/**
+ * Checks the Status of the CiviCRM configuration.
+ */
+function cm_checklist_civicrm_status(){
+ 
+  //CHECK 1 - CiviGroup Roles or CiviGroup Group Sync configured?
+  if (!module_exists('civicrm_member_roles') && !module_exists('civicrm_group_roles') ) {
+    $status = array(
+    'description' => 'CiviCRM is installed, but neither CiviGroup Roles and CiviGroup Group Sync are configured.  This is how information membership and certification information is shared between Drupal and CiviCRM.  <a href="http://drupal.org/node/1013546">Step by step instructions for configuring CiviGroup Roles and CiviGroup Group Sync</a>',
+    'severity' => 2,);
+    return $status;
+  }
+  
+  //if there are no problems, return this
+  $status = array(
+    'description' => 'See the <a href="/civicrm/admin/configtask">CiviCRM configuration checklist</a> for additional steps to that configuration.',
+    'severity' => 0,);
+  return $status;
+}
+
+/**
+ * Checks the Status of the Reservations API configuration.
+ */
+function cm_checklist_reservations_status(){
+  
+  //CHECK 1 - Check to see if any content types have been created
+  $reservations_item_count = db_query("SELECT COUNT(type) FROM {reservations_node_type} WHERE reservations_type_setting = :bucket OR reservations_type_setting = :resource", array(':bucket' => 'bucket', ':resource' => 'resource'))->fetchField();
+  
+  if (!$reservations_item_count) {
+    $status = array(
+    'description' => 'You have not configured any content types to be Buckets or Resources.  Please follow the <a href="http://drupal.org/node/1043510">step by step instructions for configuring Reservations managed content types</a>',
+    'severity' => 2,);
+    return $status;
+  }
+  
+  //if there are no problems, return this
+  $status = array(
+    'description' => 'Reservations is configured correctly.',
+    'severity' => 0,);
+  return $status;
+}
+
+/**
+ * Checks the Status of the Legal module configuration.
+ */
+function cm_checklist_legal_status(){
+  $conditions = legal_get_conditions();
+  if(!$conditions['tc_id']) {
+  
+    $link = l('terms & condiftions', 'admin/config/people/legal');
+    $status = array(
+      'description' => 'Legal is enabled, but not configured.  Please add your site\'s ' . $link,
+      'severity' => 1,);
+    return $status;
+  }
+  //if there are no problems, return this
+  $status = array(
+    'description' => 'Legal is configured correctly.',
+    'severity' => 0,);
+  return $status;
+}
+
+/**
+ * Checks to see if the Drupal.org uid has been saved 
+ * AND that at least one page of documentation has been added or edited
+ */
+function cm_checklist_documentation_status(){
+  
+  if(variable_get('cm_checklist_drupal_uid', 0) < 1) {
+  
+    $link = l('To continue, add your Drupal.org user id here.', 'admin/config/communitymedia/checklist');
+    $status = array(
+      'description' => 'In order to contribute to the documentation, you must have an account on Drupal.org.  ' . $link,
+      'severity' => 1,);
+    return $status;
+  }
+  
+  //if there are no problems, return this
+  $status = array(
+    'description' => 'You have shown that you can edit documentation on Drupal.org.',
+    'severity' => 0,);
+  return $status;
+}
+
+
+/**
+ * Checks to see if the Drupal.org uid has been saved 
+ * AND that at least one page of documentation has been added or edited
+ */
+function cm_checklist_status(){
+  //if there are no problems, return this
+  $status = array(
+    'description' => 'Checklist needs a Drupal.org ID to continue the configuration.',
+    'severity' => 0,);
+  return $status;
+}

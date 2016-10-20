@@ -1,0 +1,18 @@
+name = Media: Archive
+description = Adds Archive.org as a supported media provider.
+package = Media
+core = 7.x
+
+dependencies[] = media_internet
+
+files[] = includes/MediaArchiveStreamWrapper.inc
+files[] = includes/MediaInternetArchiveHandler.inc
+files[] = includes/MediaArchiveBrowser.inc
+
+
+; Information added by Drupal.org packaging script on 2014-06-02
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "media_archive"
+datestamp = "1401741830"
+

@@ -1,0 +1,66 @@
+<?php
+
+/**
+ * @file
+ * Provides realname integration for user with civicrm contact records.
+ */
+
+/**
+ * Retrieves a CiviCRM contact by Drupal user ID.
+ */
+function civicrm_realname_get_contact($uid) {
+  $contacts = &drupal_static(__FUNCTION__);
+  if (isset($contacts[$uid])) {
+    return $contacts[$uid];
+  }
+  if (!isset($contacts)) {
+    $contacts = array();
+  }
+  $contacts[$uid] = FALSE;
+  civicrm_initialize();
+  require_once 'api/api.php';
+  $res = civicrm_api('uf_match', 'get', array('uf_id' => $uid, 'version' => 3));
+  if ($res['is_error'] || empty($res['id']) || empty($res['values'][$res['id']])) {
+    return FALSE;
+  }
+  $id = $res['values'][$res['id']]['contact_id'];
+  $res = civicrm_api('contact', 'get', array('contact_id' => $id, 'version' => 3));
+  if ($res['is_error']) {
+    return FALSE;
+  }
+  $contacts[$uid] = $res['values'][$res['id']];
+  return $contacts[$uid];
+}
+
+/**
+ * Implements hook_user_load().
+ */
+function civicrm_realname_user_load($users) {
+  foreach ($users as $uid => $user) {
+    $contact = civicrm_realname_get_contact($uid);
+    if ($contact) {
+      $user->display_name = $contact['display_name'];
+      $user->sort_name = $contact['sort_name'];
+      $user->contact_id = $contact['contact_id'];
+    }
+  }
+}
+
+/**
+ * Alter a user's real name before it is saved to the database.
+ *
+ * @param $realname
+ *   The user's generated real name.
+ * @param $account
+ *   A user account object.
+ *
+ * @see realname_update()
+ *
+ * @ingroup realname
+ */
+function civicrm_realname_realname_alter(&$realname, $account) {
+  $contact = civicrm_realname_get_contact($account->uid);
+  if ($contact && $contact['display_name']) {
+    $realname = $contact['display_name'];
+  }
+}

@@ -1,0 +1,491 @@
+/**
+ * @file
+ * Page Styling
+ *
+ * Style the markup found in page.tpl.php. Also includes some styling of
+ * miscellaneous Drupal elements that appear in the $content variable, such as
+ * ul.links, .pager, .more-link, etc.
+ */
+/*
+ * Body
+ */
+/* line 17, ../sass/pages.scss */
+body, html {
+  height: 100%;
+}
+
+/* line 21, ../sass/pages.scss */
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #cccccc;
+}
+
+/* line 27, ../sass/pages.scss */
+#page {
+  box-shadow: 0 0 0.25em 0.25em #888;
+  -moz-box-shadow: 0 0 0.25em 0.25em #888;
+  -webkit-box-shadow: 0 0 0.25em 0.25em #888;
+  margin-top: 0.3em;
+  background-color: #fff;
+}
+
+/*
+ * The skip-link link will be completely hidden until a user tabs to the link.
+ * See the element-focusable rule in system.base.css.
+ */
+/* line 40, ../sass/pages.scss */
+#skip-link {
+  margin: 0;
+}
+/* line 44, ../sass/pages.scss */
+#skip-link a,
+#skip-link a:visited {
+  display: block;
+  width: 100%;
+  padding: 2px 0 3px 0;
+  text-align: center;
+  background-color: #666;
+  color: #fff;
+}
+
+/*
+ * Header
+ */
+/* line 64, ../sass/pages.scss */
+#branding {
+  z-index: 20;
+  overflow: hidden;
+  position: relative;
+  clear: both;
+  border-top: 4px solid #ac2e32;
+}
+/* line 77, ../sass/pages.scss */
+#branding .region-branding .logo-block {
+  position: absolute;
+  top: 0;
+  left: 2em;
+}
+@media screen and (min-width: 48.25em) {
+  /* line 77, ../sass/pages.scss */
+  #branding .region-branding .logo-block {
+    top: 1em;
+  }
+}
+@media screen and (min-width: 60em) {
+  /* line 77, ../sass/pages.scss */
+  #branding .region-branding .logo-block {
+    top: 2em;
+  }
+}
+/* line 88, ../sass/pages.scss */
+#branding .region-branding #block-search-form {
+  position: absolute;
+  right: 2em;
+  top: 1em;
+  z-index: 10;
+}
+@media screen and (min-width: 48.25em) {
+  /* line 88, ../sass/pages.scss */
+  #branding .region-branding #block-search-form {
+    top: 2em;
+  }
+}
+@media screen and (min-width: 60em) {
+  /* line 88, ../sass/pages.scss */
+  #branding .region-branding #block-search-form {
+    top: 3em;
+  }
+}
+
+/* line 105, ../sass/pages.scss */
+#logo {
+  /* Wrapping link for logo */
+}
+/* line 108, ../sass/pages.scss */
+#logo img {
+  vertical-align: bottom;
+}
+
+/* line 113, ../sass/pages.scss */
+#name-and-slogan {
+  /* Wrapper for website name and slogan */
+  float: left;
+}
+
+/* line 117, ../sass/pages.scss */
+#site-name {
+  /* The name of the website */
+  margin: 0;
+  font-size: 2em;
+  line-height: 1.5em;
+}
+/* line 123, ../sass/pages.scss */
+#site-name a:link,
+#site-name a:visited {
+  color: #000;
+  text-decoration: none;
+}
+/* line 129, ../sass/pages.scss */
+#site-name a:hover,
+#site-name a:focus {
+  text-decoration: underline;
+}
+
+/* line 134, ../sass/pages.scss */
+#site-slogan {
+  /* The slogan (or tagline) of a website */
+  margin: 0;
+  font-size: 1em;
+}
+
+/* line 139, ../sass/pages.scss */
+.region-header {
+  /* Wrapper for any blocks placed in the header region */
+  clear: both;
+  /* Clear the logo */
+  position: relative;
+  z-index: 0;
+  overflow: hidden;
+}
+
+/* line 146, ../sass/pages.scss */
+.region-subheader {
+  /* Wrapper for any blocks placed in the sub-header region */
+  clear: both;
+  /* Clear the logo */
+  position: relative;
+  top: -6em;
+  z-index: 0;
+  background-color: #333132;
+  width: 100%;
+  overflow: hidden;
+  padding: 0.75em 2em;
+  border-bottom: 4px solid #ac2e32;
+}
+
+/*
+ * Main (container for everything else)
+ */
+/* line 164, ../sass/pages.scss */
+#main img {
+  -moz-box-shadow: 0 0 0.5em 0.125em #888;
+  -webkit-box-shadow: 0 0 0.5em 0.125em #888;
+  box-shadow: 0 0 0.5em 0.125em #888;
+}
+
+/*
+ * Content
+ */
+/* line 183, ../sass/pages.scss */
+.breadcrumb {
+  /* The path to the current page in the form of a list of links */
+  border-bottom: 2px dotted #ac2e32;
+  margin-bottom: 1em;
+  padding-bottom: 0.3em;
+}
+/* line 188, ../sass/pages.scss */
+.breadcrumb ol {
+  margin: 0;
+  padding: 0;
+}
+/* line 192, ../sass/pages.scss */
+.breadcrumb li {
+  display: inline;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+/* line 198, ../sass/pages.scss */
+.breadcrumb li span {
+  font-size: 0.75em;
+  padding: 0 0.75em;
+  margin: 0;
+  vertical-align: top;
+  color: #cc0001;
+}
+
+/* line 213, ../sass/pages.scss */
+h1.title,
+h2.node-title,
+h2.block-title,
+h2.title,
+h2.comment-form,
+h3.title {
+  /* Comment title */
+  margin: 0;
+}
+
+/* line 217, ../sass/pages.scss */
+h1.title {
+  margin-bottom: 0.25em;
+  margin-top: 0.5em;
+}
+
+/* line 222, ../sass/pages.scss */
+.front #main h2.block-title {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+}
+
+/* line 226, ../sass/pages.scss */
+tr.even {
+  /* Some tables have rows marked even or odd. */
+  /* background-color: #eee; */
+  /* Drupal core uses a #eee background */
+}
+
+/* line 230, ../sass/pages.scss */
+tr.odd {
+  /* background-color: #eee; */
+  /* Drupal core uses a #eee background */
+}
+
+/* line 234, ../sass/pages.scss */
+div.messages {
+  /* Important messages (status, warning, and error) for the user. See also the declarations in messages.css. */
+  margin: 1.5em 0;
+  /* Drupal core uses "6px 0" margin */
+}
+/* line 237, ../sass/pages.scss */
+div.messages ul {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* line 243, ../sass/pages.scss */
+div.status {
+  /* Normal priority messages */
+}
+
+/* line 247, ../sass/pages.scss */
+div.warning,
+tr.warning {
+  /* Medium priority messages */
+  /* border: 1px solid #f0c020; */
+  /* Drupal core uses: 1px solid #f0c020 */
+}
+
+/* line 252, ../sass/pages.scss */
+div.error,
+tr.error {
+  /* High priority messages. See also the .error declaration below. */
+}
+
+/* line 255, ../sass/pages.scss */
+.error {
+  /* Errors that are separate from div.messages status messages. */
+  /* color: #e55; */
+  /* Drupal core uses a #e55 background */
+}
+
+/* line 259, ../sass/pages.scss */
+.warning {
+  /* Warnings that are separate from div.messages status messages. */
+  /* color: #e09010; */
+  /* Drupal core uses a #e09010 background */
+}
+
+/* line 263, ../sass/pages.scss */
+.tabs {
+  /* See also the tabs.css file. */
+}
+
+/* line 266, ../sass/pages.scss */
+.region-help {
+  /* Help text on a page */
+}
+
+/* line 269, ../sass/pages.scss */
+.more-help-link {
+  /* Link to more help */
+}
+
+/* line 272, ../sass/pages.scss */
+.region-front {
+  /* Wrapper for the actual page content */
+}
+/* line 275, ../sass/pages.scss */
+.region-front .news-articles-list {
+  padding: 0;
+  list-style: none;
+}
+/* line 279, ../sass/pages.scss */
+.region-front .news-articles-list li {
+  float: left;
+  width: 26.3333%;
+  margin-right: 7%;
+}
+
+/* line 287, ../sass/pages.scss */
+.region-content {
+  /* Wrapper for the actual page content */
+}
+
+/* line 290, ../sass/pages.scss */
+ul.inline {
+  /* List of links generated by theme_links() */
+  display: inline;
+  padding: 0;
+}
+/* line 294, ../sass/pages.scss */
+ul.inline li {
+  display: inline;
+  list-style-type: none;
+  padding: 0 1em 0 0;
+  /* LTR */
+}
+
+/* line 300, ../sass/pages.scss */
+span.field-label {
+  /* The inline field label used by the Fences module */
+  padding: 0 1em 0 0;
+  /* LTR */
+}
+
+/* line 304, ../sass/pages.scss */
+.item-list .pager {
+  /* A list of page numbers when more than 1 page of content is available */
+  padding: 0;
+}
+/* line 307, ../sass/pages.scss */
+.item-list .pager li {
+  /* Each page number in the pager list */
+  padding: 0 0.5em;
+}
+
+/* line 312, ../sass/pages.scss */
+.feed-icon {
+  /* The link to the RSS or Atom feed for the current list of content */
+}
+
+/* line 315, ../sass/pages.scss */
+.more-link {
+  /* Aggregator, blog, and forum more link */
+}
+
+/* line 318, ../sass/pages.scss */
+.more-arrows, a .more-arrows {
+  color: #ce2125;
+}
+
+/*
+ * First sidebar (on left in LTR languages, on right in RTL)
+ *
+ * Remember to NOT add padding or margin to your .region-sidebar-first
+ * (see the layout.css file.)
+ */
+/* line 329, ../sass/pages.scss */
+.region-sidebar-first {
+  border-right: 2px dotted #ac2e32;
+}
+
+/*
+ * Second sidebar (on right in LTR languages, on left in RTL)
+ *
+ * Remember to NOT add padding or margin to your .region-sidebar-second
+ * (see the layout.css file.)
+ */
+/* line 340, ../sass/pages.scss */
+.region-sidebar-second {
+  border-left: 2px dotted #ac2e32;
+}
+
+/*
+ * Footer
+ */
+/* line 348, ../sass/pages.scss */
+#footer {
+  border-top: 4px solid #ac2e32;
+  border-bottom: 4px solid #ac2e32;
+  background: #312f30;
+  color: #bcbec0;
+  overflow: hidden;
+  font-size: 85%;
+  line-height: 1.5em;
+}
+/* line 357, ../sass/pages.scss */
+#footer a {
+  color: #bcbec0;
+}
+/* line 361, ../sass/pages.scss */
+#footer h2 {
+  color: #fff;
+}
+/* line 364, ../sass/pages.scss */
+#footer .form-item label {
+  color: #bcbec0;
+}
+/* line 367, ../sass/pages.scss */
+#footer .footer-column-1 {
+  float: left;
+  width: 49%;
+  padding-right: 2%;
+}
+@media screen and (min-width: 48.25em) {
+  /* line 367, ../sass/pages.scss */
+  #footer .footer-column-1 {
+    width: 25%;
+  }
+}
+/* line 377, ../sass/pages.scss */
+#footer .footer-column-2 {
+  float: left;
+  width: 49%;
+  padding-right: 2%;
+}
+@media screen and (min-width: 48.25em) {
+  /* line 377, ../sass/pages.scss */
+  #footer .footer-column-2 {
+    width: 25%;
+  }
+}
+/* line 386, ../sass/pages.scss */
+#footer .footer-column-3 {
+  float: left;
+  width: 49%;
+  padding-right: 2%;
+  clear: both;
+}
+@media screen and (min-width: 48.25em) {
+  /* line 386, ../sass/pages.scss */
+  #footer .footer-column-3 {
+    width: 20%;
+    clear: none;
+  }
+}
+/* line 397, ../sass/pages.scss */
+#footer .footer-column-4 {
+  float: left;
+  width: 49%;
+}
+@media screen and (min-width: 48.25em) {
+  /* line 397, ../sass/pages.scss */
+  #footer .footer-column-4 {
+    width: 30%;
+  }
+}
+/* line 405, ../sass/pages.scss */
+#footer .footer-map {
+  margin-top: 3em;
+}
+
+/*
+ * Page bottom
+ */
+/* line 415, ../sass/pages.scss */
+.region-bottom {
+  /* Wrapper for any blocks placed in the page bottom region */
+  font-size: 75%;
+}
+
+/*
+ * Make block elements with the inline-block class inline-blocks
+ */
+/* line 424, ../sass/pages.scss */
+.inline-block {
+  display: inline-block;
+}

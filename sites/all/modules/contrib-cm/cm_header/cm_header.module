@@ -1,0 +1,35 @@
+<?php
+/**
+ * @file
+ */
+
+include_once('cm_header.features.inc');
+
+// use hook_node_info and hook_form to prevent uninstall issue caused by Features
+// http://drupal.org/node/1055460
+
+/**
+ * Implements hook_node_info().
+ */
+function cm_header_node_info() {
+  return array(
+    'cm_header' => array(
+      'name' => t('Header Image'),
+      'base' => 'cm_header',
+      'description' => t('Community Media - Header Images are designed to be used by the Community Media Theme'),
+      'has_title' => TRUE,
+      'title_label' => 'Title',
+      'has_body' => FALSE,
+    ),
+  );
+}
+
+
+/**
+ * Implement hook_form() with the standard default form.
+ */
+function cm_header_form($node, $form_state) {
+  return node_content_form($node, $form_state);
+}
+
+

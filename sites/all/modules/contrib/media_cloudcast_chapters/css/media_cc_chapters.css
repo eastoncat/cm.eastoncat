@@ -1,0 +1,17 @@
+.video-chapters {
+  /*background-color: #CCC;*/
+  color: black;
+  padding: 5px 5px 5px 25px;
+}
+.video-chapters li {
+  padding: 5px 0;
+  border-bottom: 1px solid black;
+  cursor: pointer;
+  font-weight: bold;
+}
+.video-chapters li:hover {
+  text-decoration: underline;
+}
+.video-chapters li .chapter-start {
+  font-weight: normal;
+}

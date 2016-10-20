@@ -1,0 +1,31 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Install, update and uninstall functions for the cm_show module.
+ *
+ */
+
+/**
+ * Implements hook_install().
+ */
+function cm_show_install() {
+
+  
+} // function cm_show_install
+
+/**
+ * Implements hook_uninstall().
+ */
+function cm_show_uninstall() {
+
+  $result = db_query("SELECT nid FROM {node} WHERE type = :type", array(':type' => 'cm_show'));
+  foreach ($result as $node) {
+    node_delete($node->nid);
+  }
+
+  drupal_set_message(t('Community Media Show module successfully uninstalled.  cm_show nodes deleted.'));
+} // cm_show_uninstall
+
+

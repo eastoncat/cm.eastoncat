@@ -1,0 +1,17 @@
+name = Creative Commons
+description = Defines a field type for attaching creative commons license types. 
+package = Search and Metadata
+core = 7.x
+
+configure = admin/config/search/creativecommons
+
+files[] = creativecommons.class.php
+files[] = creativecommons.install
+files[] = creativecommons.module
+files[] = theme/theme.inc
+; Information added by drupal.org packaging script on 2013-09-30
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "creativecommons"
+datestamp = "1380567960"
+

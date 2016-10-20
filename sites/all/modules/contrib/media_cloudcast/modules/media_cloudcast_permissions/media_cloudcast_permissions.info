@@ -1,0 +1,16 @@
+name = Media: Cloudcast Permissions
+description = Adds additional permission configuration to Cloudcast.
+package = "Media"
+core = 7.x
+files[] = media_permissions_cloudcast.module
+files[] = includes/media_cloudcast.admin.inc
+dependencies[] = media_cloudcast
+
+configure = admin/config/media/media-cloudcast-permissions
+
+; Information added by  packaging script on 2013-11-21
+version = "7.x-2.0-beta1"
+core = "7.x"
+project = "media_cloudcast"
+datestamp = "1385065409"
+

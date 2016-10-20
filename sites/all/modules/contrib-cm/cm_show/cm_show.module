@@ -1,0 +1,151 @@
+<?php
+// $Id$
+
+
+/**
+ * Implements hook_help().
+ */
+function cm_show_help($section) {
+  switch ($section) {
+    case 'admin/help#cm_show':
+      return t('Core video metadata and display.');
+      break;
+  }
+}
+
+/**
+ * Implements hook_init().
+ */
+function cm_show_init() {
+  //drupal_add_css(drupal_get_path('module', 'cm_show')  . '/cm_show.css');
+  //if (variable_get('cm_show_theme_genre_javascript', '0')) {
+  //  drupal_add_js(drupal_get_path('module', 'cm_show')  . '/cm_show.js');
+  //}
+}
+
+
+/**
+ * Implements hook_node_info().
+ */
+function cm_show_node_info() {
+  return array(
+    // Project nodes.
+    'cm_show' => array(
+      'name' => t('Show'),
+      'base' => 'cm_show',
+      'description' => t('<b>Community Media</b> - This content type where a Show\'s metadata is stored.  The core content type can be customize to be a digital version of the paper forms producers complete when submitting video. VOD can be added using the Media module.'),
+      'has_title' => TRUE,
+      'title_label' => 'Title',
+      'has_body' => TRUE,
+    ),
+  );
+}
+
+/**
+ * Implement hook_form() with the standard default form.
+ */
+function cm_show_form($node, $form_state) {
+  return node_content_form($node, $form_state);
+}
+
+/**
+ * Implementation of hook_menu().
+ */
+function cm_show_menu() {
+  $items = array();
+
+  // Adds Community Media Section to Admin Interface
+  // Duplicated in cm_checklist and cm_project.  Show only manages this menu if
+  // neight Checklist nor Project exist
+  if (!module_exists('cm_checklist') && !module_exists('cm_project')) {
+    $items['admin/config/communitymedia'] = array(
+      'title' => 'Community Media',
+      'description' => 'Configuration options for Community Media modules',
+      'position' => 'right',
+      'page callback' => 'system_admin_menu_block_page',
+      'access arguments' => array('access administration pages'),
+      'file' => 'system.admin.inc',
+      'file path' => drupal_get_path('module', 'system'),
+      'weight' => -99,
+    );
+  }
+  
+ $items['admin/config/communitymedia/show'] = array(
+    'title' => 'Show Configuration',
+    'description' => 'Configuration options for the Community Media Project.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cm_show_admin_settings'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['admin/config/communitymedia/show/edit'] = array(
+    'title' => 'Edit',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => -10,
+  );
+
+  return $items;
+
+}
+
+/**
+ * Builds the cm_show admininstration settings form.
+ */
+function cm_show_admin_settings($form, &$form_state) {
+  $form = array();
+  
+  // add display option to prevent "adult" PBCore ratings from being displayed
+  
+  $requirements = array();
+   
+  $cm_show_status = cm_show_status();
+  $requirements['cm_show']['title'] = 'Show';
+  $requirements['cm_show']['value'] = 'Installed';
+  $requirements['cm_show']['severity'] = $cm_show_status['severity']; 
+  $requirements['cm_show']['description'] = $cm_show_status['description'];
+    
+  $status = theme('status_report', array('requirements' => $requirements));
+
+  $form['cm_show_status'] = array(
+    '#markup' => $status,
+  );
+  
+  return system_settings_form($form);
+}
+
+
+/**
+ * returns status for cm_checklist
+ */
+function cm_show_status() {
+  //check OG status
+  if (!module_exists('og') && !module_exists('og_ui')) {
+    $status = array(
+    'description' => 'You should enable <a href="http://drupal.org/project/og">Organic Groups</a> and configure Show as a Content Types that can be associated to a Group.  See <a href="http://drupal.org/node/1114890">Organic Group documentation for step by step instructions</a>.',
+    'severity' => 2,); 
+    return $status;  
+  }
+  
+  //check to see if cm_project is og enabled
+  if (module_exists('og') && module_exists('og_ui')) {
+  
+    $is_group_content = og_is_group_content_type('node', 'cm_show');
+
+    if (!$is_group_content) {
+      $status = array(
+      'description' => 'Organic Groups and Organic Groups UI are enabled.  Now configure Show as a Content Types that can be associated to a Group.  See <a href="http://drupal.org/node/1114890">Organic Group documentation for step by step instructions</a>.',
+      'severity' => 2,);   
+      return $status;
+    }      
+  }
+  
+  // if there were no other steps...
+  $status = array(
+      'description' => 'Shows is configured correctly.',
+      'severity' => 0,);
+  return $status;
+
+}
+
+

@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * @file media_cloudcast_permissions_permissions/media_cloudcast_permissions_permissions.module
+ *
+ * Media: Cloudcast Permission adds additional field to node content types to hide/show
+ * Video in node.
+ *
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function media_cloudcast_permissions_permission() {
+  return array(
+    'administer media cloudcast' => array(
+      'title' => 'Administer Media Cloudcast',
+      'description' => t('Control availability of Cloudcast videos.'),
+    ),
+  );
+  
+  return array();
+}
+
+/**
+ * Implements hook_menu().
+ */
+function media_cloudcast_permissions_menu() {
+
+  $items['admin/config/media/media-cloudcast-permissions'] = array(
+    'title' => 'Cloudcast Video Control',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('media_cloudcast_permissions_admin_config'),
+    'access arguments' => array('administer media cloudcast'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'includes/media_cloudcast_permissions.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * @see node_type_form()
+ * @see media_cloudcast_permissions_add_bundle_settings()
+ */
+function media_cloudcast_permissions_form_node_type_form_alter(&$form, $form_state) {
+  $node_type = isset($form['#node_type']->type) ? $form['#node_type']->type : '';
+  module_load_include('inc', 'media_cloudcast_permissions', 'includes/media_cloudcast_permissions_permissions.admin');
+
+  $media_cloudcast_permissions_node_types = array_filter(variable_get('media_cloudcast_permissions_node_types', array()));
+  if (in_array($node_type, $media_cloudcast_permissions_node_types)) {
+    media_cloudcast_permissions_add_bundle_settings($form, $form_state, 'node', $node_type);
+  }
+}

@@ -1,0 +1,15 @@
+name = Configuration Checklist
+description = Checks system requirements and helps with configuration of modules most commonly used on a Community Media site
+package = Community Media
+
+core = 7.x
+files[] = cm_checklist.module
+
+configure = admin/config/communitymedia/checklist
+
+; Information added by drupal.org packaging script on 2013-09-30
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "cm_checklist"
+datestamp = "1380559168"
+

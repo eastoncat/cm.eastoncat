@@ -1,0 +1,31 @@
+name = "Show VOD"
+description = "Defines cm_show_vod file reference field on cm_show and title on Video file type"
+package = "Community Media"
+php = "5.2.4"
+project = "cm_show_vod"
+core = "7.x"
+
+dependencies[] = "cm_show"
+dependencies[] = "features"
+dependencies[] = "file"
+dependencies[] = "file_entity"
+dependencies[] = "media"
+dependencies[] = "strongarm"
+
+features[ctools][] = "strongarm:strongarm:1"
+features[field][] = "node-cm_show_vod-body"
+features[field][] = "node-cm_show_vod-field_cm_show_vod"
+features[node][] = "cm_show_vod"
+features[variable][] = "menu_options_cm_show_vod"
+features[variable][] = "menu_parent_cm_show_vod"
+features[variable][] = "node_options_cm_show_vod"
+features[variable][] = "node_preview_cm_show_vod"
+features[variable][] = "node_submitted_cm_show_vod"
+
+
+; Information added by drupal.org packaging script on 2013-09-30
+version = "7.x-2.x-dev"
+core = "7.x"
+project = "cm_show_vod"
+datestamp = "1380559183"
+

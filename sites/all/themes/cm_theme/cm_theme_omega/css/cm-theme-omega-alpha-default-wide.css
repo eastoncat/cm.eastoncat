@@ -1,0 +1,78 @@
+/*------------------------------------*\
+	WIDE
+\*------------------------------------*/
+
+/* This file will hold styles that are loaded using the same media query as the wide grid. */
+
+
+
+ 
+/****************
+ SECTION HEADER 
+****************/
+
+
+
+/**************
+Header zone 
+**************/
+#zone-header-wrapper {
+
+}
+
+#region-header-first {
+  width: 1200px;
+}
+
+#region-footer-first .region-inner, #region-footer-second .region-inner {
+  width: 1200px;
+}
+
+/* Buttons on channelAustin frontpage */
+
+.button-big {
+  width: 240px;
+}
+
+.content .col {
+  width: 270px; 
+}
+
+.button-big a {
+  padding: 11px 87px 16px 70px;
+}
+
+
+
+#block-views-frontpage-block-1 .views-row{
+  width: 196px;
+}
+
+#block-views-frontpage-block-1 .views-field-field-vod{
+  height: 99px;
+  width: 176px;
+}
+
+#block-views-frontpage-block-1 .views-field-field-vod img {
+  height: 99px;
+}
+
+
+
+#section-content .region {
+  margin: 0 10px;
+}
+
+/* @todo: remove channelAustin customizations */
+
+.button-big.media-artist a {
+  background: url(/sites/all/themes/cm_theme/images/icon_arrow-right.png) no-repeat scroll 215px 14px,url(/sites/all/themes/cm_theme/images/frontpage_mediaArtist.png) no-repeat 12px 10px;
+}
+
+.button-big.iyouth a {
+  background: url(/sites/all/themes/cm_theme/images/icon_arrow-right.png) no-repeat scroll 215px 14px,url(/sites/all/themes/cm_theme/images/frontpage_iYouth.png) no-repeat scroll 12px 12px;
+}
+
+.button-big.donations a {
+  background: url(/sites/all/themes/cm_theme/images/icon_arrow-right.png) no-repeat scroll 215px 14px,url(/sites/all/themes/cm_theme/images/frontpage_donations.png) no-repeat scroll 12px 11px;
+}

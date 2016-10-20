@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Adds a MediaRSS feed processor to the Feeds module.
+ */
+
+/**
+ * Implements ctools_plugin_api().
+ */
+
+function media_cloudcast_feeds_ctools_plugin_api($owner, $api) {
+  if ($owner == 'feeds' && $api == 'plugins') {
+    return array('version' => 1);
+  }
+}
+
+/**
+ * Implements hook_feeds_plugins().
+ */
+function media_cloudcast_feeds_feeds_plugins() {
+  $info = array();
+  $info['MediaCloudcastFeedsParser'] = array(
+    'name' => 'MediaRSS Cloudcast parser',
+    'description' => 'Parse MediaRSS and Cloudcast feeds.',
+    'help' => 'Use PHP SimpleXML parser to parse MediaRSS and Cloudcast feeds.',
+    'handler' => array(
+      'parent' => 'FeedsMediaRSSParser',
+      'class' => 'MediaCloudcastFeedsParser',
+      'file' => 'MediaCloudcastFeedsParser.inc',
+      'path' => drupal_get_path('module', 'media_cloudcast_feeds'),
+    ),
+  );
+  return $info;
+}

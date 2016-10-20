@@ -1,0 +1,13 @@
+<?php
+
+
+/**
+ * @file
+ */
+
+/**
+ * Implements hook_install().
+ */
+function cm_show_staff_install() {
+  db_query("UPDATE {system} SET weight = 10 WHERE name = 'cm_show_staff'");
+}

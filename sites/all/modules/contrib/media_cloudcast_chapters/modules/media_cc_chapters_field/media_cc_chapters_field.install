@@ -1,0 +1,45 @@
+<?php
+/**
+ * @file
+ * Install file for media_cc_chapters_field.  
+ */
+
+/**
+ * Implements hook_field_schema().
+ */
+function media_cc_chapters_field_field_schema($field) {
+  if ($field['type'] == 'chapter') {
+    $columns = array(
+        'cid' => array(
+            'type' => 'int',
+            'not null' => FALSE,
+            'length' => 11,
+            'description' => 'The chapter id.',
+        ),
+        'title' => array(
+            'type' => 'varchar',
+            'not null' => FALSE,
+            'length' => 512,
+            'description' => 'The chapter title.',
+        ),
+        'description' => array(
+            'type' => 'text',
+            'not null' => FALSE,
+            'size' => 'big',
+            'description' => 'The chapter description.',
+        ),
+        'start' => array(
+            'type' => 'varchar',
+            'not null' => FALSE,
+            'length' => 10,
+            'description' => 'The chapter start time.',
+        ),
+    );
+    return array(
+        'columns' => $columns,
+        'indexes' => array(
+            'cid' => array('cid'),
+        )
+    );
+  }
+}

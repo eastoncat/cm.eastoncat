@@ -1,0 +1,19 @@
+name = Show
+description = Defines Show content type.  Add fields to match your stations submission guidelines. 
+package = Community Media
+
+core = 7.x
+
+files[] = cm_show.install
+files[] = cm_show.module
+files[] = cm_show.views_default.inc
+
+configure = admin/config/communitymedia/show
+
+
+; Information added by Drupal.org packaging script on 2014-07-08
+version = "7.x-1.0-beta1+0-dev"
+core = "7.x"
+project = "cm_show"
+datestamp = "1404854028"
+

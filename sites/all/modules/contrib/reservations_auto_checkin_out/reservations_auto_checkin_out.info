@@ -1,0 +1,10 @@
+name = Reservations Auto Checkin/Out
+package = Reservations
+description = "Automatically checks items in and out on cron."
+
+core = 7.x
+
+dependencies[] = reservations
+
+
+

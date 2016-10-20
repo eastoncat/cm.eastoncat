@@ -1,0 +1,97 @@
+diff --git a/cm_vod_feed.install b/cm_vod_feed.install
+new file mode 100644
+index 0000000..1a94f98
+--- /dev/null
++++ b/cm_vod_feed.install
+@@ -0,0 +1,78 @@
++<?php
++
++/**
++ * @file
++ * Community Media VOD Feeds module's install, uninstall and upgrade code.
++ */
++
++/**
++ * Implements hook_requirements().
++ */
++function cm_vod_feed_requirements($phase) {
++  $requirements = array();
++  
++   if ($phase == 'install') {
++    $t = get_t();
++    $status = _cm_vod_feed_status();
++    if(!$status){
++       drupal_set_message(t("VOD importer will not work without at least one of the media_youtube, media_vimeo, media_cloudcast, etc modules enabled."), 'warning');
++    }
++  }
++  
++  if ($phase == 'runtime') {
++    $t = get_t();
++    $status = _cm_vod_feed_status();
++      
++    if (!$status) {
++
++      $requirements['cm_vod_feed'] = array(
++        'title' => 'Community VOD Feeds',
++        'value' => $t('Dependency error'),
++        'severity' => REQUIREMENT_ERROR,
++        'description' => $t('VOD importer will not work without at least one of the media_youtube, media_vimeo, media_cloudcast, etc modules enabled.'), 
++        );
++        
++        drupal_set_message(t("VOD importer will not work without at least one of the media_youtube, media_vimeo, media_cloudcast, etc modules enabled."), 'warning');
++   
++    }
++    else {
++      
++      $requirements['cm_vod_feed'] = array(
++        'title' => 'Community VOD Feeds',
++        'severity' => REQUIREMENT_OK,
++        'value' => t('Required version of a media_[provider] module is enabled.'),
++      );
++    }
++  }
++
++  return $requirements;
++}
++
++/**
++ * Checks Media dependencies.
++ *
++ * @return bool
++ *   Array with TRUE/FALSE for each dependency.
++ *
++ * @see fullcalendar_requirements()
++ */
++function _cm_vod_feed_status() {
++
++  if (module_exists('media_youtube')) {
++    return TRUE;
++  }
++
++  if (module_exists('media_cloudcast')) {
++    return TRUE;
++  }
++  
++  if (module_exists('media_archive')) {
++    return TRUE;
++  }
++  
++    if (module_exists('media_archive')) {
++    return TRUE;
++  }
++
++  return FALSE;
++}
+\ No newline at end of file
+diff --git a/cm_vod_feed.module b/cm_vod_feed.module
+index 9ca4742..c599ad2 100755
+--- a/cm_vod_feed.module
++++ b/cm_vod_feed.module
+@@ -80,4 +80,5 @@ function _cm_vod_feed_insert_after_first_element(&$a, $element) {
+     $first_element = array_shift($a);
+     array_unshift($a, $first_element, $element);
+   }
+-}
+\ No newline at end of file
++}
++

@@ -1,0 +1,42 @@
+<?php
+
+/**
+ * @file
+ * Install and Uninstall functions for the Media Cloudcast Chapters module.
+ * Creates a chapter field and defines an instance on a video files.
+ */
+
+/**
+ * Implements hook_install()
+ */
+function media_cc_chapters_install() {
+  if (!field_info_field('video_chapters')) {
+    field_info_cache_clear();
+
+    field_create_field(array(
+        'field_name' => 'video_chapters',
+        'type' => 'chapter',
+        'cardinality' => FIELD_CARDINALITY_UNLIMITED
+    ));
+    // Create the instance.
+    $instance = array(
+        'field_name' => 'video_chapters',
+        'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+        'entity_type' => 'file',
+        'bundle' => 'video',
+        'label' => 'Video Chapters',
+        'description' => 'The video\'s chapters.',
+        'required' => false
+    );
+    field_create_instance($instance);
+  }
+}
+
+/**
+ * Implements hook_uninstall()
+ */
+function media_cc_chapters_uninstall() {
+  field_delete_field('video_chapters');
+  field_purge_batch(1000);
+  field_purge_batch(1000);
+}

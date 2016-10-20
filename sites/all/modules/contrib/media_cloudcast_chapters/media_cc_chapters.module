@@ -1,0 +1,68 @@
+<?php
+/**
+ * @file
+ * 
+ * Media CloudCast Chapters.  Imports chapters from CloudCast to store in the field created in the 
+ * media_cc_chapters_field module.  Also provides an example view for displaying chapters alongside
+ * other information.
+ */
+
+/**
+ * Implements hook_init().
+ */
+function media_cc_chapters_init() {
+  module_load_include('php', 'media_cc_chapters', 'media_cc_chapters_settings');
+  module_load_include('inc', 'media_cc_chapters', 'views/video_chapters_view');
+}
+
+/**
+ * Implements hook_menu
+ */
+function media_cc_chapters_menu() {
+  $items['admin/config/media/chapters'] = array(
+      'title' => 'Media CloudCast Chapters',
+      'description' => 'Settings for Media CloudCast Chapters',
+      'page callback' => 'drupal_get_form',
+      'page arguments' => array('media_cc_chapters_settings'),
+      'access arguments' => array('administer media_cc_chapters'),
+      'type' => MENU_NORMAL_ITEM
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission
+ */
+function media_cc_chapters_permission() {
+  return array(
+      'administer media_cc_chapters' => array(
+          'title' => t('Administer Media CloudCast Chapters Settings'),
+          'description' => t('Provides access to change Media CloudCast Chapters Settings')
+  ));
+}
+
+/**
+ * Implements hook_cron
+ * 
+ * Runs import during cron according to the interval set in the settings
+ */
+function media_cc_chapters_cron() {
+  $interval = variable_get("media_cc_chapters_cron_frequency", -1) * 60 * 60; // convert to seconds
+  // if interval is set to -1 than run every time
+  if (variable_get("media_cc_chapters_run_cron") && ($interval < 0 || time() > variable_get("media_cc_chapters_next_import", 0))) {
+    $last = variable_get("media_cc_chapters_num_chapter_import");
+    $last = is_int($last) ? $last : db_query('SELECT COUNT(*) FROM {file_managed} WHERE filemime = "video/cloudcast"')->fetchField();
+    _media_cc_chapters_do_import(0, $last);
+  }
+  variable_set("media_cc_chapters_next_import", time() + $interval);
+}
+
+/**
+ * Implements hook_views_api().
+ */
+function media_cc_chapters_views_api() {
+  return array(
+      'api' => 3,
+      'path' => drupal_get_path('module', 'media_cc_chapters_view') . "/views"
+  );
+}

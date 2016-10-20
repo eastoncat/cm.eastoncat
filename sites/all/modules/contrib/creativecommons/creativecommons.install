@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * @file
+ * Install, update, and uninstall functions for the creativecommons module.
+ */
+/**
+ * Implements hook_field_schema().
+ */
+function creativecommons_field_schema($field){
+  $columns = array(
+    'license' => array(
+      'type' => 'varchar',
+      'length' => 255,
+      'not null' => FALSE
+    )
+  );
+  $indexes = array(
+    'license' => array(
+      'license'
+    )
+  );
+  return array(
+    'columns' => $columns,
+    'indexes' => $indexes
+  );
+}

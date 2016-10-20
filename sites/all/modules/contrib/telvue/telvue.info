@@ -1,0 +1,17 @@
+name = Telvue API
+package = Community Media
+description = "Defines API functions to allow Drupal to communicate with a Telvue."
+core = 7.x
+
+configure = admin/config/system/telvue
+
+files[] = telvue.install
+files[] = telvue.module
+
+
+; Information added by drupal.org packaging script on 2013-07-16
+version = "7.x-1.0-alpha4"
+core = "7.x"
+project = "telvue"
+datestamp = "1374012368"
+

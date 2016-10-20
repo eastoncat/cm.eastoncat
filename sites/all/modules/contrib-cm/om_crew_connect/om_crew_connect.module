@@ -1,0 +1,182 @@
+<?php
+/**
+ * @file
+ * Code for the Crew Connect feature.
+ */
+
+include_once('om_crew_connect.features.inc');
+
+
+/**
+ * Implements hook_init().
+ */
+function om_crew_connect_init() {
+  drupal_add_css(drupal_get_path('module', 'om_crew_connect') . '/css/om_crew_connect.css');
+}
+
+
+/**
+ * Implementation of hook_form_alter().
+ */
+function om_crew_connect_form_alter(&$form, $form_state, $form_id) {
+  
+  if (isset($form_state['step']) &&  $form_state['step'] ==  'views_send_config_form') {
+    
+    //force the email to be sent from the logged in user
+    global $user;
+    $display = $form['display']['#value'];
+    
+    unset($form['from']);    
+    
+    $form['from']['views_send_from_name'] = array(
+      '#type' => 'hidden',
+      '#title' => t('Sender\'s name'),
+      '#description' => t("Enter the sender's human readable name."),
+      '#default_value' => $user->name,
+      '#maxlen' => 255,
+    );
+    $form['from']['views_send_from_mail'] = array(
+      '#type' => 'hidden',
+      '#title' => t('Sender\'s e-mail'),
+      '#description' => t("Enter the sender's e-mail address."),
+      '#required' => TRUE,
+      '#default_value' => $user->mail,
+      '#maxlen' => 255,
+    );
+    
+    
+    // only allow admin users to set these variables   
+    if (!user_access('administer views_send')) {
+      unset($form['to']);
+    
+      $form['to']['views_send_to_name'] = array(
+        '#type' => 'hidden',
+        '#title' => t('Field used for recipient\'s name'),
+        '#description' => t('Select which field from the current view will be used as recipient\'s name.'),
+        '#default_value' => variable_get('views_send_to_name_' . $display, ''),
+      );
+      $form['to']['views_send_to_mail'] = array(
+        '#type' => 'hidden',
+        '#title' => t('Field used for recipient\'s e-mail'),
+        '#description' => t('Select which field from the current view will be used as recipient\'s e-mail.'),
+        '#default_value' => variable_get('views_send_to_mail_' . $display, ''),
+        '#required' => TRUE,
+      );
+    
+      $form['views_send_remember'] = array(
+        '#type' => 'hidden',
+        '#title' => t('Remember these values next time when you will send mass mail.'),
+        '#default_value' => variable_get('views_send_remember_' . $display, TRUE),
+      );
+    }
+  }
+  
+  if (isset($form_state['step']) &&  $form_state['step'] ==  'views_send_confirm_form') {
+    
+    //remove email addresses form the preview
+    $emails_stripped = preg_replace("/&lt;(.*?)&gt;/i", '', $form['to']['#markup']); 
+   
+        
+    $form['to'] = array(
+      '#type' => 'item',
+      '#title' => t('To'),
+      '#markup' => $emails_stripped,
+    );
+    
+    unset($form['headers']);
+  
+  }
+
+  if ($form_id == 'views_form_om_crew_connect_find_om_crew_connect_find') {
+    drupal_add_js(array('querysting' => request_uri()), array('type' => 'setting', 'scope' => JS_DEFAULT));
+
+    drupal_add_library('system', 'ui.slider');
+    drupal_add_js(drupal_get_path('module', 'om_crew_connect') . '/js/om_crew_connect.js');
+    
+    //if VBO is configured, alter it
+    if (isset($form['select']['system_send_email_action'])) {
+      //move the option out of the field group
+      $form['system_send_email_action'] = $form['select']['system_send_email_action'];
+      //move to the bottom of the view?
+      $form['system_send_email_action']['#weight'] = 100;
+      
+      unset($form['select']);
+    }
+    
+    if (isset($form['recipient'])) {
+      $form['recipient']['#type'] = 'hidden';
+      $form['recipient']['#default_value'] = '[node:author:mail]';
+      $form['subject']['#description'] = NULL;
+      $form['message']['#description'] = NULL;
+    }
+  }
+}
+
+
+/**
+ * Returns number of select list profile fields in Skills category
+ */
+function om_crew_connect_skill_count() {
+
+  return db_query("SELECT COUNT(field_id) FROM {field_config_instance} JOIN {field_config} ON field_config.id = field_config_instance.field_id WHERE field_config_instance.deleted = 0 AND bundle = :category AND type = :type", array(':category' => 'skills', ':type' => 'list_integer'))->fetchField();
+}
+
+/**
+ * Check added to all cm_ modules to help with the configuration.
+ * Returns status array
+ */
+function om_crew_connect_status() {
+  $skills = om_crew_connect_skill_count(); 
+
+  if ($skills == 1) {
+    $status = array(
+    'description' => 'Crew Connect installed, but no additional skill fields added. Before new users sign up for accounts on your site, <a href="http://drupal.org/node/1128626">follow the step by step instructions for adding additional fields found on Drupal.org</a>.  Users are MUCH more likely to rate their skills when creating their account than to go back and  rate themselves.',
+    'severity' => 2,);
+    return $status;
+  }
+  
+  //if there are no problems, return this
+  $status = array(
+    'description' => 'Crew Connect installed and correctly configured',
+    'severity' => 0,);
+  return $status;
+}
+
+// SEE http://www.metachunk.com/blog/adding-module-path-drupal-7-theme-registry
+// These function essentially trick Drupal into thinking this module is also a theme
+// where tpls can be found
+
+/**
+* Implementation of hook_registry_alter
+*/
+function om_crew_connect_theme_registry_alter(&$theme_registry) {
+  $mod_path = drupal_get_path('module', 'om_crew_connect');
+  $theme_registry_copy = $theme_registry;       // munge on a copy
+  _theme_process_registry($theme_registry_copy, 'phptemplate', 'theme_engine', 'pow', $mod_path);
+  $theme_registry += array_diff_key($theme_registry_copy, $theme_registry);
+  $hooks = array('node');
+  foreach ($hooks as $h) {
+    _om_crew_connect_insert_after_first_element($theme_registry[$h]['theme paths'], $mod_path);
+  }          
+}
+
+/**
+ * Helper function for re-ordering arrays (needed by theme_registry_alter)
+*/
+function _om_crew_connect_insert_after_first_element(&$a, $element) {
+  if(is_array($a)) {
+    $first_element = array_shift($a);
+    array_unshift($a, $first_element, $element);
+  }
+}
+
+/**
+ * Implementation of hook_views_api().
+ */
+function om_crew_connect_views_api() {
+  return array(
+    'api' => 3,
+    'path' => drupal_get_path('module', 'om_crew_connect'),
+  );
+}
+

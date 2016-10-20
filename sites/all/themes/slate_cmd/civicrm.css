@@ -1,0 +1,22 @@
+/**
+ * @file
+ * CiviCRM styling
+ *
+ * Adds styles for CiviCRM.
+ *
+ */
+
+article.node-civicrm-multiday-event .civicrm-multiday-event-register-button {
+  background: none repeat scroll 0 0 #666666;
+  color: #EEEEEE;
+  text-indent: 0;
+  text-decoration: none;
+  text-align: center;
+  font-size: 100%;
+  color: #FFFFFF;
+}
+
+article.node-civicrm-multiday-event .civicrm-multiday-event-register-button:hover {
+  color:#666666;
+  background-color: #EEEEEE;
+}

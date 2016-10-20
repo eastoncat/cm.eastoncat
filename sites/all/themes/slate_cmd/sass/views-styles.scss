@@ -1,0 +1,760 @@
+/**
+ * @file
+ * Views Styling
+ */
+
+@import "base";
+
+
+.li-head {
+  line-height: 1.2;
+  font-size: 1.2em;
+}
+
+/*
+ * Views' admin tabs
+ *
+ * The views admin tabs use the same classes as the secondary tabs. We prevent
+ * some of our tab styling from bleeding into (and breaking) the Views admin
+ * pages. If your sub-theme isn't used for admin pages, you can remove this
+ * entire section.
+ */
+.views-displays .secondary {
+  li {
+    float: none;
+    margin: 0 6px 0;
+  }
+
+  a:link,
+  a:visited {
+    @include single-text-shadow(none);
+    padding: 2px 7px 3px;
+  }
+
+  .open > a {
+    @include border-radius(7px 7px 0 0);
+    &:hover {
+      color: #333;
+    }
+  }
+
+  .action-list li {
+    margin: 0;
+    &:first-child {
+      @include border-radius(0 7px 0 0);
+    }
+    &:last-child {
+      @include border-radius(0 0 7px 7px);
+    }
+  }
+}
+
+#main {
+ul.list {
+
+  margin-left: 0;
+  padding-left: 0;
+
+  @include respond-to(37.5em) {
+    padding: 0.5em;
+    max-width: 70em;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  li {
+    border-bottom: 1px solid #ccc;
+    border-collapse: collapse;
+    display: table;
+    width: 100%;
+    padding-bottom: 1%;
+    margin-bottom: 1%;
+
+    @include respond-to(37.5em) {
+      margin-left: 1%;
+      display: block;
+      width: 32.66666%;
+      float: left;
+      background: none;
+      border: 0;
+
+      &.views-row-1, &.views-row-4 {
+        margin-left: 0;
+        clear: both;
+      }
+    }
+
+    @include respond-to(50em) {
+      width: 15.83333%;
+
+      &.views-row-4 {
+        margin-left: 1%;
+        clear: none;
+      }
+    }
+
+    .inner {
+      display: table-row;
+      overflow: hidden;
+
+      @include respond-to(37.5em) {
+        display: block;
+        width: auto;
+        padding: 0;
+      }
+
+      .li-img {
+        display: table-cell;
+        vertical-align: middle;
+        width: 40%;
+        padding-right: 1em;
+
+      @include respond-to(37.5em) {
+        display: block;
+        width: auto;
+        padding: 0;
+      }
+
+        img {
+  		    display: block;
+		      width: 100%;
+		      height: auto;
+             -moz-box-shadow: none;
+          -webkit-box-shadow: none;
+                  box-shadow: none;
+          border: 1px solid #888;
+
+          &:hover {
+            border: 1px solid #000;
+          }
+		    }
+      }
+
+      .li-text {
+        display: table-cell;
+		    vertical-align: middle;
+		    width: 60%;
+
+		    @include respond-to(37.5em) {
+		      padding: 0.2em 0;
+		      display: block;
+		      width: auto;
+		    }
+
+        .li-head, .li-sub {
+		      font-size: 0.813em;
+		      margin: 0;
+		    }
+	    }
+    }
+  }
+}
+}
+
+
+// Classes on frontpage
+
+
+.upcoming-classes {
+ul {
+
+  margin-left: 0;
+  padding-left: 0;
+
+  @include respond-to(37.5em) {
+    padding: 0.5em 0;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+
+  li {
+    border-bottom: 1px solid #ccc;
+    border-collapse: collapse;
+    display: table;
+    width: 100%;
+
+    @include respond-to(37.5em) {
+      margin-left: 2%;
+      display: block;
+      width: 48.5%;
+      float: left;
+      background: none;
+      border: 0;
+
+      &.views-row-1, &.views-row-3 {
+        margin-left: 0;
+        clear: both;
+      }
+    }
+
+    @include respond-to(60em) {
+      width: 23.5%;
+
+      &.views-row-3 {
+        margin-left: 2%;
+        clear: none;
+      }
+    }
+
+    .inner {
+      display: table-row;
+      overflow: hidden;
+
+      @include respond-to(37.5em) {
+        display: block;
+        width: auto;
+        padding: 0;
+      }
+
+      .li-img {
+        display: table-cell;
+        vertical-align: middle;
+        width: 40%;
+        padding-right: 1em;
+
+      @include respond-to(37.5em) {
+        display: block;
+        width: auto;
+        padding: 0;
+      }
+
+        img {
+          display: block;
+          width: 100%;
+          height: auto;
+             -moz-box-shadow: none;
+          -webkit-box-shadow: none;
+                  box-shadow: none;
+          border: 1px solid #888;
+
+          &:hover {
+            border: 1px solid #000;
+          }
+        }
+      }
+
+      .li-text {
+        display: table-cell;
+        vertical-align: middle;
+        width: 60%;
+
+        @include respond-to(37.5em) {
+          padding: 0.2em 0;
+          display: block;
+          width: auto;
+        }
+
+        .li-head, .li-sub {
+          font-size: 0.813em;
+          margin: 0;
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+a {
+  color: #000000;
+  display: block;
+  padding: 0.5em;
+
+  &:hover {
+    background: #e6e7e9;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+
+  .upcoming-classes-date {
+    float: left;
+    width: 20%;
+    background: #b16766;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+
+    p {
+      font-size: 0.75em;
+      text-align: center;
+      color: #ffffff;
+      margin: 0;
+
+      span {
+        background: #cccccc;
+        font-size: 1.4em;
+        font-weight: bold;
+        color: #000000;
+        text-transform: uppercase;
+        display: block;
+        border-radius: 0 0 6px 6px;
+        -moz-border-radius: 0 0 6px 6px;
+        -webkit-border-radius: 0 0 6px 6px;
+        padding: 1px 0 4px 0;
+      }
+    }
+  }
+
+  .upcoming-classes-title {
+    float: left;
+    width: 76%;
+    margin-left: 4%;
+    color: #6D6E71;
+  }
+
+  .upcoming-classes-description {
+    clear: both;
+    padding: 0.3em 0;
+    font-size: 87.5%;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .more-link {
+    font-size: 75%;
+    color: #8a4a4a;
+    padding: 0;
+    text-align: left;
+  }
+}
+}
+
+a {
+  .arrow-r {
+    border-style: dashed;
+    border-color: transparent;
+    border-width: 0.53em;
+    display: -moz-inline-box;
+    display: inline-block;
+    /* Use font-size to control the size of the arrow. */
+    font-size: 80%;
+    height: 0;
+    line-height: 0;
+    position: relative;
+    vertical-align: middle;
+    width: 0;
+    border-left-width: 1em;
+    border-left-style: solid;
+    border-left-color: #666;
+    bottom: 0.1em;
+    left: 0.4em;
+  } 
+  &:hover {
+    .arrow-r {
+      border-left-color: #fff;
+    }
+  }
+}
+
+.front {
+
+  .view-header, .view-footer {
+    float: right;
+    font-size: 80%;
+    margin-bottom: 0.5em;
+
+    p {
+      margin-bottom: 0;
+
+      a {
+        padding: 0.2em 0.4em;
+        background: #f2f3f5;
+        border: 1px solid #666;
+        line-height: 1;
+        border-radius: 4px;
+
+        
+
+        &:hover {
+          background: #a8a9ad;
+          color: #fff;
+          text-decoration: none;
+
+          
+        }
+      }
+    }
+  }
+
+  .view-content {
+    clear: both;
+  }
+
+  .content {
+    h2.block-title {
+      @include element-invisible;
+    }
+  }
+}
+
+
+#block-views-icons-menu-block {
+  width: 100%;
+
+  h2 {
+	@include element-invisible;
+  }
+
+  .icons-menu {
+
+    ul {
+      padding: 1em 0 0;
+      max-width: 70em;
+      margin: 0 auto;
+      overflow: hidden;
+
+      li {
+        margin-bottom: 1em;
+        display: block;
+		    text-align: center;
+
+		    .inner {
+          display: block;
+          overflow: hidden;
+          text-decoration: none;
+
+          .li-img {
+            vertical-align: middle;
+
+            img {
+              display: block;
+              width: 100%;
+              max-width: 88px;
+		          margin: 0 auto;
+              height: auto;
+		             -moz-box-shadow: none;
+              -webkit-box-shadow: none;
+                      box-shadow: none;
+		        }
+          }
+		  
+          .li-text {
+  		      padding: 0.5em 0 0 0;
+			     font-weight: bold;
+          }
+		    }
+      }
+    }
+  }
+}
+
+#block-views-latest-videos-block {
+  .inner h2 {
+    @include element-invisible;
+  }
+}
+
+
+#block-views-frontpage-news-block, #block-views-latest-videos-block  {
+  clear: both;
+}
+
+  .view-frontpage-news, .view-latest-videos, .view-related-shows {
+    padding-left: 0;
+    margin: 0.5em 0 0;
+
+	.views-row {
+      border-bottom: 1px solid #ccc;
+      border-collapse: collapse;
+      margin-bottom: 0.5em;
+      display: table;
+    }
+    a:link, a:visited {
+      overflow: hidden;
+      text-decoration: none;
+
+	  .li-img {
+        display: table-cell;
+        vertical-align: top;
+        width: 40%;
+        padding: 0.5em 1em 0.3em 0.5em;
+
+	    img {
+          display: block;
+          width: 100%;
+          height: auto;
+          margin-bottom: 0.5em;
+        }
+	  }
+
+    .li-text {
+        display: table-cell;
+        vertical-align: middle;
+        width: 60%;
+        padding: 0.5em 0.5em 0.3em 0.5em;
+
+      .li-head {
+        margin: 0 0 0.5em 0;
+        display: table-cell;
+      }
+      .li-sub {
+          margin: 0;
+          font-size: 87.5%;
+          color: #000000;
+        }
+      .li-created {
+        font-size: 0.875em;
+        }
+
+      }
+
+    .more-link {
+          font-size: 75%;
+          padding: 0 0.5em 0.5em;
+          text-align: left;
+      }
+
+      &:hover {
+        background: #e6e7e9;
+        -webkit-border-radius: 4px;
+        -moz-border-radius: 4px;
+        border-radius: 4px;
+        text-decoration: none;
+      }
+    }
+  }
+
+  @include respond-to(37.5em) {
+
+
+	  .view {
+      
+        .views-row {
+          border: 0;
+          display: block;
+
+
+          .inner {
+            display: block;
+
+            .li-img, .li-text, .inner {
+              display: block;
+              width: auto;
+              padding: 0;
+            }
+            .li-img, .li-text {
+              padding: 0em 0.5em 0.3em 0.5em;
+            }
+            .li-text {
+              padding-top: 0;
+            }
+          }
+	    }
+	  }
+  }
+
+
+
+ 
+/*
+ * Overriding FullCalendar CSS for footer mini calendar
+ */
+
+#footer {
+  .footer-calendar {
+    width: 200px;
+    margin: 0 auto;
+
+
+    table.fc-header {
+      margin-bottom: 0;
+      background: #e6e7e9;
+      font-size: 87.5%;
+
+      .ui-state-default, .ui-state-hover {
+        border: none;
+        background: transparent;
+      }
+      .fc-header-title {
+        h2 {
+          color: #47484a;
+          font-size: 1.125em;
+          font-weight: bold;
+          line-height: 1;
+          padding-top: 0.3em;
+          white-space: normal !important;
+        }
+      }
+    }
+
+    .fc-content {
+      margin-bottom: 0.5em;
+      font-size: 87.5%;
+
+      .fc-grid {
+        .ui-widget-header, .ui-widget-content {
+          border: none;
+          background: #e6e7e9;
+        }
+
+        .fc-today {
+          .fc-day-number {
+            background: $bullet;
+            border-radius: 1em;
+            color: #ffffff;
+          }
+        }
+        .fc-day-content {
+          @include element-invisible;
+        }
+      }
+
+    }
+
+  .fc-view-month .fc-event, .fc-view-agendaWeek .fc-event {
+    font-size: 0;
+    overflow: hidden;
+    height: 2px;
+  }
+  .fc-view-agendaWeek .fc-event-vert {
+    font-size: 0;
+    overflow: hidden;
+    width: 2px !important;
+  }
+  .fc-agenda-axis {
+    width: 20px !important;
+    font-size: .7em;
+  }
+
+  .fc-button-content {
+    padding: 0;
+  }
+  }
+
+  .view-footer {
+    font-size: 100%;
+  }
+}
+
+
+
+/*
+ * Overriding FullCalendar CSS for footer mini calendar
+ */
+
+.fc-agenda-allday {
+  @include element-invisible;
+}
+
+.fc-event-default,
+.fc-event-default .fc-event-skin,
+.fc-event-default .fc-event-time,
+.fc-event-default a {
+  border-style: none;
+  background-color: $grey;
+  color: #eeeeee;
+  line-height: 2em;
+}
+
+.fc-event-time,
+.fc-event-title {
+  padding: 0 0.5em;
+  }
+
+.ui-widget-header {
+  background: #dddddd;
+}
+
+/* News Page */
+
+.news-article {
+  padding-bottom: 1em;
+  border-bottom: 2px dotted $line;
+  margin-bottom: 1.5em;
+  overflow: hidden;
+
+  a {
+    color: #000000;
+    display: block;
+    padding: 0.5em;
+    overflow: hidden;
+
+    &:hover {
+      text-decoration: none;
+      background: #e6e7e9;
+      webkit-border-radius: 4px;
+      moz-border-radius: 4px;
+      border-radius: 4px;
+    }
+
+    .news-teaser-image {
+      float: left;
+      margin-right: 1.5em;
+      width: 18em;
+    }
+
+    h2 {
+      line-height: 1em;
+      margin-bottom: 0.5em;
+      color: #6d6e71;
+    }
+  }
+}
+
+
+
+/* Watch Page */
+
+#main {
+.watch-channel-icons {
+
+  ul {
+    padding-left: 0;
+
+    li {
+      list-style: none;
+      margin-bottom: 1em;
+      overflow: hidden;
+
+
+      .watch-icons-icon {
+        float: left;
+
+        img {
+          -moz-box-shadow: none;
+          -webkit-box-shadow: none;
+          box-shadow: none;
+        }
+      }
+
+      .watch-icons-text {
+        float: left;
+        margin: 0.5em 0 0 1em;
+
+        a {
+
+        }
+      }
+    }
+  }
+}
+}
+
+
+
+
+
+
+$zen-gutter-width: 0.8em;
+
+.view-frontpage-news, .view-latest-videos {
+  @include breakpoint-grid-breakdown(1 2 4 4);
+}
+
+.related-shows {
+  @include breakpoint-grid-breakdown(1 2 2 3);
+}
+
+.view-icons-menu {
+  @include breakpoint-grid-breakdown(3 5 5 5);
+}
+
+#footer {
+  @include breakpoint-grid-breakdown(1 2 4 4, $breakpoint-mobile $breakpoint-tablet $breakpoint-narrow $breakpoint-desktop, '.footer-column', 2em);
+}
+

@@ -1,0 +1,98 @@
+<?php
+/**
+ * @file
+ * Code for the VOD Feed: YouTube Lookup.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function cm_vod_feed_youtube_lookup_menu() {
+
+  $items['admin/vod-feed-youtube/check-all-shows'] = array(
+    'title' => 'Check All Shows for YouTube VOD',
+    'description' => 'Loads all Shows without a VOD',
+    'page callback' => 'cm_vod_feed_youtube_lookup_batch_init',
+    'access arguments' => array('administer feeds'),
+    'type' => MENU_CALLBACK
+  );
+  
+  return $items;
+}
+
+function cm_vod_feed_youtube_lookup_batch_init() {
+    
+  $batch = array(
+    'title' => t('Resaving Show Nodes...'),
+    'operations' => array(),
+    'init_message' => t('Starting Resave'),
+    'progress_message' => t('Processed @current out of @total.'),
+    'error_message' => t('An error occurred during processing'),
+    'finished' => 'cm_vod_feed_youtube_lookup_batch_finished',
+    'progressive' => FALSE
+  );
+    
+  //query all shows nodes without VOD
+  
+  $result = db_query('SELECT nid FROM {node} LEFT JOIN field_data_field_show_vod ON nid = entity_id WHERE type = :type AND field_show_vod_fid IS NULL ORDER BY nid DESC', array(':type' => 'cm_show'));
+  
+  $count = 0;
+  foreach ($result as $record) {
+    //if ($count < 10) {
+      $batch['operations'][] = array('cm_vod_feed_youtube_lookup_batch_worker', array($record->nid));
+      $count++;
+    //}
+  }
+   
+ 
+ 
+  batch_set($batch);
+ 
+  batch_process('admin/content');
+}
+ 
+function cm_vod_feed_youtube_lookup_batch_worker($nid, &$context) {
+
+  $node = node_load($nid);
+
+  //dsm($node);
+  $program_code = $node->field_program_code[LANGUAGE_NONE][0]['value'];
+  //dsm($program_code);
+  // check to see if there's a video with a matching term
+  $term = taxonomy_get_term_by_name($program_code);
+  $term_keys = array_keys($term);
+
+  //dsm($term_keys[0]);
+  
+  // is there a video with that term?
+  $vod_fid = db_query('SELECT entity_id FROM {field_data_field_youtube_tags} WHERE field_youtube_tags_tid = :tid', array(':tid' => $term_keys[0]))->fetchObject();
+  
+  if ($vod_fid) {
+    
+    dsm('cm_vod_feed_youtube_lookup', 'related node ' . $node->nid . ' to file ' . $vod_fid->entity_id); 
+    //$node->field_show_vod[LANGUAGE_NONE][0]['fid'] = $vod_fid->entity_id;
+    $file = file_load($vod_fid->entity_id);
+    $node->field_show_vod[LANGUAGE_NONE][0] = array(
+      'fid' => $vod_fid->entity_id,
+      'display' => 1,
+      'description' => '', 
+    );
+  }
+  
+  node_save($node);
+    
+  $context['results']['processed']++;
+  $context['message'] = 'Successfully updated Show #' . $array[0];
+}
+ 
+function cm_vod_feed_youtube_lookup_batch_finished($success, $results, $operations) {
+  if ($success) {
+    $message = format_plural($results['processed'], 'One Show processed.', '@count Shows processed.');
+  }
+  else {
+    $message = 'some errors';
+  }
+ 
+  drupal_set_message($message);
+}
+

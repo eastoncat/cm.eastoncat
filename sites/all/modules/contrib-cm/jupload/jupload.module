@@ -1,0 +1,213 @@
+<?php
+
+/**
+ * @file
+ * ...
+ */
+
+/**
+ * Implements hook_permission().
+ */
+function jupload_permission() {
+  $permissions = array(
+    'access jupload' => array(
+      'title' => t('Access JUpload'),
+      'description' => t('Allows users to access the JUpload UI.'),
+    ),
+  );
+     // 'restrict access' => TRUE,
+  return $permissions;
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function jupload_menu() {
+  $items = array();
+  
+  $items['admin/config/media/jupload'] = array(
+    'title' => 'JUpload Configuration',
+    'description' => '',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('jupload_admin_settings'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['jupload'] = array(
+    'title' => 'Upload Files',
+    'description' => '',
+    'page callback' => 'jupload_user_ui',
+    'access arguments' => array('access jupload'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  $items['jupload/upload'] = array(
+    'title' => 'Upload Files',
+    'description' => '',
+    'page callback' => 'jupload_upload',
+    'access arguments' => array('access jupload'),
+    'type' => MENU_CALLBACK,
+  );
+  
+  $items['jupload/after-upload'] = array(
+    'title' => 'Upload Files',
+    'description' => '',
+    'page callback' => 'jupload_after_upload',
+    'access arguments' => array('access jupload'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+
+/**
+ * Builds the jupload_admin_settings admininstration settings form.
+ */
+function jupload_admin_settings($form, &$form_state) {
+  $form = array();
+  
+  $form['jupload_ftp_server'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Server'),
+    '#default_value' => variable_get('jupload_ftp_server', 'ftp.mysite.com'),
+    '#description' => t(''),
+  );
+  
+  $form['jupload_ftp_user'] = array(
+    '#type' => 'textfield',
+    '#title' => t('User'),
+    '#default_value' => variable_get('jupload_ftp_user', 'username'),
+    '#description' => t(''),
+  );
+  
+  $form['jupload_ftp_password'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Password'),
+    '#default_value' => variable_get('jupload_ftp_password', 'password'),
+    '#description' => t(''),
+  );
+  
+  $form['jupload_after_upload'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Password'),
+    '#default_value' => variable_get('jupload_after_upload', '/'),
+    '#description' => t(''),
+  );
+  
+  $form['jupload_path_uid'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Add Use unique directory for each uid'),
+    '#default_value' => variable_get('jupload_path_uid', 0),
+    '#description' => t('This option will add the uid number to the path specified above.'),
+  );
+  
+  $form['jupload_show_log_window'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show Log Window'),
+    '#default_value' => variable_get('jupload_show_log_window', 0),
+    '#description' => t('Use for debugging'),
+  );
+  
+  $form['jupload_debug_level'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Debug Level'),
+    '#default_value' => variable_get('jupload_debug_level', 0),
+    '#description' => t(''),
+  );
+  
+  return system_settings_form($form);
+}
+
+
+function jupload_user_ui() {
+  
+  $posturl = 'ftp://' . variable_get('jupload_ftp_user', 'username') . ':' . variable_get('jupload_ftp_password', 'password') . '@' . variable_get('jupload_ftp_server', 'ftp.mysite.com');
+  $showlog = (variable_get('jupload_show_log_window', 0)) ? 'true' : 'false';
+  
+  $value = '<applet code="wjhk.jupload2.JUploadApplet" name="JUpoload" archive="'. jupload_get_library_path() .'/wjhk.jupload.jar,'. jupload_get_library_path() .'/jakarta-commons-oro.jar,'. jupload_get_library_path() .'/jakarta-commons-net.jar" width="600" height="300" mayscript alt="" >
+            <param name="postURL" value="' . $posturl . '" />
+            
+            <param name="afterUploadURL" value="' . variable_get('jupload_after_upload', '/') . '" />
+            <param name="nbFilesPerRequest" value="-1" />
+            <param name="maxFileSize" value="8GB" />
+            <param name="showLogWindow" value="' . $showlog . '"/>
+            <param name="debugLevel" value="' . variable_get('jupload_debug_level', 0) . '" />
+            <param name="lookAndFeel" value="system" />
+            <param name="showSuccessDialog" value="false">
+            <param name="serverProtocol" value="FTP">
+            Java 1.5 or higher plugin required.
+            </applet>';
+            
+  return $value;
+}
+
+/**
+ * Helper function gets the path to the library directory
+ */
+function jupload_get_library_path() {
+
+  $path = drupal_get_path('module', 'jupload') . '/java';
+  
+  // If Libraries API is enabled, make sure the file exists before pointing there
+  if (function_exists('libraries_get_path') && file_exists(libraries_get_path('jupload'))) {
+    $path = libraries_get_path('jupload');
+  }
+  
+  return $path;
+}
+
+
+/**
+ * This page is displayed by the applet, once all files are uploaded. You can add here any post-treatment you need.
+ * 
+ * This page content: just display the list of uploaded files. 
+ */
+function jupload_after_upload() {
+
+  //session_start();
+  
+  echo("<H3>List of session content</H3>");
+  foreach($_SESSION as $key => $value) {
+	  echo("$key: $value<BR>");
+  } 
+  
+  echo("<H3>List of uploaded files</H3>");
+  $files = $_SESSION['juvar.files'];
+  echo ('Nb uploaded files is: ' . sizeof($files));
+  echo('<table border="1"><TR><TH>Filename</TH><TH>file size</TH><TH>Relative path</TH><TH>Full name</TH><TH>md5sum</TH><TH>Specific parameters</TH></TR>');
+  foreach ($files as $f) {
+	  echo('<tr><td>');
+	  echo($f['name']);
+	  echo('</td><td>');
+	  echo($f['size']);
+	  echo('</td><td>');
+	  echo($f['relativePath']);
+	  echo('</td><td>');
+	  echo($f['fullName']);
+	  echo('</td><td>');
+	  echo($f['md5sum']);
+	  $addBR = false;
+	  foreach ($f as $key=>$value) {
+		  //If it's a specific key, let's display it:
+		  if ($key != 'name' && $key != 'size' && $key != 'relativePath' && $key != 'fullName' && $key != 'md5sum') {
+			  if ($addBR) {
+				  echo('<br>');
+			  } else {
+				  // First line. We must add a new 'official' list separator.
+				  echo('</td><td>');
+				  $addBR = true;
+			  }
+			  echo("$key => $value");
+		  }
+	  }
+	  echo('</td></tr>');
+	  echo("\n");
+  }
+  echo("</table>\n");
+
+}
+
+

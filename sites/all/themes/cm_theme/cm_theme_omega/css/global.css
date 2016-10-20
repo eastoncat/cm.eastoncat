@@ -1,0 +1,953 @@
+/*------------------------------------*\
+	GLOBAL
+\*------------------------------------*/
+
+/* This file will hold styles for the mobile version of your website (mobile first). */
+/* This also can include ANY global CSS that applies site-wide. Unless overwritten by a more specific style rule, CSS declarations in global.css will apply site-wide. */
+
+
+/*------------------------------------*\
+    CONTENTS
+\*------------------------------------*/
+/*
+NOTES
+$RESET
+$SHARED			Share anything we can across elements.
+$MAIN			HTML, BODY, etc.
+$HEADER ZONE
+$CONTENT ZONE
+$FOOTER ZONE
+$CLEARFIX
+$TYPE
+$IMAGES
+$ARTICLES
+$FORMS
+$MISC
+*/
+
+
+
+
+
+/*------------------------------------*\
+    $RESET
+\*------------------------------------*/
+
+/* Resetting icon in admin menu, caused by other themes */
+.icon {
+  height: auto;
+  width: auto;
+}
+
+
+
+
+
+/*------------------------------------*\
+	$SHARED
+\*------------------------------------*/
+/*
+Rather than repeating declarations over and over, let’s make a shared section.
+*/
+h1,h2,h3,h4,h5,h6,
+ul,ol,dl,p,address,figure,pre,fieldset,table,hr{
+	margin-bottom: 0.3em;
+}
+figcaption,small{
+	font-size: 0.75em;
+}
+ul,ol,dd{
+	margin-left: 1em;
+}
+small,code{
+	line-height:1;
+}
+pre,code,
+input,textarea{
+	font:inherit;
+}
+
+.zone-menu,
+.zone-header,
+.zone-preface,
+.zone-content,
+.zone-postscript {
+  -moz-box-shadow:    3px 3px 5px 2px #777, -3px 3px 5px 2px #777;
+  -webkit-box-shadow: 3px 3px 5px 2px #777, -3px 3px 5px 2px #777;
+  box-shadow: 		  3px 3px 5px 2px #777, -3px 3px 5px 2px #777;
+}
+#zone-menu, #zone-content {
+  background: #ffffff;
+}
+
+
+/*------------------------------------*\
+    $MAIN
+\*------------------------------------*/
+
+html, body{
+  font-size: 100%;  /* 15px */
+  line-height: 1.5;
+}
+
+body {
+  font-family: 'lucida sans', 'verdana', 'Helvetica Neue', Arial, 'Helvetica', sans-serif;
+  min-height: 100%; 
+}   
+
+#page {
+  padding-top: 0.3em;
+}
+
+
+
+/*------------------------------------*\
+    $HEADER SECTION
+\*------------------------------------*/
+.block-views-cm-slideshow-block {
+  display: none;
+}
+
+
+
+.zone-header-wrapper {
+  display: none;
+}
+
+/*--- BRANDING REGION ---*/
+.zone-branding-wrapper {
+  background: transparent;
+}
+
+.region-branding {
+
+}
+
+.region-branding-inner {
+  padding: 1em 0;
+}
+
+.region-branding-second-inner {
+  padding: 1em 0;
+}
+
+.logo-img {
+  float: none;
+  text-align: center;
+  margin-right: 0;
+}
+
+.region-branding img {
+  width: 100%;
+  max-width: 18em;
+}
+
+.region-branding-second {
+  padding: 0 0 0.85em;
+  float: none;
+  text-align: center;
+}
+
+
+/*--- MENU ZONE ---*/
+.zone-menu-wrapper {
+  background: transparent; 
+}
+
+.zone-menu {
+  padding: 0;
+}
+
+#section-header  ul.menu, ul#main-menu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0.6em 0 0.6em 1em;
+  display: inline-block;
+}
+
+#section-header  ul.menu li, ul#main-menu li {
+  margin: 0;
+  line-height: 2.188em;
+  list-style: none;
+  display: block;
+  padding: 0;
+  float: left;
+}
+
+#section-header  ul.menu li  a, ul#main-menu li  a{
+  text-decoration: none;
+  display: block;
+  padding: 0 0.6em;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  margin: 0.5em 0.2em 0 0.2em;
+  background: #000000;
+}
+
+#section-header  ul.menu ul, ul#main-menu ul {
+  display: none;
+}
+
+/*--- HEADER ZONE ---*/
+#zone-header {
+  margin: 0 auto;
+}
+
+#region-header-first {
+  margin: 0;
+  width: 100%;
+}
+
+
+
+
+
+/*------------------------------------*\
+    $CONTENT SECTION
+\*------------------------------------*/
+
+#section-content .region {
+  margin: 0.625em 0;
+}
+
+
+/*--- BREADCRUMBS ---*/
+#breadcrumb {
+  display: block;
+  margin: 0;
+  padding: 0;
+  background: #F2F2F2;
+  font-size: 93.8%;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+.breadcrumb {
+  padding: 0.813em 1.625em;
+}
+
+
+/*--- CONTENT ZONE ---*/
+#zone-content {
+  padding: 0.625em;
+} 
+
+#region-content {
+  background: #ffffff;
+  padding: 1em;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border: 1px solid #e3e3e3;
+}
+
+.region-content-inner {
+  padding: 0.2em 0;
+  margin: 0;
+}
+
+
+/*--- SIDEBAR SECOND REGION ---*/
+#region-sidebar-second {
+  background: #ffffff;
+  padding: 1em;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  border: 1px solid #e3e3e3;
+}
+
+
+
+
+
+/*------------------------------------*\
+    $FOOTER SECTION
+\*------------------------------------*/
+
+#region-footer-first, #region-footer-second {
+  width: 100%;
+  display: block;
+  margin-left: 0;
+}
+
+#region-footer-first .region-inner, #region-footer-second .region-inner {
+  padding: 0.625em 0;
+}
+
+#zone-footer .content{
+  padding: 0 1em;
+}
+
+
+
+
+
+/*------------------------------------*\
+	$CLEARFIX
+\*------------------------------------*/
+/*
+Fix clearing issues as per: nicolasgallagher.com/micro-clearfix-hack/
+*/ 
+
+/* For modern browsers */
+.clearfix:before,
+.clearfix:after {
+    content:"";
+    display:table;
+}
+
+.clearfix:after {
+    clear:both;
+}
+
+/* For IE 6/7 (trigger hasLayout) */
+.clearfix {
+    *zoom:1;
+}
+
+
+
+
+
+/*------------------------------------*\
+    $TYPE
+\*------------------------------------*/
+
+/*--- HEADINGS ---*/
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+h1, h2.site-name {
+  font-size: 2em;    		/* 32px */
+  line-height: 1.5;			/* 48px */
+}
+
+h2 {
+  font-size: 1.5em;     	/* 24px */
+  line-height: 1.2;			/* 24px */
+}
+
+h3 {
+  font-size: 1.25em;   		/* 20px */
+  line-height: 1.2;
+}
+
+h4, .block-title {
+  font-size: 1.125em;   	/* 18px */
+  line-height: 1.333;
+}
+
+.block-title {
+  padding-bottom: 0.2em;
+  border-bottom: 1px solid #B2BBC0;
+}
+
+h5 {
+  font-weight: bold;
+}
+
+h5, h6 {
+  font-size: 1em;   		/* 16px */
+  line-height: 1.5;
+}
+
+
+/*--- PARAGRAPHS ---*/
+p {
+  margin-bottom: 1.5em;
+}
+
+
+/*--- LINKS ---*/
+a, a:link, a:visited {
+  text-decoration: none;
+}
+
+a:visited{
+	opacity:0.8; /* A bit basic, but it’s a bare minumum... */
+}
+
+a:hover{
+	text-decoration:underline;
+}
+
+
+
+
+/*--- LISTS ---*/
+ul {
+  list-style: disc;
+}
+ol {
+  list-style: decimal;
+}
+li > ul,
+li > ol{
+	/* Let’s take care of lists in lists */
+	margin-bottom:0;
+}
+
+.node-links ul, .comment-links ul {
+  float: right;
+  text-align: right;
+}
+
+.node-links ul.inline li, .comment-links ul.inline li{
+  padding-left: 0.4em;
+  margin-left: 0.4em;
+  margin-right: 0;
+  border-left: 1px solid #b2bbc0;
+  display: inline-block;
+}
+
+.node-links ul.inline li.first, .comment-links ul.inline li.first{
+  border-left: none;
+}
+
+.node-links a, .comment-links a {
+  background: none;
+  border: none;
+}
+
+.node-links a:hover { 
+  text-decoration: underline;
+}
+
+ul.menu {
+  padding-left: 1.2em;
+}
+
+ul.menu li, .item-list ul li{
+  margin: 0;
+}
+
+ul.links {
+  margin: 0;
+}
+
+dt{
+  font-weight:bold;
+}
+
+dd {
+  margin-bottom: 1em;
+}
+
+.block {
+  margin-bottom: 1.5em;
+}
+
+  .block:last-child{
+    margin-bottom:0;
+  }
+
+/*--- QUOTES ---*/
+/*
+Big up @boblet: html5doctor.com/blockquote-q-cite/
+*/
+q{ quotes:"‘" "’" "“" "”"; }
+
+q:before{ content:"‘"; content:open-quote; }
+q:after{ content:"’"; content:close-quote; }
+
+q q:before{ content: "“"; content: open-quote; }
+q q:after{ content: "”"; content: close-quote; }
+
+blockquote{ quotes: "“" "”"; }
+blockquote p:before{ content: "“"; content: open-quote; }
+blockquote p:after{ content: ""; content: no-close-quote; }
+blockquote p:last-of-type:after{ content: "”"; content: close-quote; }
+
+blockquote{
+	text-indent:-0.4em;
+}
+ 
+/*
+Mark up the source of a quote with .source:
+<blockquote>
+	<p>Lorem ipsum dolor sit amet. <b class=source>Joe Bloggs</b></p>
+</blockquote>
+*/
+.source{
+	display:block;
+	text-indent:0;
+	margin-top:-24px;
+	margin-top:-1.5rem;
+}
+	.source:before{
+		content:"—";
+	}
+
+/*--- MISC ---*/
+hr {
+  display: block;
+  clear: both;
+  border: 0;
+  outline: 0;
+  padding: 0;
+  height: 1px;
+  margin: 1.3125em 0;
+  background: #e3e3e3;
+}
+
+
+
+
+/*------------------------------------*\
+    $IMAGES
+\*------------------------------------*/
+img {
+  max-width: 100%;
+}
+
+img.left	{ margin:0 1.5em 0 0; }
+img.right	{ margin:0 0 0 1.5em; }
+
+
+/*--- FLASH/VIDEO ---*/
+object,
+embed,
+video{
+	max-width:100%;
+}
+
+
+
+
+
+/*------------------------------------*\
+    $ARTICLES
+\*------------------------------------*/
+
+.node-teaser {
+  padding: 0 0 1em 0;
+  border-bottom: 1px solid #B2BBC0;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em; 
+  display: inline-block;
+  display: inline-table;
+  width: 100%;
+}
+
+.article-content {
+
+}
+
+.article-content .content {
+  overflow: hidden;
+}
+
+.article-image {
+  width: 32%;
+  float: left;
+  margin-right: 1em;
+}
+
+.article-image img{
+  width: 100%;
+}
+
+.submitted {
+  color: #919699;
+  text-transform: uppercase;
+  margin-bottom: 0.5em;
+  font-size: 87.5%;
+}
+
+
+
+
+
+/*------------------------------------*\
+    $TABS
+\*------------------------------------*/
+
+ul.tabs {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 0.5em;
+  border-bottom: none;
+}
+
+ul.tabs li {
+  display: block;
+  float: left;
+  margin: 0;
+  font-size: 0.9em;
+}
+
+ul.tabs li a {
+  display: block;
+  -webkit-border-radius: 4px;
+}
+
+
+/*--- HORIZONTAL TABS ---*/
+div.horizontal-tabs {
+  border: 1px solid #E2E2E2;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+}
+
+.horizontal-tabs ul.horizontal-tabs-list {
+  background-color: transparent;
+  border: none;
+  display: block;
+  overflow: hidden;
+}
+
+.horizontal-tabs-panes {
+  background: #f2f2f2;
+}
+
+.horizontal-tabs ul.horizontal-tabs-list li {
+  background: #ffffff;
+  border-right: 1px solid #e3e3e3;
+  min-width: 0;
+}
+
+.horizontal-tabs ul.horizontal-tabs-list li.first {
+  -webkit-border-top-left-radius: 6px;
+  -moz-border-radius-topleft: 6px;
+  border-top-left-radius: 6px;
+}
+
+.horizontal-tabs ul.horizontal-tabs-list li.selected {
+  background-color: #f2f2f2;
+}
+
+.horizontal-tabs fieldset.horizontal-tabs-pane {
+  margin: 0;
+  padding: 0.5em 1em 0 1em;
+}
+
+.horizontal-tabs ul.horizontal-tabs-list li a, .horizontal-tabs ul.horizontal-tabs-list li.selected a {
+  font-size: 0.875em;
+  padding: 0.5em 0.5em 0.3em 0.5em;
+}
+
+.vertical-tabs ul.vertical-tabs-list li a {
+  font-size: 0.875em;
+}
+
+.horizontal-tabs .form-item, .horizontal-tabs .form-actions {
+  margin: 1em 0 1em 0;
+}
+
+.horizontal-tabs .form-type-radio {
+  margin: 0.5em 0;
+}
+
+.horizontal-tabs-panes .fieldset-wrapper {
+padding: 0 0 0.5em 0;
+}
+
+
+
+
+
+/*------------------------------------*\
+	FORMS
+\*------------------------------------*/
+
+/**
+ * Fieldsets.
+ *
+ * Fieldset legends are displayed like containers in Seven. However, several
+ * browsers do not support styling of LEGEND elements. To achieve the desired
+ * styling:
+ * - All fieldsets use 'position: relative'.
+ * - All legend labels are wrapped in a single span.fieldset-legend that uses
+ *   'position: absolute', which means that the LEGEND element itself is not
+ *   rendered by browsers.
+ * - Due to using 'position: absolute', collapsed fieldsets do not have a
+ *   height; the fieldset requires a 'padding-top' to make the absolute
+ *   positioned .fieldset-legend appear as though it would have a height.
+ * - Various browsers are positioning the legend differently if there is a
+ *   'padding-left'/'padding-right' applied on a fieldset and inherit the
+ *   positioning even to absolute positioned elements within; we therefore have
+ *   to apply all padding to the inner .fieldset-wrapper instead.
+ */
+ 
+fieldset {
+  border: 1px solid #e3e3e3;
+  -webkit-border-radius: 6px;
+     -moz-border-radius: 6px;
+          border-radius: 6px;
+  background-color: #f2f2f2;
+  padding: 2.5em 0 0 0; /* LTR */
+  position: relative;
+  margin: 1em 0;
+  max-width: 100%;
+}
+
+fieldset.vertical-tabs-pane {
+  background-color: transparent;
+  width: 100%; 
+}
+
+fieldset .fieldset-legend {
+  margin-top: 0.5em;
+  padding-left: 0.667em;
+  position: absolute;
+  font-size: 1.5em;
+}
+
+/*--- OVERRIDING FILTER CSS ---*/
+.filter-wrapper {
+  padding: 0; 
+  margin: 1em 0 0;
+}
+.filter-wrapper .form-item {
+  padding: 0 0 0.5em 0;
+}
+.filter-guidelines {
+  padding: 0;
+}
+
+.block-headerimage .links.inline {
+  display: none;
+}
+
+fieldset .fieldset-wrapper {
+  padding: 0.938em 0.813em 0.813em 0.938em; 
+}
+fieldset.collapsed {
+  background-color: transparent;
+}
+html.js fieldset.collapsed {
+  border-width: 1px;
+  height: auto;
+}
+fieldset fieldset {
+  background-color: #fff;
+}
+fieldset fieldset fieldset {
+  background-color: #f8f8f8;
+}
+
+#search-block-form  .container-inline {
+  -webkit-border-radius: 4px;
+     -moz-border-radius: 4px;
+          border-radius: 4px;
+}
+
+.form-item, .form-actions {
+
+}
+
+textarea, select, input[type="date"], input[type="datetime"], input[type="datetime-local"], input[type="email"], input[type="month"], input[type="number"], input[type="password"], input[type="search"], input[type="tel"], input[type="text"], input[type="time"], input[type="url"], input[type="week"] {
+  font: inherit;
+  -webkit-border-radius: 5px;
+     -moz-border-radius: 5px;
+          border-radius: 5px;
+  border: 1px solid #e5e5e5;
+  width: 100%;
+  max-width: 100%;
+}
+
+button:focus,
+button:active,
+input:focus,
+input:active,
+select:focus,
+select:active,
+textarea:focus,
+textarea:active {
+  outline: none;
+  border: 1px solid #e3e3e3;
+  box-shadow: 0 0 3px #aaa;
+  z-index: 1; /* For Opera */
+}
+
+textarea, select[size], select[multiple] {
+  height: auto;
+}
+
+/* Animated throbber */
+html.js input.form-autocomplete {
+  background-position: 100% 7px; /* LTR */
+}
+html.js input.throbbing {
+  background-position: 100% -13px; /* LTR */
+}
+
+select#edit-cc-license-uri {
+
+}
+
+/*--- SEARCH FORM ---*/
+.block-search {
+  width: 16.2em;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.block-search input[type="text"] {
+  background: #f2f2f2 url(/sites/all/themes/cm_theme/images/icon_search.png) no-repeat scroll 0.4em 0.5em;
+  border: 1px solid #e3e3e3;
+  padding: 0em 0.813em 0em 1.25em;
+  width: 71%;
+  font-size: 0.813em;
+  height: 2.168em;
+}
+
+.block-search input[type="submit"] {
+  border: none;
+  margin-right: 0;
+  float: right;
+  height: 2.168em;
+  width: 26%;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.button, input[type="submit"], input[type="button"]  {
+  text-shadow: none;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  border-radius: 4px;
+  padding: 0.5em 0.6em;
+  font-size: 0.75em;
+  text-transform: none;
+  border: none;
+  text-align: center;
+}
+
+.button  {
+  text-transform: uppercase;
+}
+
+.button .flag-wrapper {
+  text-transform: none;
+  display: block;
+}
+
+
+/*------------------------------------*\
+	$TABLES
+\*------------------------------------*/
+table {
+	width:100%;
+	max-width:100%;
+	margin: 0;
+	padding: 0;
+	word-break: break-word;
+}
+table th,
+table td {
+	padding: 0.5em 0.2em;
+	text-align: left;
+	border-bottom: 1px solid #cccccc;
+	}
+table th {
+	border-width: 2px;
+	font-weight: bold;
+	word-break: normal;
+	}
+table td {
+	color: #666;
+	}
+table tr.odd {
+	background-color: #f2f2f2;
+	}
+table tr.even {
+	background-color: #ffffff;
+	}
+table tr.odd td.active {
+	background-color: #e0e0e0;
+	}
+table tr.even td.active {
+	background-color: #f2f2f2;
+	}
+tr.even, tr.odd {
+	border-bottom: none;
+	padding: 0;
+}
+
+
+
+
+
+/*------------------------------------*\
+	$MISC
+\*------------------------------------*/
+.accessibility{
+  /* Hide content off-screen without hiding from screen-readers. N.B. This is not suited to RTL languages */
+  position:absolute;
+  left:-99999px;
+}
+.node-readmore a:after{
+  /* Too many people use &raquo; in their markup to signify progression/movement, that ain’t cool. Let’s insert that using content:""; */
+  content:" »";
+}
+
+.flag-message {
+  /* Overriding the flag message from the Flag module */
+  z-index: 20;
+  background: #ffffff;
+  border: 1px solid #e3e3e3;
+  text-align: left;
+  padding: 0.4em;
+  color: #333333;
+}
+
+
+
+
+/*------------------------------------*\
+    $STAFF PAGE
+\*------------------------------------*/
+
+.view-staff table {
+  border: none;
+}
+
+.view-staff td {
+  vertical-align: top;
+  padding-bottom: 1em;
+  width: 33%;
+}
+
+.view-staff td div {
+  margin-bottom: 0.5em;
+}
+
+.view-staff img {
+  width: 140px;
+  height: 140px;
+}
+
+
+
+
+
+/*------------------------------------*\
+    $USER PROFILE
+\*------------------------------------*/
+
+
+
+
+.block .view-cm-playlist {
+  font-size: 87.5%;
+}
+
+.playlist-button {
+  padding: 0;
+  display: inline-block;
+}
+
+.playlist-button a {
+  padding: 0.2em 0.6em;
+  display: inline-block;
+}
+
+.playlist-button a:hover {
+  text-decoration: none;
+}

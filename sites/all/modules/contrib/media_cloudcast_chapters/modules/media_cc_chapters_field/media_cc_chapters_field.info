@@ -1,0 +1,21 @@
+name = Media: Cloudcast Chapters Field
+description = Defines a Video Chapter field type.
+package = "Media"
+core = 7.x
+files[] = media_cc_chapters_field.module
+files[] = media_cc_chapters_field.install
+
+dependencies[] = media_cloudcast
+; Information added by Drupal.org packaging script on 2015-04-24
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "media_cloudcast_chapters"
+datestamp = "1429915688"
+
+
+; Information added by Drupal.org packaging script on 2015-04-29
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "media_cloudcast_chapters"
+datestamp = "1430333884"
+

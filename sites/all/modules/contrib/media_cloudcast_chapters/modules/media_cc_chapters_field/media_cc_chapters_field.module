@@ -1,0 +1,105 @@
+<?php
+/**
+ * @file
+ * Defines the necessary field definitions for video chapters.
+ */
+
+/**
+ * Implements hook_field_info().
+ */
+function media_cc_chapters_field_field_info() {
+  return array(
+      'chapter' => array(
+          'label' => t('Chapter'),
+          'description' => t('This field stores chapter information for a media file.'),
+          'default_widget' => 'chapter_manual',
+          'default_formatter' => 'chapter_formatter',
+//          'no_ui' => true
+      ),
+  );
+}
+
+/**
+ * Implements hook_field_widget_info
+ * 
+ */
+function media_cc_chapters_field_field_widget_info() {
+  return array(
+      'chapter_manual' => array(
+          'label' => t('Chapter Fields'),
+          'field types' => array('chapter')
+      )
+  );
+}
+
+/**
+ * Uses four separate elements to save title, description, cid and start into database 
+ * 
+ */
+function media_cc_chapters_field_field_widget_form(&$form, &$form_state, $field, $instance, $langcode, $items, $delta, $element) {
+  $title = isset($items[$delta]['title']) ? $items[$delta]['title'] : '';
+  $description = isset($items[$delta]['description']) ? $items[$delta]['description'] : '';
+  $cid = isset($items[$delta]['cid']) ? $items[$delta]['cid'] : '';
+  $start = isset($items[$delta]['start']) ? $items[$delta]['start'] : '';
+  $element = array(
+      'title' => array(
+          '#type' => 'textfield',
+          '#default_value' => $title,
+          '#title' => 'Title'
+      ),
+      'description' => array(
+          '#type' => 'textarea',
+          '#default_value' => $description,
+          '#title' => 'Description'
+      ),
+      'cid' => array(
+          '#type' => 'textfield',
+          '#default_value' => $cid,
+          '#title' => 'CID'
+      ),
+      'start' => array(
+          '#type' => 'textfield',
+          '#default_value' => $start,
+          '#title' => 'Start Time'
+      )
+  );
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_info
+ */
+function media_cc_chapters_field_field_formatter_info() {
+  return array(
+      'chapter_formatter' => array(
+          'label' => 'Chapter',
+          'description' => 'Displays chapters w/ title description and link to skip video to start time',
+          'field types' => array('chapter')
+      )
+  );
+}
+
+/**
+ * Implements hook_field_formatter_view
+ */
+function media_cc_chapters_field_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  drupal_add_css(drupal_get_path('module', 'media_cc_chapters') . '/css/media_cc_chapters.css');
+  drupal_add_js(drupal_get_path('module', 'media_cc_chapters') . '/js/media_cc_chapters.js');
+  $element = array(
+      '#prefix' => "<ol class='video-chapters'>",
+      '#suffix' => "</ol>"
+  );
+  foreach ($items as $delta => $item) {
+    $element[$delta] = array(
+        '#markup' => "<li id='chapter-{$item['cid']}' class='chapter-trigger' data-cid='{$item['cid']}' data-fid='{$entity->fid}'><span class='chapter-title'>{$item['title']}</span> - <span class='chapter-start'>" . gmdate('H:i:s', $item['start']) . "</span></li>",
+    );
+  }
+  return $element;
+}
+
+/**
+ * Implements hook_field_is_empty
+ */
+function media_cc_chapters_field_field_is_empty($item) {
+  return !$item;
+}
