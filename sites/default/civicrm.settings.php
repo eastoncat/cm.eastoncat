@@ -133,8 +133,8 @@ define('CIVICRM_LOGGING_DSN', CIVICRM_DSN);
 
 global $civicrm_root;
 
-$civicrm_root = '/var/www/testing.ecat/sites/all/modules/contrib/civicrm/';
-define( 'CIVICRM_TEMPLATE_COMPILEDIR', '/var/www/testing.ecat/sites/default/files/civicrm/templates_c/' );
+$civicrm_root = '/var/www/testing.eastoncat.org/sites/all/modules/contrib/civicrm/';
+define( 'CIVICRM_TEMPLATE_COMPILEDIR', '/var/www/testing.eastoncat.org/sites/default/files/civicrm/templates_c/' );
 
 /**
  * Site URLs:
@@ -184,7 +184,7 @@ define( 'CIVICRM_MAIL_SMARTY', 0 );
  * The CIVICRM_MAIL_LOG is a debug option which disables MTA (mail transport agent) interaction.
  * You must disable CIVICRM_MAIL_LOG before CiviCRM will talk to your MTA.
  */
- define( 'CIVICRM_MAIL_LOG', '/var/www/testing.ecat/sites/default/files/civicrm/mail.log' );
+ define( 'CIVICRM_MAIL_LOG', '/var/www/testing.eastoncat.org/sites/default/files/civicrm/mail.log' );
 
 define( 'CIVICRM_DOMAIN_ID'      , 1 );
 

@@ -719,7 +719,6 @@ function form_load_include(&$form_state, $type, $module, $name = NULL) {
  * @endcode
  */
 function drupal_form_submit($form_id, &$form_state) {
-
   if (!isset($form_state['build_info']['args'])) {
     $args = func_get_args();
     array_shift($args);

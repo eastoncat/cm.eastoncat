@@ -1,4 +1,4 @@
-.civicrm-contact-image {
+.civicrm-file-icon img {
   max-width: 60px;
   max-height: 60px;
   border: 1px solid #aaa;
@@ -19,9 +19,4 @@
 
 #wf-crm-billing-items td + td {
   text-align: right;
-}
-
-.webform-client-form .paypal_button_info-section,
-.webform-client-form ._qf_Main_upload_express-section {
-  display: none;
 }
