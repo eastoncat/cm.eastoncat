@@ -15,16 +15,16 @@ function cmb_cloudcast_show_import_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
-  $items['admin/cmb-show-import-batch-test'] = array(
+  /*$items['admin/cmb-show-import-batch-test'] = array(
     'page callback' => 'cmb_cloudcast_show_import_test',
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
-  );
+  );*/
 
   return $items;
 }
 
-function cmb_cloudcast_show_import_test() {
+/*function cmb_cloudcast_show_import_test() {
   // Do 10 items at a time.
   $limit = 10;
   $queue_name = 'cmb_cloudcast_show_import_queue_collect';
@@ -41,6 +41,7 @@ function cmb_cloudcast_show_import_test() {
 
   return 'cmb_cloudcast_show_import_test';
 }
+*/
 
 /**
  * Form.

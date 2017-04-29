@@ -340,7 +340,7 @@ function _ecat_show_import_create_tag($title) {
 /**
  * Implements hook_menu().
  */
-function ecat_show_import_menu() {
+/*function ecat_show_import_menu() {
   $items = array();
   $items['wluisi_test/ecat_show_import'] = array(
     'page callback' => 'ecat_show_import_test',
@@ -356,3 +356,4 @@ function ecat_show_import_test() {
 
   return 'ecat_show_import_test';
 }
+*/

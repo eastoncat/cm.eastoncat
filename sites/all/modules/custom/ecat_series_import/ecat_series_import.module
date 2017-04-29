@@ -15,16 +15,16 @@ function ecat_series_import_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
-  $items['admin/cmb-series-import-batch-test'] = array(
+  /*$items['admin/cmb-series-import-batch-test'] = array(
     'page callback' => 'ecat_series_import_test',
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
-  );
+  );*/
 
   return $items;
 }
 
-function ecat_series_import_test() {
+/*function ecat_series_import_test() {
   // Do 10 items at a time.
   $limit = 10;
   $queue_name = 'ecat_series_import_queue_collect';
@@ -44,6 +44,7 @@ function ecat_series_import_test() {
 
   return 'ecat_series_import_test';
 }
+*/
 
 /**
  * Form.
