@@ -12,10 +12,3 @@ core = "7.x"
 project = "media_cloudcast_chapters"
 datestamp = "1429915688"
 
-
-; Information added by Drupal.org packaging script on 2015-04-29
-version = "7.x-1.x-dev"
-core = "7.x"
-project = "media_cloudcast_chapters"
-datestamp = "1430333884"
-

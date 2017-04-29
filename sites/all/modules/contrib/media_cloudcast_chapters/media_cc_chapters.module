@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * 
@@ -51,8 +52,12 @@ function media_cc_chapters_cron() {
   // if interval is set to -1 than run every time
   if (variable_get("media_cc_chapters_run_cron") && ($interval < 0 || time() > variable_get("media_cc_chapters_next_import", 0))) {
     $last = variable_get("media_cc_chapters_num_chapter_import");
-    $last = is_int($last) ? $last : db_query('SELECT COUNT(*) FROM {file_managed} WHERE filemime = "video/cloudcast"')->fetchField();
-    _media_cc_chapters_do_import(0, $last);
+    $last = is_numeric($last) ? $last : db_query('SELECT COUNT(*) FROM {file_managed} WHERE filemime = :filemime', array(":filemime" => "video/cloudcast"))->fetchField();
+    $results = _media_cc_chapters_do_import(0, $last);
+    drupal_set_message("Chapter import complete.  " . count($results['files']) . "/{$results['total']} shows had chapters to import.");
+    foreach ($results['files'] as $file) {
+      drupal_set_message("Retrieved chapters for File " . l($file['filename'], url("file/{$file['fid']}/usage", array('absolute' => true))));
+    }
   }
   variable_set("media_cc_chapters_next_import", time() + $interval);
 }
@@ -63,6 +68,6 @@ function media_cc_chapters_cron() {
 function media_cc_chapters_views_api() {
   return array(
       'api' => 3,
-      'path' => drupal_get_path('module', 'media_cc_chapters_view') . "/views"
+      'path' => drupal_get_path('module', 'media_cc_chapters') . "/views"
   );
 }

@@ -1,0 +1,5 @@
+name = CMB Migration Helper
+description = Migration helper module to enable other modules after DB refresh.
+core = 7.x
+package = CM Bootstrap
+version = 7.x-1.0

@@ -1,0 +1,6 @@
+name = ECAT Show Import
+description = ECAT Show Import
+package = ECAT
+core = 7.x
+dependencies[] = elysia_cron
+dependencies[] = cmb_show_features

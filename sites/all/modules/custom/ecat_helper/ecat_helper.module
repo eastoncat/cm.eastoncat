@@ -1,0 +1,10 @@
+<?php
+
+/**
+ * Implements hook_init().
+ */
+function ecat_helper_init() {
+  if ($GLOBALS['theme'] != 'seven') {
+    drupal_add_css(drupal_get_path('module', 'ecat_helper') . '/css/ecat_helper.css');
+  }
+}

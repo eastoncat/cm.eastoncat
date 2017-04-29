@@ -1,0 +1,358 @@
+<?php
+
+/**
+ * Implements hook_cronapi($op, $job = NULL).
+ */
+function ecat_show_import_cronapi($op, $job = NULL) {
+  $items = array();
+
+  $items['ecat_show_import_show_feed'] = array(
+    'description' => 'ECAT Show XML Feed',
+    'rule' => '0 */3 * * *',
+    'callback' => '_ecat_show_import_show_feed',
+    'weight' => 4,
+  );
+
+  return $items;
+}
+
+/**
+ * Callback function for cron item.
+ */
+function _ecat_show_import_show_feed() {
+  $data = ecat_show_import_get_xml_feed();
+
+  if ($data) {
+    foreach($data as $item) {
+      // Check if airing exists
+      if (!$show_exists = ecat_show_import_show_node_exists($item['guid'])) {
+        $show = ecat_show_import_create_cm_show_node($item);
+
+        if ($show) {
+          // Log success to watchdogg
+          watchdog(
+            $type = 'ecat_show_import',
+            $message = 'Success! Created show for GUID: %guid',
+            $variables = array('%guid' => $item['guid']),
+            $severity = WATCHDOG_INFO
+          );
+        }
+        else {
+          // Log failure to watchdog.
+          watchdog(
+            $type = 'ecat_show_import',
+            $message = 'Failure! Could not create show for GUID: %guid',
+            $variables = array('%guid' => $item['guid']),
+            $severity = WATCHDOG_ALERT
+          );
+        }
+      }
+      // Update
+      else {
+        // Add function to update node anyway
+        $show = ecat_show_import_update_cm_show_node($item, $show_exists);
+
+        if ($show) {
+          watchdog(
+            $type = 'ecat_show_import',
+            $message = 'Success! Show exists, but updated show for GUID: %guid',
+            $variables = array('%guid' => $item['guid']),
+            $severity = WATCHDOG_INFO
+          );
+        }
+        else {
+          // Log failure to watchdog.
+          watchdog(
+            $type = 'ecat_show_import',
+            $message = 'Failure! Show exists, but could not update show for GUID: %guid',
+            $variables = array('%guid' => $item['guid']),
+            $severity = WATCHDOG_ALERT
+          );
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to get xml feed.
+ */
+function ecat_show_import_get_xml_feed() {
+  $url = 'http://cloudcast.telvue.com/api/mrss/v2/mrss/T01500.xml?recent=50';
+
+  // Init curl and pull in rss feed.
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_URL, $url);
+  $xml = curl_exec($curl);
+  $channel = new SimpleXMLElement($xml);
+  $namespaces = $channel->getNamespaces(true);
+
+  foreach($channel->xpath('//item') as $item) {
+    // Get data in cloudcast: namespace
+    $cloudcast = $item->children($namespaces['cloudcast']);
+    // Get data in media: namespace.
+    $media = $item->children($namespaces['media']);
+
+    $data[] = array(
+      'guid' => (string) $item->{'link'},
+      'title' => (string) $cloudcast->summary,
+      'link' => (string) $item->{'link'},
+      'description' => (string) $media->description,
+      'pubDate' => (string) $item->{'pubDate'},
+      'program' => (string) $cloudcast->program,
+      'category' => (string) $media->category,
+    );
+  }
+
+  // Close curl
+  curl_close($curl);
+
+  return $data;
+}
+
+/**
+ * Helper function to check if 'show' node exists, based on GUID field.
+ */
+function ecat_show_import_show_node_exists($guid) {
+  $query = new EntityFieldQuery;
+  $query->entityCondition('entity_type', 'node')
+    ->propertyCondition('type', 'cm_show')
+    ->fieldCondition('field_cmb_show_guid', 'value', $guid, '=');
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $nid = array_keys($result['node']);
+    $nid = $nid[0];
+    return $nid;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to create Show Node.
+ */
+function ecat_show_import_create_cm_show_node($item) {
+  $node = new stdClass();
+  $node->title = $item['title'];
+  $node->type = 'cm_show';
+  node_object_prepare($node);
+  $node->language = LANGUAGE_NONE;
+  $node->uid = 1;
+  $node->status = 1;
+  $node->promote = 0;
+  $node->comment = 0;
+
+  // Create file
+
+  // @todo Need to figure how to programmatically generate this uri.
+  //$uri = 'cloudcast://id/T01500/video/306037';
+
+  //$embed_code = 'http://cvp.telvue.com/player?id=T01500&video=305951&mini=1';
+  //$uri = ecat_show_import_parse_embed($embedCode);
+  $embed_code = $item['link'];
+
+  $provider = media_internet_get_provider($embed_code);
+  $file = $provider->save();
+
+  //dpm($uri);
+
+  /*$file = file_uri_to_object($uri, TRUE);
+
+  // Save
+  file_save($file);
+
+  //dpm($file);
+  */
+
+  // Add Fields
+  if ($file) {
+    $node->field_show_vod[LANGUAGE_NONE][] = array(
+      'fid' => $file->fid,
+      'display' => 1,
+      'description' => NULL,
+    );
+  }
+
+  // GUID
+  $node->field_cmb_show_guid[LANGUAGE_NONE][]['value'] = $item['guid'];
+
+  // Production Date/Original Air Date [ field: field_show_production_date ]
+  $show_date = strtotime($item['pubDate']);
+  $node->field_show_production_date[LANGUAGE_NONE][]['value'] = date("Y-m-d H:i:s", $show_date);
+
+  // Description
+  $node->field_description[LANGUAGE_NONE][]['value'] = $item['description'];
+
+  // Tags
+  // Existing tag
+  if ($tag_tid = _ecat_show_import_find_tag_by_title($item['category']) ) {
+    $node->field_tags[LANGUAGE_NONE][]['tid'] = $tag_tid;
+  }
+  // Create tag and assign to node.
+  else {
+    $term = _ecat_show_import_create_tag($item['category']);
+    if ($term) {
+      $node->field_tags[LANGUAGE_NONE][]['tid'] = $term->tid;
+    }
+  }
+
+  // Save node
+  $node = node_submit($node);
+
+  try {
+    node_save($node);
+    $success = TRUE;
+
+    // We need to do this after the node is saved to the DB, not during creation.
+    // Series
+    // Create record in og_membership table.
+
+    // GID is the NID of the series.
+    // We get this by matching the cloudcast:program value to a series title.
+    $gid = _ecat_show_import_find_series_by_title($item['program']);
+    //$gid = 84691;
+
+    if ($gid) {
+      $og_values = array(
+        'entity_type' => 'node',
+        'entity' => $node,
+        'state' => OG_STATE_ACTIVE,
+      );
+
+      // Add this node to the group
+      $og_group = og_group('node', $gid, $og_values);
+    }
+  }
+  catch (Exception $e) {
+    $success = FALSE;
+  }
+
+  return $success;
+}
+
+/**
+ * Helper function to update Show Node.
+ */
+function ecat_show_import_update_cm_show_node($item, $nid) {
+  $node = node_load($nid);
+  // @todo add logic to check if source already matches what's in drupal, if so don't update.
+
+  //$node->title = 'UPDATED! ' . $item['title'];
+
+   // Update fields
+   // Start Date: Convert datetime to UTC
+   /*if ($event->start_date != 'null') {
+     $start_date = cmb_search_event_convert_datetime_to_ut($event->start_date);
+     $node->field_cmbs_event_date[LANGUAGE_NONE][0]['value'] = $start_date;
+     $node->field_cmbs_event_datetime[LANGUAGE_NONE][0]['value'] = $event->start_date;
+   }
+   // End Date: Convert datetime to UTC
+   if ($event->end_date != 'null') {
+     $end_date = cmb_search_event_convert_datetime_to_ut($event->end_date);
+     $node->field_cmbs_event_date[LANGUAGE_NONE][0]['value2'] = $end_date;
+     $node->field_cmbs_event_datetime[LANGUAGE_NONE][0]['value2'] = $event->end_date;
+   }
+   // Summary
+   if ($event->summary != 'null') {
+     $node->field_cmbs_event_summary[LANGUAGE_NONE][0]['value'] = $event->summary;
+   }
+   // Description
+   if ($event->description != 'null') {
+     $node->field_cmbs_event_descr[LANGUAGE_NONE][0]['value'] = $event->description;
+   }*/
+   //node_save($node);
+
+   // Save node, if can't save, then return false.
+   try {
+     node_save($node);
+     $success = TRUE;
+   }
+   catch (Exception $e) {
+     $success = FALSE;
+   }
+
+   return $success;
+}
+
+/**
+ * Helper function to find show by title.
+ */
+function _ecat_show_import_find_series_by_title($title) {
+  $nid = db_query("SELECT nid FROM {node} WHERE type = 'cm_project' AND title = :title",
+    array(
+      ':title' => $title)
+    )->fetchField();
+
+  if (!empty($nid)) {
+   return $nid;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to find Taxonomy tags by title
+ */
+function _ecat_show_import_find_tag_by_title($title) {
+  $tid = db_query("SELECT tid FROM {taxonomy_term_data} WHERE name = :name",
+    array(
+      ':name' => $title)
+    )->fetchField();
+
+  if (!empty($tid)) {
+   return $tid;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to create a Taxonomy Tag
+ */
+function _ecat_show_import_create_tag($title) {
+  $vocab = taxonomy_vocabulary_machine_name_load('tags');
+
+  $term = (object) array(
+   'name' => $title,
+   //'description' => 'This is term 1',
+   'vid' => $vocab->vid,
+  );
+
+  try {
+    $success = taxonomy_term_save($term);
+  }
+  catch (Exception $e) {
+    $success = FALSE;
+  }
+
+  return $success;
+}
+
+
+
+/* TESTING STUFF */
+
+/**
+ * Implements hook_menu().
+ */
+function ecat_show_import_menu() {
+  $items = array();
+  $items['wluisi_test/ecat_show_import'] = array(
+    'page callback' => 'ecat_show_import_test',
+    'access callback' => TRUE,
+  );
+  return $items;
+}
+
+function ecat_show_import_test() {
+  //ecat_show_import_create_cm_show_node();
+  $data = ecat_show_import_get_xml_feed();
+  dpm($data);
+
+  return 'ecat_show_import_test';
+}

@@ -1,0 +1,412 @@
+<?php
+
+/* START: BATCH */
+
+/**
+ * Implements hook_menu().
+ */
+function cmb_cloudcast_show_import_menu() {
+  $items = array();
+
+  $items['admin/cmb-show-import-batch'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cmb_cloudcast_show_import_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['admin/cmb-show-import-batch-test'] = array(
+    'page callback' => 'cmb_cloudcast_show_import_test',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+function cmb_cloudcast_show_import_test() {
+  // Do 10 items at a time.
+  $limit = 10;
+  $queue_name = 'cmb_cloudcast_show_import_queue_collect';
+
+  $result = db_query_range("SELECT item_id, data, expire, created FROM {queue} WHERE name = :name ORDER BY item_id", 0, $limit,
+    array(
+      ':name' => $queue_name,
+      //':item_id' => $context['sandbox']['current_item'],
+    ),
+    array('fetch' => PDO::FETCH_ASSOC));
+    foreach ($result as $item) {
+      dpm(unserialize($item['data']));
+    }
+
+  return 'cmb_cloudcast_show_import_test';
+}
+
+/**
+ * Form.
+ */
+function cmb_cloudcast_show_import_form($form, &$form_state) {
+  $form['vfm_message'] = array (
+		'#type' => 'item',
+		'#markup' => 'Clicking this button will run a batch process to create Shows from Queue.',
+	);
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+
+  return $form;
+}
+
+/**
+ * Form Submit.
+ */
+function cmb_cloudcast_show_import_form_submit($form, &$form_state) {
+  $queue = DrupalQueue::get('cmb_cloudcast_show_import_queue_collect');
+  // Get max count
+  $max_count = $queue->numberOfItems();
+
+  if ($max_count > 0) {
+    $form_values = array(
+  	  'max' => $max_count,
+    );
+
+    $operations[] = array('cmb_cloudcast_show_import_batch_op', array($form_values));
+
+    $batch = array(
+      'operations' => $operations,
+      'finished' => 'cmb_cloudcast_show_import_batch_finished',
+      'title' => t("Show Batch Process Queue"),
+      'init_message' => t('Processing...'),
+      'error_message' => t('Error!'),
+    );
+
+    batch_set($batch);
+  }
+  else {
+    drupal_set_message(t('No data!'));
+  }
+}
+
+/**
+ * Batch operation
+ */
+function cmb_cloudcast_show_import_batch_op($form_values, &$context) {
+  if (empty($context['sandbox'])) {
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['current_item'] = 0;
+    $context['sandbox']['max'] = $form_values['max'];
+  }
+  // Do 10 items at a time.
+  $limit = 10;
+
+  if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+    $queue_name = 'cmb_cloudcast_show_import_queue_collect';
+
+    //$items = array();
+    $result = db_query_range("SELECT item_id, data, expire, created FROM {queue} WHERE item_id != :item_id AND name = :name ORDER BY item_id DESC", 0, $limit,
+    array(
+      ':name' => $queue_name,
+      ':item_id' => $context['sandbox']['current_item'],
+    ),
+    array('fetch' => PDO::FETCH_ASSOC));
+    foreach ($result as $item) {
+      // Get data
+      $data = unserialize($item['data']);
+      // Create show
+      $show = cmb_cloudcast_show_import_create_cm_show_node($data);
+
+      // Show created, so delete the queue item.
+      if ($show) {
+        // Delete queue item.
+        db_delete('queue')
+        ->condition('item_id', $item['item_id'])
+        ->execute();
+
+        // Update context
+        $context['results'][] = $item['item_id'] . ' : ' . check_plain($item['item_id']);
+        $context['sandbox']['progress']++;
+        $context['sandbox']['current_item'] = $item['item_id'];
+        $context['message'] = 'Processed ' . $context['sandbox']['progress'] . ' of ' . $context['sandbox']['max'] . ' items.';
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+      }
+      else {
+        // Delete queue item.
+        db_delete('queue')
+        ->condition('item_id', $item['item_id'])
+        ->execute();
+
+        // Update context
+        $context['results'][] = $item['item_id'] . ' : ' . check_plain($item['item_id']);
+        $context['sandbox']['progress']++;
+        $context['sandbox']['current_item'] = $item['item_id'];
+        $context['message'] = 'Processed ' . $context['sandbox']['progress'] . ' of ' . $context['sandbox']['max'] . ' items.';
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+      }
+    }
+  }
+  else {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+}
+
+/**
+ * Batch 'finished' callback
+ */
+function cmb_cloudcast_show_import_batch_finished($success, $results, $operations) {
+  if ($success) {
+    drupal_set_message(t('Data process is complete!'));
+  }
+  else {
+    // An error occurred.
+    // $operations contains the operations that remained unprocessed.
+    $error_operation = reset($operations);
+    drupal_set_message(
+      t('An error occurred while processing @operation with arguments : @args',
+        array(
+          '@operation' => $error_operation[0],
+          '@args' => print_r($error_operation[0], TRUE),
+        )
+      )
+    );
+  }
+}
+
+/* END BATCH */
+
+/**
+ * Implements hook_cronapi($op, $job = NULL).
+ */
+function cmb_cloudcast_show_import_cronapi($op, $job = NULL) {
+  $items = array();
+
+  $items['cmb_cloudcast_show_import_queue_collect'] = array(
+    'description' => 'Collect Show Data from XML Feed',
+    'rule' => '0 */3 * * *',
+    'callback' => 'cmb_cloudcast_show_import_queue_collect',
+    'weight' => 4,
+  );
+
+  $items['cmb_cloudcast_show_import_queue_process'] = array(
+    'description' => 'Process Show Data from Queue',
+    'rule' => '0 */3 * * *',
+    'callback' => 'cmb_cloudcast_show_import_queue_process',
+    'weight' => 4,
+  );
+
+  return $items;
+}
+
+/**
+ * Queue callback function to collect show data from XML source feed.
+ */
+function cmb_cloudcast_show_import_queue_collect() {
+  $url = 'http://cloudcast.telvue.com/api/mrss/v2/mrss/T01500.xml';
+
+  // Init curl and pull in rss feed.
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_URL, $url);
+  $xml = curl_exec($curl);
+  $channel = new SimpleXMLElement($xml);
+  $namespaces = $channel->getNamespaces(true);
+
+  foreach($channel->xpath('//item') as $item) {
+    // Get data in cloudcast: namespace
+    $cloudcast = $item->children($namespaces['cloudcast']);
+    // Get data in media: namespace.
+    $media = $item->children($namespaces['media']);
+
+    $data = array(
+      'guid' => (string) $item->{'link'},
+      'title' => (string) $cloudcast->summary,
+      'link' => (string) $item->{'link'},
+      'description' => (string) $media->description,
+      'pubDate' => (string) $item->{'pubDate'},
+      'program' => (string) $cloudcast->program,
+      'category' => (string) $media->category,
+    );
+
+    // Get queue
+    $queue = DrupalQueue::get('cmb_cloudcast_show_import_queue_collect');
+    // Create queue item
+    $queue->createItem($data);
+  }
+
+  // Close curl
+  curl_close($curl);
+}
+
+/**
+ * Process callback function
+ */
+function cmb_cloudcast_show_import_queue_process() {
+  // Get the queue.
+  $queue = DrupalQueue::get('cmb_cloudcast_show_import_queue_collect');
+
+  // Claim queue item.
+  while ($item = $queue->claimItem()) {
+    // Build data array
+    $data = [
+      'guid' => $item->data['guid'],
+      'title' => $item->data['title'],
+      'link' => $item->data['link'],
+      'description' => $item->data['description'],
+      'pubDate' => $item->data['pubDate'],
+      'program' => $item->data['program'],
+      'category' => $item->data['category'],
+    ];
+
+    $show = cmb_cloudcast_show_import_create_cm_show_node($data);
+
+    // Show created, so delete the queue item.
+    if ($show) {
+      // Success! Delete queue item.
+      $queue->deleteItem($item);
+    }
+  }
+
+  // Can't process, so release item.
+  $queue->releaseItem($item);
+}
+
+/**
+ * Helper function to create Show Node.
+ */
+function cmb_cloudcast_show_import_create_cm_show_node($item) {
+  $node = new stdClass();
+  $node->title = $item['title'];
+  $node->type = 'cm_show';
+  node_object_prepare($node);
+  $node->language = LANGUAGE_NONE;
+  $node->uid = 1;
+  $node->status = 1;
+  $node->promote = 0;
+  $node->comment = 0;
+
+  // Create file
+  $embed_code = $item['link'];
+  $provider = media_internet_get_provider($embed_code);
+  $file = $provider->save();
+
+  // Add Fields
+  if ($file) {
+    $node->field_show_vod[LANGUAGE_NONE][] = array(
+      'fid' => $file->fid,
+      'display' => 1,
+      'description' => NULL,
+    );
+  }
+
+  // GUID
+  $node->field_cmb_show_guid[LANGUAGE_NONE][]['value'] = $item['guid'];
+
+  // Production Date/Original Air Date [ field: field_show_production_date ]
+  $show_date = strtotime($item['pubDate']);
+  $node->field_show_production_date[LANGUAGE_NONE][]['value'] = date("Y-m-d H:i:s", $show_date);
+
+  // Description
+  $node->field_description[LANGUAGE_NONE][]['value'] = $item['description'];
+
+  // Tags
+  // Existing tag
+  if ($tag_tid = _cmb_cloudcast_show_import_find_tag_by_title($item['category']) ) {
+    $node->field_tags[LANGUAGE_NONE][]['tid'] = $tag_tid;
+  }
+  // Create tag and assign to node.
+  else {
+    if (!empty($item['category'])) {
+      $term = _cmb_cloudcast_show_import_create_tag($item['category']);
+      if ($term) {
+        $node->field_tags[LANGUAGE_NONE][]['tid'] = $term->tid;
+      }
+    }
+  }
+
+  // Save node
+  $node = node_submit($node);
+
+  try {
+    node_save($node);
+    $success = TRUE;
+
+    // We need to do this after the node is saved to the DB, not during creation.
+    // Series
+    // Create record in og_membership table.
+
+    // GID is the NID of the series.
+    // We get this by matching the cloudcast:program value to a series title.
+    $gid = _cmb_cloudcast_show_import_find_series_by_title($item['program']);
+
+    if ($gid) {
+      $og_values = array(
+        'entity_type' => 'node',
+        'entity' => $node,
+        'state' => OG_STATE_ACTIVE,
+      );
+
+      // Add this node to the group
+      $og_group = og_group('node', $gid, $og_values);
+    }
+  }
+  catch (Exception $e) {
+    $success = FALSE;
+  }
+
+  return $success;
+}
+
+/**
+ * Helper function to find show by title.
+ */
+function _cmb_cloudcast_show_import_find_series_by_title($title) {
+  $nid = db_query("SELECT nid FROM {node} WHERE type = 'cm_project' AND title = :title",
+    array(
+      ':title' => $title)
+    )->fetchField();
+
+  if (!empty($nid)) {
+   return $nid;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to find Taxonomy tags by title
+ */
+function _cmb_cloudcast_show_import_find_tag_by_title($title) {
+  $tid = db_query("SELECT tid FROM {taxonomy_term_data} WHERE name = :name",
+    array(
+      ':name' => $title)
+    )->fetchField();
+
+  if (!empty($tid)) {
+   return $tid;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to create a Taxonomy Tag
+ */
+function _cmb_cloudcast_show_import_create_tag($title) {
+  $vocab = taxonomy_vocabulary_machine_name_load('tags');
+
+  $term = (object) array(
+   'name' => $title,
+   'vid' => $vocab->vid,
+  );
+
+  try {
+    $success = taxonomy_term_save($term);
+  }
+  catch (Exception $e) {
+    $success = FALSE;
+  }
+
+  return $success;
+}

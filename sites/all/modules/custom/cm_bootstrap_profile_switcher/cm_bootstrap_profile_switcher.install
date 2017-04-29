@@ -1,0 +1,96 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function cm_bootstrap_profile_switcher_install() {
+  $new_profile = 'cm_bootstrap';
+  $old_profile = 'cm_starterkit_moderate';
+
+  if ($new_profile == $old_profile) {
+    $old_profile = FALSE;
+  }
+
+  // Set 'install_profile' variable
+  variable_set('install_profile', $new_profile);
+
+  $new_status = db_query('SELECT status FROM {system} WHERE name = :name', array(':name' => $new_profile))->fetchField();
+  if (empty($new_status)) {
+    // Unlike modules, profiles aren't added to the system table just because the
+    // files are added to /profiles.  They are added after they are active.  We
+    // need to add them before that so they are BOTH active and enabled.
+
+    // Cache a fully-built schema.
+    drupal_get_schema(NULL, TRUE);
+    system_rebuild_module_data();
+
+    // Flush all caches to ensure that any full bootstraps during the installer
+    // do not leave stale cached data, and that any content types or other items
+    // registered by the install profile are registered correctly.
+    drupal_flush_all_caches();
+  }
+
+  // Activate new install profile.
+  if (!$new_status) {
+    $new_profile_activated = db_update('system')
+    ->fields(array(
+      'status' => 1,
+     ))
+    ->condition('name', $new_profile, '=')
+    ->execute();
+  }
+
+  if ($old_profile) {
+    //@todo: Add check to see if new profile was enabled
+    $old_status = db_query('SELECT status FROM {system} WHERE name = :name', array(':name' => $old_profile))->fetchField();
+
+    if ($old_status) {
+      $old_profile_deactivated = db_update('system') // Table name no longer needs {}
+      ->fields(array(
+        'status' => 0,
+       ))
+      ->condition('name', $old_profile, '=')
+      ->execute();
+    }
+    drupal_set_message(t('@new_profile was enabled.  @old_profile was disabled.', array('@new_profile' => $new_profile, '@old_profile' => $old_profile)));
+  }
+  else {
+    drupal_set_message(t('@new_profile was re-enabled.', array('@new_profile' => $new_profile)));
+  }
+
+  // Update block table for theme name change
+  // SQL: UPDATE block SET theme = 'cmb_theme' WHERE theme = 'cm_bootstrap';
+  $block_table_update = db_update('block')
+    ->fields(array(
+      'theme' => 'cmb_theme',
+    ))
+    ->condition('theme', 'cm_bootstrap', '=')
+    ->execute();
+
+  // @todo
+  // Rebuild registry?
+
+  // Disable existing theme
+  theme_disable(array('slate_cmd'));
+
+  // Enable themes
+  // Enable bootstrap
+  theme_enable(array('bootstrap'));
+
+  // Enable adminimal
+  theme_enable(array('adminimal'));
+
+  // Enable cmb_theme
+  theme_enable(array('cmb_theme'));
+  // Set cmb_theme to default theme
+  variable_set('theme_default','cmb_theme');
+
+  // Set jQuery version for non-admin to 1.9
+  variable_set('jquery_update_jquery_version', '1.9');
+
+  // @todo
+  // Delete system record for "cm_bootstrap" theme.
+
+  // Enable cm_admin theme if not already enabled.
+  theme_enable(array('cm_admin'));
+}

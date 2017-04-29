@@ -8,16 +8,10 @@ files[] = media_cc_chapters.install
 dependencies[] = views
 dependencies[] = media_cloudcast
 dependencies[] = media_cc_chapters_field
+dependencies[] = jquery_update
 ; Information added by Drupal.org packaging script on 2015-04-24
 version = "7.x-1.x-dev"
 core = "7.x"
 project = "media_cloudcast_chapters"
 datestamp = "1429915688"
-
-
-; Information added by Drupal.org packaging script on 2015-04-29
-version = "7.x-1.x-dev"
-core = "7.x"
-project = "media_cloudcast_chapters"
-datestamp = "1430333884"
 

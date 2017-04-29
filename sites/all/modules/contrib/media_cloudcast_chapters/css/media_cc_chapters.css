@@ -15,3 +15,6 @@
 .video-chapters li .chapter-start {
   font-weight: normal;
 }
+.video-chapters .chapter-description {
+  display: none;
+}
