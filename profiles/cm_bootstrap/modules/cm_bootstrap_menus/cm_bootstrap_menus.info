@@ -1,0 +1,10 @@
+name = CM Bootstrap Menus
+description = Custom Menus and Menu Blocks required for CM Bootstrap suite.
+package = CM Bootstrap
+core = 7.x
+stylesheets[all][] = css/social_media_menu.css
+
+dependencies[] = menu
+dependencies[] = menu_block
+dependencies[] = ctools
+dependencies[] = menu_attributes

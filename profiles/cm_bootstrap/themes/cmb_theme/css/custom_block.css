@@ -1,0 +1,166 @@
+#block-cm-bootstrap-custom-blocks-front-pg-ls-carousel h2,
+#block-cm-bootstrap-custom-blocks-cb-custom-video-lists-front h2,
+#block-cm-bootstrap-custom-blocks-front-pg-fv-carousel h2 {
+  background: #D1D0CC;
+  color: #000;
+  padding: 28px;
+  text-align: center;
+  margin-bottom: 0;
+  text-transform: normal;
+  font-size: 28px;
+  margin: 0;
+  padding: 36px 10px;
+  max-height: 105px;
+}
+
+
+/* START: 'Featured Videos' Carousel */
+.slider-fpfvbc  .flex-direction-nav a:before {
+  color:#FFF;
+}
+
+.slider-fpfvbc .flexslider .flex-direction-nav a.flex-prev {
+  opacity: 1;
+  left: 10px;
+}
+
+.slider-fpfvbc .flexslider .flex-direction-nav a.flex-next {
+  opacity: 1;
+  right: 10px;
+}
+
+section.slider-fpfvbc ul.fv-carousel li {
+  overflow:hidden;
+}
+
+section.slider-fpfvbc ul.fv-carousel li a .overlay {
+  box-sizing: border-box;
+  
+  /*-webkit-transition: 250ms ease-out;
+  -moz-transition: 250ms ease-out;
+  -o-transition: 250ms ease-out;
+  transition: 250ms ease-out;*/
+  width:400px;
+  
+  opacity: 0;
+  /*max-width: 390px;*/
+  height: 100%;
+  /*font-size: 2em;*/
+  font-weight: 700;
+  position: absolute;
+  color: #FFF;
+  padding: 20px;
+}
+
+section.slider-fpfvbc ul.fv-carousel li a:hover span.overlay {
+  opacity:.85;
+  background:red;
+}
+
+span.watch-now {
+  font-size: 1em;
+  /* margin-left: 70%; */
+  position: absolute;
+  bottom: 20px;
+}
+
+/*#block-custom-block-front-pg-fv-carousel h2 {
+  background: #E60023;
+  color:#FFF;
+  padding: 20px 10px;
+  text-align: center;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  margin:0;
+}*/
+/* END: 'Featured Videos' Carousel */
+
+/* START: 'Latest Shows' Carousel */
+.slider-fp-ls-vc .flex-direction-nav a:before {
+  color:#FFF;
+}
+
+.slider-fp-ls-vc .flexslider .flex-direction-nav a.flex-prev {
+  opacity: 1;
+  left: 10px;
+}
+
+.slider-fp-ls-vc .flexslider .flex-direction-nav a.flex-next {
+  opacity: 1;
+  right: 10px;
+}
+
+section.slider-fp-ls-vc ul li {
+  overflow:hidden;
+}
+
+section.slider-fp-ls-vc ul li a .overlay {
+  box-sizing: border-box;
+  
+  /*-webkit-transition: 250ms ease-out;
+  -moz-transition: 250ms ease-out;
+  -o-transition: 250ms ease-out;
+  transition: 250ms ease-out;*/
+  
+  width:400px;
+  
+  /*width:300px;*/
+  opacity: 0;
+  /*max-width: 390px;*/
+  height: 100%;
+  /*font-size: 2em;*/
+  font-weight: 700;
+  position: absolute;
+  color: #FFF;
+  padding: 20px;
+}
+
+section.slider-fp-ls-vc ul li a:hover span.overlay {
+  opacity:.85;
+  background:red;
+}
+
+
+span.watch-now {
+  font-size: 1em;
+  /* margin-left: 70%; */
+  position: absolute;
+  bottom: 20px;
+}
+
+/*#block-custom-block-front-pg-ls-carousel h2 {
+  background: #FA7900;
+  color:#FFF;
+  padding: 20px 10px;
+  text-align: center;
+  margin-bottom: 0;
+  text-transform: uppercase;
+  margin:0;
+}*/
+
+
+/*section.slider-fp-ls-vc ul.ls-carousel*/ ul.slides li a span.play-button {
+  width: 400px;
+  
+  box-sizing: border-box;
+  height: 100%;
+  position: absolute;
+  padding: 20px;
+  z-index: 100000;
+}
+
+ul.slides li a span.play-button i {
+  font-size: 13em;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-60%, -60%);
+  -webkit-transform: translate(-60%, -60%);
+  opacity: .25;
+  color: #FFF;
+}
+/* END: 'Latest Shows' Carousel */
+
+.block-custom-block h2.block-title {
+  margin:0px !important;
+}

@@ -1,0 +1,22 @@
+<?php
+
+/**
+ * Implements hook_node_update($node).
+ */
+function cmb_landing_page_node_update($node) {
+  if ($node->type == 'cmb_landing_page') {
+    // @todo figure out why we need to do this, b/c paragraphs are getting
+    // some weird as fuck cacheing w/o this, but only on Pantheon server.
+    //
+    // Don't clear cache_form - in-progress form submissions may break.
+    // Ordered so clearing the page cache will always be the last action.
+    $core = array(
+      'cache',
+      'cache_filter',
+    );
+    $cache_tables = array_merge(module_invoke_all('flush_caches'), $core);
+    foreach ($cache_tables as $table) {
+      cache_clear_all('*', $table, TRUE);
+    }
+  }
+}

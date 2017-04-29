@@ -1,0 +1,80 @@
+<?php
+
+/**
+ * Implements hook_menu_block_blocks().
+ * Programmatically create a menu block.
+ */
+function cm_bootstrap_menus_menu_block_blocks() {
+  // The array key is the block delta used by menu block.
+  return array(
+    
+    // The array key is the block id used by menu block
+    'cmb-navigation-menu-block' => array(
+      // Use the array keys/values described in menu_tree_build().
+      // @see http://www.drupalcontrib.org/api/drupal/contributions%21menu_block%21menu_block.module/function/menu_tree_build/7
+      //
+      // This is really weird, but the actual menu name in DB is menu-navigation-menu,
+      // However, the 'menu' prefix must be removed for this to work properly.
+      'menu_name' => 'navigation-menu',
+      'title' => '<none>',
+      'title_link'  => FALSE,
+      'admin_title' => 'Navigation Menu Block [cmbm]',
+      'level'       => 1,
+      'follow'      => 0,
+      'depth'       => 0,
+      'expanded'    => FALSE,
+      'sort'        => FALSE,
+      // This might be wrong?
+      'parent_mlid' => 0,
+    ),
+    
+    // Social media menu block 1
+    /*'cmb-social-media-menu-block' => array(
+      'menu_name' => 'social-media-menu',
+      'title' => '<none>',
+      'title_link'  => FALSE,
+      'admin_title' => 'Social Media Menu Block 1 [cmbm]',
+      'level'       => 1,
+      'follow'      => 0,
+      'depth'       => 0,
+      'expanded'    => FALSE,
+      'sort'        => FALSE,
+      'parent_mlid' => 0,
+    ),
+    
+    // Social media menu block 2
+    'cmb-social-media-menu-block2' => array(
+      'menu_name' => 'social-media-menu',
+      'title' => '<none>',
+      'title_link'  => FALSE,
+      'admin_title' => 'Social Media Menu Block 2 [cmbm]',
+      'level'       => 1,
+      'follow'      => 0,
+      'depth'       => 0,
+      'expanded'    => FALSE,
+      'sort'        => FALSE,
+      'parent_mlid' => 0,
+    ),*/
+    
+  );
+}
+
+/*function cm_bootstrap_menus_menu_tree__social_media_menu($variables){
+  return '<ul class="your-custom-class" id="your-custom-id">' . $variables['tree'] . '</ul>';
+}*/
+
+/**
+ * Implements hook_theme_registry_alter(&$theme_registry).
+ * Override TPL from a custom module.
+ */
+/*function cm_bootstrap_menus_theme_registry_alter(&$theme_registry) {
+  dpm($theme_registry);
+  // site_wrapper: header.tpl.php
+  $theme_registry['site_wrapper_header'] = array(
+    'path' => path_to_theme() . '/templates/site_wrapper',  
+    'template' => 'header',
+    'type' => 'theme',
+    'theme path' => path_to_theme(),
+  );
+}*/
+

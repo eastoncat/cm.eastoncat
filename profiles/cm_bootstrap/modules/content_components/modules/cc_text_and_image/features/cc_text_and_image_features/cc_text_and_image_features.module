@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CC Text and Image Features feature.
+ */
+
+include_once 'cc_text_and_image_features.features.inc';

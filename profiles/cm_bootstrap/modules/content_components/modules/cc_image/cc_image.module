@@ -1,0 +1,71 @@
+<?php
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cc_image_theme($existing, $type, $theme, $path) {
+  $theme = array();
+  
+  $theme['paragraphs_item__image'] = array(
+    'template' => 'paragraphs-item--image',
+    'path' => drupal_get_path('module', 'cc_image') . '/templates',
+  );
+  
+  $theme['paragraphs_item__image__paragraphs_editor_preview'] = array(
+    'template' => 'paragraphs-item--image--paragraphs_editor_preview',
+    'path' => drupal_get_path('module', 'cc_image') . '/templates',
+  );
+   
+  return $theme;
+}
+
+/**
+ * Implements hook_preprocess_entity(&$variables).
+ */
+function cc_image_preprocess_entity(&$variables) {	
+	if ($variables['entity_type'] == 'paragraphs_item' && $variables['elements']['#bundle'] == 'image') {
+  	$paragraph = $variables['paragraphs_item'];
+  	  	
+  	switch($variables['view_mode']) {
+    	case 'paragraphs_editor_preview':
+        $img_src = FALSE;
+        if (isset($paragraph->field_cc_image['und'])) {
+          $img_src = image_style_url('large', $paragraph->field_cc_image['und'][0]['uri']);
+        }
+        
+        $data = array(
+          'id' => $paragraph->item_id,
+          'img_src' => $img_src,
+        );
+        break;
+      
+      case 'full':
+        $img_src = FALSE;
+        if (isset($paragraph->field_cc_image['und'])) {
+          $img_src = image_style_url('cc_image', $paragraph->field_cc_image['und'][0]['uri']);
+        }
+        
+        $data = array(
+          'id' => $paragraph->item_id,
+          'img_src' => $img_src,
+        );
+        break;
+  	}
+  	
+    //$paragraph = $variables['paragraphs_item'];
+    
+    // CC Image
+    /*$img_src = FALSE;
+    
+    if (isset($paragraph->field_cc_image['und'])) {
+      $img_src = image_style_url('cc_image', $paragraph->field_cc_image['und'][0]['uri']);
+    }
+    
+    $data = array(
+      'id' => $paragraph->item_id,
+      'img_src' => $img_src,
+    );*/
+    
+    $variables['image'] = $data;        
+  }
+}

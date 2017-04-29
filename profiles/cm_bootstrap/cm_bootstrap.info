@@ -1,0 +1,4 @@
+name = CM Bootstrap
+description = CM Bootstrap Profile
+version = VERSION
+core = 7.x

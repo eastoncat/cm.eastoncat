@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CMB Jumbotron Features feature.
+ */
+
+include_once 'cmb_jumbotron_features.features.inc';

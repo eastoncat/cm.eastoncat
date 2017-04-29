@@ -1,0 +1,91 @@
+@media screen {
+  /* line 3, ../scss/cc_slider.scss */
+  .clean-ul-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* line 10, ../scss/cc_slider.scss */
+  .content-component--slider .row {
+    margin: 0 !important;
+  }
+  /* line 13, ../scss/cc_slider.scss */
+  .content-component--slider .flexslider {
+    margin: 0 !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+  }
+  /* line 18, ../scss/cc_slider.scss */
+  .content-component--slider h2 {
+    text-align: center;
+    padding: .5em;
+  }
+  /* line 25, ../scss/cc_slider.scss */
+  .content-component--slider ul li img {
+    width: 100%;
+    height: auto;
+  }
+  /* line 32, ../scss/cc_slider.scss */
+  .content-component--slider .text-wrapper {
+    padding: 0 1em;
+  }
+  /* line 34, ../scss/cc_slider.scss */
+  .content-component--slider .text-wrapper h2, .content-component--slider .text-wrapper h3, .content-component--slider .text-wrapper h4 {
+    padding: 0 0 .5em 0;
+    text-align: inherit;
+  }
+  /* line 42, ../scss/cc_slider.scss */
+  .content-component--slider #flexslider-thumbnails ul li {
+    border-top: 3px solid #FFFFFF;
+    border-right: 3px solid #FFFFFF;
+    cursor: pointer;
+    cursor: hand;
+  }
+  /* line 52, ../scss/cc_slider.scss */
+  .content-component--slider .flex-direction-nav a {
+    padding: 2px 8px;
+    right: 0px;
+    text-shadow: none !important;
+    color: transparent;
+  }
+  /* line 58, ../scss/cc_slider.scss */
+  .content-component--slider .flex-direction-nav .flex-prev, .content-component--slider .flex-direction-nav .flex-next {
+    opacity: 1 !important;
+  }
+  /* line 61, ../scss/cc_slider.scss */
+  .content-component--slider .flex-direction-nav .flex-prev,
+  .content-component--slider .flex-direction-nav .flex-prev:hover {
+    left: 10px !important;
+  }
+  /* line 65, ../scss/cc_slider.scss */
+  .content-component--slider .flex-direction-nav .flex-next {
+    right: 10px !important;
+  }
+  /* line 69, ../scss/cc_slider.scss */
+  .content-component--slider .flex-direction-nav .flex-prev:before,
+  .content-component--slider .flex-direction-nav .flex-next:before {
+    color: #FFF;
+    font-size: 2em;
+  }
+  /* line 74, ../scss/cc_slider.scss */
+  .content-component--slider .flex-direction-nav .flex-prev:before {
+    font-family: "fontello";
+    content: '\e814';
+  }
+  /* line 78, ../scss/cc_slider.scss */
+  .content-component--slider .flex-direction-nav .flex-next:before {
+    font-family: "fontello";
+    content: '\e815';
+  }
+}
+@media screen and (min-width: 767px) {
+  /* line 88, ../scss/cc_slider.scss */
+  .content-component--slider .media-column {
+    float: right;
+  }
+  /* line 91, ../scss/cc_slider.scss */
+  .content-component--slider .text-column {
+    float: left;
+  }
+}

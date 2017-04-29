@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CMB Search Producer Features feature.
+ */
+
+include_once 'cmb_search_producer_features.features.inc';

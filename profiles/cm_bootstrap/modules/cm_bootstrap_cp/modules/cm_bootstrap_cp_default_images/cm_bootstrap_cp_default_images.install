@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * Implements hook_schema().
+ */
+function cm_bootstrap_cp_default_images_schema() {
+  // Default image
+  $schema['cm_bootstrap_cp_default_images'] = array(
+    'description' => 'Stores default images.',
+    'fields' => array(
+      'content_type' => array(
+        'description' => 'The content type for the image.',
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'fid' => array(
+        'description' => 'Fid of managed file.',
+        'type' => 'int',
+        'unsigned' => FALSE,
+        'not null' => TRUE
+      ),
+    ),
+    'primary key' => array('content_type'),
+  );
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function cm_bootstrap_cp_default_images_uninstall() {
+  drupal_uninstall_schema('cm_bootstrap_cp_default_images');
+}

@@ -1,0 +1,272 @@
+<?php
+
+/**
+ * Implements hook_custom_theme().
+ * switch theme based on paths and/or user roles.
+ */
+function cmb_helper_custom_theme() {
+  if (in_array('authenticated user', $GLOBALS['user']->roles)) {
+    //dpm('test');
+    // Node add
+    if (arg(0) == 'node' && arg(1) == 'add') {
+      return 'cm_admin';
+    }
+    // Node edit
+    if (arg(0) == 'node' && arg(2) == 'edit') {
+      return 'cm_admin';
+    }
+    // Node delete
+    if (arg(0) == 'node' && arg(2) == 'delete') {
+      return 'cm_admin';
+    }
+    // Node revisions
+    if (arg(0) == 'node' && arg(2) == 'revisions') {
+      return 'cm_admin';
+    }
+    // User Edit
+    if (arg(0) == 'user' && arg(2) == 'edit') {
+      return 'cm_admin';
+    }
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function cmb_helper_form_node_form_alter(&$form, &$form_state) {
+  // Add 'Save and Add Another Show' Button
+  if ($form['#form_id'] == 'cm_show_node_form') {
+    //dpm($form);
+    $form['actions']['cmb_helper_save_and_add_button'] = array(
+      '#type' => 'submit',
+      '#value' => 'Save and Add Another Show',
+      '#submit' => array('cmb_helper_save_and_add'),
+      '#weight' => 99
+    );
+  }
+}
+
+/**
+ * Callback function for 'Save and Add Another Show'
+ */
+function cmb_helper_save_and_add($form, &$form_state){
+  unset($_GET['destination']);
+  $node = node_form_submit_build_node($form, $form_state);
+
+  $insert = empty($node->nid);
+  node_save($node);
+
+  $node_link = l(t('view'), 'node/' . $node->nid);
+  $watchdog_args = array(
+    '@type' => $node->type,
+    '%title' => $node->title,
+  );
+  $t_args = array(
+    '@type' => node_type_get_name($node),
+    '%title' => $node->title,
+  );
+  if ($insert) {
+    watchdog('content', '@type: added %title.', $watchdog_args, WATCHDOG_NOTICE, $node_link);
+    drupal_set_message(t('@type %title has been created.', $t_args));
+  }
+  else {
+    watchdog('content', '@type: updated %title.', $watchdog_args, WATCHDOG_NOTICE, $node_link);
+    drupal_set_message(t('@type %title has been updated.', $t_args));
+  }
+  if ($node->nid) {
+    $form_state['redirect'] = 'node/add/cm-show';
+  }
+  else {
+    // In the unlikely case something went wrong on save, the node will be
+    // rebuilt and node form redisplayed the same way as in preview.
+    drupal_set_message(t('The post could not be saved.'), 'error');
+    $form_state['rebuild'] = TRUE;
+  }
+  // Clear the page and block caches.
+  cache_clear_all();
+}
+
+/**
+ * Implements hook_node_presave($node).
+ * On node save, we post to facebook's open graph so it crawls our page.
+ * This is good for updating content, as well as creating new content.
+ */
+/*function cmb_helper_node_presave($node) {
+  $url = $GLOBALS['base_url'] . '/node/' . $node->nid;
+  $fb = new CmFacebookDebugger();
+  $fb->reload($url);
+}
+*/
+
+/**
+ * Custom class for posting to Facebook open graph.
+ */
+class CmFacebookDebugger {
+	/*
+	 * https://developers.facebook.com/docs/opengraph/using-objects
+	 *
+	 */
+	public function reload($url) {
+		$graph = 'https://graph.facebook.com/';
+		$post = 'id='.urlencode($url).'&scrape=true';
+		return $this->send_post($graph, $post);
+	}
+	private function send_post($url, $post) {
+		$r = curl_init();
+		curl_setopt($r, CURLOPT_URL, $url);
+		curl_setopt($r, CURLOPT_POST, 1);
+		curl_setopt($r, CURLOPT_POSTFIELDS, $post);
+		curl_setopt($r, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($r, CURLOPT_CONNECTTIMEOUT, 5);
+		$data = curl_exec($r);
+		curl_close($r);
+		return $data;
+	}
+}
+
+/**
+* Truncates text.
+*
+* Cuts a string to the length of $length and replaces the last characters
+* with the ending if the text is longer than length.
+*
+* ### Options:
+*
+* - `ending` Will be used as Ending and appended to the trimmed string
+* - `exact` If false, $text will not be cut mid-word
+* - `html` If true, HTML tags would be handled correctly
+*
+* @param string  $text String to truncate.
+* @param integer $length Length of returned string, including ellipsis.
+* @param array $options An array of html attributes and options.
+* @return string Trimmed string.
+* @access public
+* @link http://book.cakephp.org/view/1469/Text#truncate-1625
+*/
+function cmb_helper_truncate($text, $length = 100, $options = array()) {
+  $default = array(
+    'ending' => '...', 'exact' => true, 'html' => false
+  );
+  $options = array_merge($default, $options);
+  extract($options);
+  if ($html) {
+    if (mb_strlen(preg_replace('/<.*?>/', '', $text)) <= $length) {
+      return $text;
+    }
+    $totalLength = mb_strlen(strip_tags($ending));
+    $openTags = array();
+    $truncate = '';
+    preg_match_all('/(<\/?([\w+]+)[^>]*>)?([^<>]*)/', $text, $tags, PREG_SET_ORDER);
+    foreach ($tags as $tag) {
+      if (!preg_match('/img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param/s', $tag[2])) {
+        if (preg_match('/<[\w]+[^>]*>/s', $tag[0])) {
+          array_unshift($openTags, $tag[2]);
+        }
+        else if (preg_match('/<\/([\w]+)[^>]*>/s', $tag[0], $closeTag)) {
+          $pos = array_search($closeTag[1], $openTags);
+          if ($pos !== false) {
+            array_splice($openTags, $pos, 1);
+          }
+        }
+      }
+      $truncate .= $tag[1];
+      $contentLength = mb_strlen(preg_replace('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', ' ', $tag[3]));
+      if ($contentLength + $totalLength > $length) {
+        $left = $length - $totalLength;
+        $entitiesLength = 0;
+        if (preg_match_all('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', $tag[3], $entities, PREG_OFFSET_CAPTURE)) {
+          foreach ($entities[0] as $entity) {
+            if ($entity[1] + 1 - $entitiesLength <= $left) {
+              $left--;
+              $entitiesLength += mb_strlen($entity[0]);
+            }
+            else {
+              break;
+            }
+          }
+        }
+        $truncate .= mb_substr($tag[3], 0 , $left + $entitiesLength);
+        break;
+      }
+      else {
+        $truncate .= $tag[3];
+        $totalLength += $contentLength;
+      }
+      if ($totalLength >= $length) {
+        break;
+      }
+    }
+  }
+  else {
+    if (mb_strlen($text) <= $length) {
+      return $text;
+    }
+    else {
+      $truncate = mb_substr($text, 0, $length - mb_strlen($ending));
+    }
+  }
+  if (!$exact) {
+    $spacepos = mb_strrpos($truncate, ' ');
+    if (isset($spacepos)) {
+      if ($html) {
+        $bits = mb_substr($truncate, $spacepos);
+        preg_match_all('/<\/([a-z]+)>/', $bits, $droppedTags, PREG_SET_ORDER);
+        if (!empty($droppedTags)) {
+          foreach ($droppedTags as $closingTag) {
+            if (!in_array($closingTag[1], $openTags)) {
+              array_unshift($openTags, $closingTag[1]);
+            }
+          }
+        }
+      }
+      $truncate = mb_substr($truncate, 0, $spacepos);
+    }
+  }
+  $truncate .= $ending;
+  if ($html) {
+    foreach ($openTags as $tag) {
+      $truncate .= '</'.$tag.'>';
+    }
+  }
+  return $truncate;
+}
+
+/**
+ * Implements hook_views_pre_render(&$view)
+ * Temporary fix for case: RETN-31
+ * @todo remove after properly upgrading cm_airings and related modules.
+ */
+function cmb_helper_views_pre_render(&$view) {
+  switch($view->name) {
+    case 'tv_schedules':
+      //dpm($view);
+      foreach ($view->result as $key => &$result) {
+        $timestamp = strtotime($result->field_field_airing_date[0]['raw']['value']);
+        $hour = (int)date('h', $timestamp);
+        $minute = date('i', $timestamp);
+        $am_pm = date('a', $timestamp);
+        // Overide rendered output
+        $result->field_field_airing_date[0]['rendered']['#markup'] = $hour . ':' . $minute . ' ' . $am_pm;;
+      }
+      break;
+
+    case 'tv_schedules_front':
+      foreach ($view->result as $key => &$result) {
+        $timestamp = strtotime($result->field_field_airing_date[0]['raw']['value']);
+        $hour = (int)date('h', $timestamp);
+        $minute = date('i', $timestamp);
+        $am_pm = date('a', $timestamp);
+        // Overide rendered output
+        $result->field_field_airing_date[0]['rendered']['#markup'] = $hour . ':' . $minute . ' ' . $am_pm;;
+      }
+      break;
+  }
+}
+
+/**
+ * Utility function to check is a theme is enabled.
+ */
+function cmb_helper_theme_exists($theme_name) {
+  $themes = list_themes();
+  return isset($themes[$theme_name]) && $themes[$theme_name]->status == 1;
+}

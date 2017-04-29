@@ -1,0 +1,38 @@
+<?php
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cc_text_theme($existing, $type, $theme, $path) {
+  $theme = array();
+  
+  $theme['paragraphs_item__text'] = array(
+    'template' => 'paragraphs-item--text',
+    'path' => drupal_get_path('module', 'cc_text') . '/templates',
+   );
+   
+  return $theme;
+}
+
+/**
+ * Implements hook_preprocess_entity(&$variables).
+ */
+function cc_text_preprocess_entity(&$variables) {	
+	if ($variables['entity_type'] == 'paragraphs_item' && $variables['elements']['#bundle'] == 'text') {
+    $paragraph = $variables['paragraphs_item'];
+    
+    $text_paragraph = FALSE;
+    //dpm($paragraph);
+        
+    if (isset($paragraph->field_cc_text_paragraph['und'])) {
+      $text_paragraph = $paragraph->field_cc_text_paragraph['und'][0]['value'];
+    }
+    
+    $data = array(
+      'id' => $paragraph->item_id,
+      'field_cc_text_paragraph' => $text_paragraph,
+    );
+    
+    $variables['text'] = $data;        
+  }
+}

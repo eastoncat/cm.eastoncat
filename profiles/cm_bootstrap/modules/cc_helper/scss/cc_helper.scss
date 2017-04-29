@@ -1,0 +1,49 @@
+.vertical-center {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  -webkit-transform: translate(0,-50%);
+  -ms-transform: translate(0,-50%);
+  transform: translate(0,-50%);
+  text-align: center;
+}
+
+.clean-ul-list {
+  list-style-type: none;
+  margin:0;
+  padding:0;
+}
+
+.full-width {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.fixed-width {
+  margin: 0 auto;
+  max-width: 62.5em;
+  width: 100%;
+}
+
+.fixed-width-1500 {
+  width: 100% !important;
+  max-width: 1500px !important;
+  margin:0 auto;
+}
+
+.no-padding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.vertical-center {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  -webkit-transform: translate(0,-50%);
+  -ms-transform: translate(0,-50%);
+  transform: translate(0,-50%);
+  text-align: center;
+}

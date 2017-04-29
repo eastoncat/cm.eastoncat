@@ -1,0 +1,6 @@
+name = CM Bootstrap Archive
+description = Define archive content types and provides default TPLs for archive pages.
+package = CM Bootstrap
+core = 7.x
+dependencies[] = cmb_helper
+dependencies[] = cmb_archive_features

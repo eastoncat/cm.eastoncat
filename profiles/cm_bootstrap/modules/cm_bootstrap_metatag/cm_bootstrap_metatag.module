@@ -1,0 +1,18 @@
+<?php
+
+function cm_bootstrap_metatag_metatag_metatags_view_alter(&$output, $instance) {
+  switch ($instance) {
+    case 'node:page':
+    case 'node:blog':
+      if (empty($output['description']) && empty($output['og:description'])) {
+        module_load_include('inc', 'cm_bootstrap_metatag', 'inc/description');
+        cm_bootstrap_metatag_description();
+      }
+      break;
+
+    case 'node:cm_show':
+      module_load_include('inc', 'cm_bootstrap_metatag', 'inc/cm_show');
+      cm_bootstrap_metatag_cm_show_image();
+      break;
+  }
+}

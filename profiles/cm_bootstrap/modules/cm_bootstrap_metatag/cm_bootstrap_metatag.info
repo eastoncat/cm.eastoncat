@@ -1,0 +1,6 @@
+name = CM Bootstrap Metatag
+description = Custom Metatag
+core = 7.x
+package = CM Bootstrap
+
+dependencies[] = metatag

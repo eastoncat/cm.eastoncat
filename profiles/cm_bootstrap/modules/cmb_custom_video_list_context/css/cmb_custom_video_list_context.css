@@ -1,0 +1,131 @@
+@media screen {
+  /* line 2, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  /* line 6, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context h2.title {
+    text-align: center;
+    background: red;
+    color: #FFF;
+    margin: 0;
+    padding: 1.3em 0;
+    font-size: 28px;
+  }
+  /* line 15, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context .flexslider {
+    margin: 0 !important;
+  }
+  /* line 20, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li {
+    position: relative;
+  }
+  /* line 22, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a {
+    display: block;
+  }
+  /* line 24, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay {
+    box-sizing: border-box;
+    opacity: 0;
+    height: 8em;
+    font-weight: 700;
+    position: relative;
+    bottom: 0;
+    color: #FFF;
+    opacity: 1;
+    padding: 20px;
+    display: block;
+    background-color: #0099d9 !important;
+  }
+  /* line 37, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay .title {
+    font-size: 1em;
+    line-height: 1em;
+    letter-spacing: .35px;
+    margin: 0 0 3px;
+    color: #FFF !important;
+  }
+  /* line 44, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay .series-title {
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: .35px;
+    font-size: .75em;
+    position: absolute;
+  }
+  /* line 51, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay .watch-now {
+    position: absolute;
+    bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: .75em;
+  }
+  /* line 59, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay:hover {
+    opacity: .95;
+  }
+  /* line 63, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a:hover {
+    text-decoration: underline;
+    color: #FFF;
+  }
+  /* line 66, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a:hover .overlay {
+    opacity: .95;
+  }
+  /* line 75, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context .flex-direction-nav a.flex-prev {
+    opacity: 1 !important;
+    left: 0px;
+    padding: 2px 8px;
+  }
+  /* line 80, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context .flex-direction-nav a.flex-next {
+    opacity: 1 !important;
+    right: 0px;
+    padding: 2px 8px;
+  }
+}
+@media screen and (min-width: 1025px) {
+  /* line 96, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay {
+    -webkit-transition: 250ms ease-out;
+    -moz-transition: 250ms ease-out;
+    -o-transition: 250ms ease-out;
+    transition: 250ms ease-out;
+    box-sizing: border-box;
+    width: 100%;
+    opacity: 0;
+    height: 100%;
+    font-weight: 700;
+    position: absolute;
+    bottom: 0;
+    color: #FFF;
+    padding: 20px;
+    background-color: #0099d9 !important;
+  }
+  /* line 111, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay .play-button {
+    width: 100%;
+  }
+  /* line 114, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay .title {
+    font-size: 1.35em;
+  }
+  /* line 117, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay .series-title {
+    font-size: 1em;
+  }
+  /* line 120, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay .watch-now {
+    letter-spacing: .35px;
+    font-size: 1em;
+  }
+  /* line 125, ../scss/cmb_custom_video_list_context.scss */
+  .cc--custom-video-list-context ul.slides li a .overlay:hover {
+    opacity: .95;
+  }
+}

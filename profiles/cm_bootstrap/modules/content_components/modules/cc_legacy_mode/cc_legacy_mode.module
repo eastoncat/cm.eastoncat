@@ -1,0 +1,141 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function cc_legacy_mode_menu() {
+  $items = array();
+  $items['admin/cc-legacy-mode-page-batch'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cc_legacy_mode_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  
+  return $items;
+}
+
+/**
+ * Form.
+ */
+function cc_legacy_mode_form($form, &$form_state) {
+  $form['vfm_message'] = array (
+		'#type' => 'item',
+		'#markup' => 'Clicking this button will run a batch process to make set all page nodes into legacy mode.',
+	);
+  $form['cc_legacy_mode'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+  
+  return $form;
+}
+
+/**
+ * Form Submit.
+ */
+function cc_legacy_mode_form_submit($form, &$form_state) {  
+  // Get count of nodes for max count
+  $query = new EntityFieldQuery();
+    $query->entityCondition('entity_type', 'node');
+    $query->entityCondition('bundle', 'page');
+  
+  // Get max count  
+  $max_count = $query->count()->execute();
+    
+  if ($max_count > 0) {
+    $form_values = array(
+  	  'max' => $max_count,
+    );  
+    
+    $operations[] = array('cc_legacy_mode_batch_op', array($form_values));
+    
+    $batch = array(
+      'operations' => $operations,
+      'finished' => 'cc_legacy_mode_batch_finished',
+      'title' => t("Page Content Type Nodes Legacy Mode Batch"),
+      'init_message' => t('Batch processing page node to legacy mode'),
+      'error_message' => t('Error!'),
+    );
+    
+    batch_set($batch);
+  }
+  else {
+    drupal_set_message(t('No data to process'));
+  }
+}
+
+/**
+ * Batch operation
+ */
+function cc_legacy_mode_batch_op($form_values, &$context) {
+  if (empty($context['sandbox'])) {
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['current_node'] = 0;
+    $context['sandbox']['max'] = $form_values['max'];
+  }
+  
+  $limit = 10;
+      
+  if ($context['sandbox']['progress'] != $context['sandbox']['max']) { 
+    $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'node');
+      $query->entityCondition('bundle', 'page');
+      $query->propertyCondition('nid', $context['sandbox']['current_node'], '>');
+      $query->range(0, $limit);
+    $result = $query->execute();
+    
+    if (isset($result['node'])) {
+      $nids = array_keys($result['node']);
+      $nodes = entity_load('node', $nids);
+          
+      foreach ($nodes as $node) {        
+        // Turn legacy mode on
+        $node->field_legacy_toggle[LANGUAGE_NONE][0]['value'] = 1;
+        node_save($node);
+        
+        // @todo figure out if this is better?
+        /*
+        $node->field_legacy_toggle = 1;
+        field_attach_update('node', $node);
+        */
+                        
+        $context['results'][] = $node->nid . ' : ' . check_plain($node->nid);
+        $context['sandbox']['progress']++;
+        $context['sandbox']['current_node'] = $node->nid;
+        $context['message'] = 'Processed ' . $context['sandbox']['progress'] . ' of ' . $context['sandbox']['max'] . ' nodes.'; 
+      }
+    }
+  }
+  else {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+
+  if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+  
+}
+
+/**
+ * Batch 'finished' callback
+ */
+function cc_legacy_mode_batch_finished($success, $results, $operations) {  
+  if ($success) {
+    drupal_set_message(t('Data process is complete!'));
+    //dpm($results);
+  }
+  else {
+    // An error occurred.
+    // $operations contains the operations that remained unprocessed.
+    $error_operation = reset($operations);
+    drupal_set_message(
+      t('An error occurred while processing @operation with arguments : @args',
+        array(
+          '@operation' => $error_operation[0],
+          '@args' => print_r($error_operation[0], TRUE),
+        )
+      )
+    );
+  }
+}

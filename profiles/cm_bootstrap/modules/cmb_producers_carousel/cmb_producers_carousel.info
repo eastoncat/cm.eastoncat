@@ -1,0 +1,7 @@
+name = CMB Producers Carousel
+description = CMB Producers Carousel
+package = CM Bootstrap: Content Components
+core = 7.x
+dependencies[] = paragraphs
+dependencies[] = cc_helper
+dependencies[] = cmb_producers_carousel_features

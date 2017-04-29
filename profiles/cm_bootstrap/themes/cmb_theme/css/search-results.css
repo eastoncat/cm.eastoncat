@@ -1,0 +1,15 @@
+.page-search #search-form {
+  padding:0 40px;
+}
+.page-search h2 {
+  padding:0 40px;
+}
+.page-search .main-container .region-content {
+  padding: 0 70px;
+}
+
+@media (max-width: 767px) {
+  .page-search .main-container .region-content {
+    padding: 0px;
+  }
+}

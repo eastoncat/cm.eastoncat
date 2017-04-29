@@ -1,0 +1,4 @@
+name = CC Legacy Mode
+description = Batch process to set all existing page nodes into legacy mode.
+package = Content Components
+core = 7.x

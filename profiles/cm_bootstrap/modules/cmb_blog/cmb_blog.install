@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * Implements hook_install().
+ */
+function cmb_blog_install() {
+  // Disable and uninstall the blog module.
+  // We do this in order to allow features to handle the config
+  if (module_exists('blog')) {
+    module_disable(array('blog'));
+    drupal_uninstall_modules(array('blog'));
+  }
+
+  // Update "node_type" table, to allow features to recognize the blog content type.
+  $node_type_blog = db_update('node_type')
+    ->fields(array(
+      'base' => 'node_content',
+      'custom' => 1,
+      'modified' => 1,
+      'disabled' => 0,
+      'locked' => 0,
+    ))
+    ->condition('type', 'blog', '=')
+    ->execute();
+}

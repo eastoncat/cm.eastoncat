@@ -1,0 +1,148 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function cm_bootstrap_cp_colors_menu() {
+  $items['cp/colors'] = array(
+    'title' => 'Control Panel: Colors',
+    'description' => 'Control Panel: Colors',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cm_bootstrap_cp_colors_form'),
+    'access arguments' => array('access control panel colors'),
+    'file' => 'forms/cm_bootstrap_cp_colors.form.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['cp/colors/export'] = array(
+    'title' => 'Control Panel: Colors Export',
+    'description' => 'Control Panel: Colors Export',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cm_bootstrap_cp_colors_export_form'),
+    'access arguments' => array('access control panel colors'),
+    'file' => 'forms/cm_bootstrap_cp_colors_export.form.inc',
+    'type' => MENU_CALLBACK,
+  );
+  $items['cp/colors/import'] = array(
+    'title' => 'Control Panel: Colors Import',
+    'description' => 'Control Panel: Colors Import',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cm_bootstrap_cp_colors_import_form'),
+    'access arguments' => array('access control panel colors'),
+    'file' => 'forms/cm_bootstrap_cp_colors_import.form.inc',
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function cm_bootstrap_cp_colors_permission() {
+  return array(
+    'access control panel colors' => array(
+      'title' => t('Access Control Panel Colors'),
+      'description' => t('Access Control Panel Colors'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_element_info().
+ */
+function cm_bootstrap_cp_colors_element_info() {
+  $elements['spectrum_field'] = array(
+    //'#default_value' => '',
+    '#input' => TRUE,
+    '#process' => array('cm_bootstrap_cp_colors_spectrum_element_process'),
+    '#theme' => array('spectrum_field'),
+    '#theme_wrappers' => array('form_element'),
+    '#tree' => TRUE,
+  );
+  return $elements;
+}
+
+/**
+ * Process function for spectrum field.
+ */
+function cm_bootstrap_cp_colors_spectrum_element_process($element, &$form_state, $complete_form) {
+  $element['#tree'] = TRUE;
+  $element['spectrum_field'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Select Color'),
+    '#size' => 10,
+    '#default_value' => $element['#default_value'],   
+    //'#title_display' => 'invisible',
+    '#attributes' => array(
+      'class' => array(
+        'cf-spectrum'
+      ),
+    ),
+    '#theme_wrappers' => array(),
+    '#attached' => array(
+      'css' => array(
+        drupal_get_path('module', 'cm_bootstrap_cp_colors') . '/js/libraries/bgrins-spectrum/spectrum.css',
+      ),
+      'js' => array(
+        drupal_get_path('module', 'cm_bootstrap_cp_colors') . '/js/libraries/bgrins-spectrum/spectrum.js',
+      ),
+    ),
+  );
+  return $element;
+}
+
+/**
+ * Implements hook_custom_theme().
+ * Switch theme based on paths
+ */
+function cm_bootstrap_cp_colors_custom_theme() {
+  if (arg(0) == 'cp' && arg(1) == 'colors') {
+    return 'seven';
+  }
+}
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cm_bootstrap_cp_colors_theme($existing, $type, $theme, $path) {
+  return array(
+    'spectrum_field' => array(
+      'render element' => 'element',
+      'template' => 'spectrum-field',
+      'path' => $path . '/templates',
+    ),
+  );
+}
+
+/**
+ * Helper function to get colors.
+ */
+function cm_bootstrap_cp_colors_get() {
+  $colors = db_query('SELECT * FROM {cmb_cp_colors}')->fetchAll();
+  $colors_array = array();
+  foreach($colors as $color) {
+    $colors_array[$color->name] = $color->value;
+  }
+  return $colors_array;
+}
+
+/**
+ * Helper function to convert hex to rgb
+ */
+function cm_bootstrap_cp_colors_hex_to_rgb($hex) {
+   $hex = str_replace("#", "", $hex);
+   if(strlen($hex) == 3) {
+    $r = hexdec(substr($hex,0,1).substr($hex,0,1));
+    $g = hexdec(substr($hex,1,1).substr($hex,1,1));
+    $b = hexdec(substr($hex,2,1).substr($hex,2,1));
+   } 
+   else {
+    $r = hexdec(substr($hex,0,2));
+    $g = hexdec(substr($hex,2,2));
+    $b = hexdec(substr($hex,4,2));
+   }
+   $rgb = array($r, $g, $b);
+   // returns the rgb values separated by commas
+   return implode(",", $rgb);
+   // returns an array with the rgb values
+   //return $rgb;
+}

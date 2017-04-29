@@ -1,0 +1,27 @@
+@media screen {
+  .cc-cmb-block-reference {
+    &.full-width,
+    &.full-width section {
+      max-width:100% !important;
+      width:100% !important;
+      margin:0 !important;
+      padding:0 !important;
+    }
+
+    &.fixed-width {
+      max-width:100% !important;
+      width:100% !important;
+      margin:0 !important;
+      padding:0 !important;
+    }
+    &.fixed-width section {
+      padding: 1em 0;
+      max-width: 1170px;
+      margin: 0 auto;
+    }
+  }
+}
+
+@media screen and (min-width: 767px) {
+
+}

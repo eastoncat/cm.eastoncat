@@ -1,0 +1,7 @@
+name = CM Bootstrap Jumbotron
+description = Generates Jumbotron slider for use on home pg.
+core = 7.x
+package = CM Bootstrap
+
+;stylesheets[all][] = css/custom_front_pg_slider.css
+;scripts[] = js/custom_front_pg_slider.js

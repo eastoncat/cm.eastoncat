@@ -1,0 +1,67 @@
+@media screen {
+  /* line 3, ../scss/cc_content_list.scss */
+  .cc--cl {
+    /*.clean-ul-list.row {
+      margin-bottom:1em;
+    }
+    */
+  }
+  /* line 4, ../scss/cc_content_list.scss */
+  .cc--cl .col-sm-12 {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  /* line 8, ../scss/cc_content_list.scss */
+  .cc--cl h2 {
+    text-transform: uppercase;
+    border-bottom: 1px solid gainsboro;
+    padding: 0 0 .5em 0;
+    margin-bottom: 1.5em;
+  }
+  /* line 14, ../scss/cc_content_list.scss */
+  .cc--cl .clean-ul-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  /* line 23, ../scss/cc_content_list.scss */
+  .cc--cl ul.cl-items li {
+    margin-bottom: 1em;
+  }
+
+  /* line 32, ../scss/cc_content_list.scss */
+  .cc-cl--title-display-overlay .overlay-wrapper a,
+  .cc-cl--title-display-overlay .overlay-wrapper .no-link {
+    display: block;
+    min-height: 216px;
+    background-repeat: no-repeat !important;
+    background-position: center center !important;
+    background-size: cover !important;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+  }
+  /* line 43, ../scss/cc_content_list.scss */
+  .cc-cl--title-display-overlay .overlay-wrapper .overlay {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.25);
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+  /* line 49, ../scss/cc_content_list.scss */
+  .cc-cl--title-display-overlay .overlay-wrapper .overlay h3 {
+    color: white;
+    position: absolute;
+    bottom: 0;
+    padding: 0 .5em;
+  }
+  /* line 56, ../scss/cc_content_list.scss */
+  .cc-cl--title-display-overlay .overlay-wrapper a:hover .overlay,
+  .cc-cl--title-display-overlay .overlay-wrapper .no-link:hover .overlay {
+    background: rgba(0, 0, 0, 0.5);
+  }
+  /* line 60, ../scss/cc_content_list.scss */
+  .cc-cl--title-display-overlay .overlay-wrapper p {
+    padding: 1em 0;
+  }
+}

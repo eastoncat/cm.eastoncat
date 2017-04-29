@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CM Bootstrap Search Features feature.
+ */
+
+include_once 'cm_bootstrap_search_features.features.inc';

@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * Implements hook_views_api().
+ */
+function cm_bootstrap_search_views_api() {
+  return array(
+    'api' => 3,
+  );
+}
+
+/**
+ * Implements hook_form_alter(&$form, &$form_state, $form_id).
+ */
+function cm_bootstrap_search_form_alter(&$form, &$form_state, $form_id) {
+	if (($form_id == 'views_exposed_form') && ($form['#id'] == 'views-exposed-form-solr-search-page')) {
+		// Change to checkboxes
+		$form['node_type']['#type'] = 'checkboxes';
+		$form['node_type']['#default_value']['page'] = 1;
+
+		//dpm($form);
+
+		// Alter exposed filter options
+		if (isset($form['node_type']['#options']['cmbs_event'])) {
+  		$form['node_type']['#options']['cmbs_event'] = 'Event';
+		}
+
+		if (isset($form['node_type']['#options']['blog'])) {
+  		$form['node_type']['#options']['blog'] = 'Blog';
+		}
+  }
+  else if (($form_id == 'views_exposed_form') && ($form['#id'] =='views-exposed-form-solr-search-block-1')) {
+    $form['node_type']['#type'] = 'checkboxes';
+
+    // Alter exposed filter options
+		if (isset($form['node_type']['#options']['cmbs_event'])) {
+  		$form['node_type']['#options']['cmbs_event'] = 'Event';
+		}
+
+		if (isset($form['node_type']['#options']['blog'])) {
+  		$form['node_type']['#options']['blog'] = 'Blog';
+		}
+  }
+}

@@ -1,0 +1,8 @@
+name = Content Component: Content List
+description = Content List content component
+package = Content Components
+core = 7.x
+
+dependencies[] = paragraphs
+dependencies[] = content_components
+dependencies[] = cc_content_list_features

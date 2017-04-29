@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CMB Search Event Features feature.
+ */
+
+include_once 'cmb_search_event_features.features.inc';

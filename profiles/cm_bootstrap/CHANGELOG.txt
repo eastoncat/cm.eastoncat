@@ -1,0 +1,53 @@
+Tag: tags/2017-03-30
+---------------------
+- p-86: Producers carousel
+
+Tag: tags/2017-03-26
+---------------------
+- p-139: Homepage Using Paragraphs
+- p-141: Estimate: Jumbotron Text Treatment Modification
+
+Tag: tags/2017-03-25-0
+---------------------
+- p-114: Creating Slide Show Feature clean-up
+
+Tag: tags/2017-03-25
+---------------------
+- p-114: Creating Slide Show Feature
+
+Tag: tags/2017-03-20
+---------------------
+- p-142: Added meetup font icon
+
+Tag: tags/2017-03-15
+---------------------
+- p-147: RSS Feed Returning Invalid in Mailchimp. Blank space in cmb_blog.module file.
+
+Tag: tags/2017-03-11
+---------------------
+- p-148: Video on Partner Pages Collapsed
+
+Tag: tags/2017-03-04
+---------------------
+- Fixed bug where CC Slider would break other flexsliders, if Custom Video List CC was also on the same page.
+- updated file_view_mode to full for video display
+
+Tag: tags/2017-02-28
+---------------------
+- p-143: Isolated Video/Show in Paragraphs, i.e., added Video Content Component
+
+Tag: tags/2017-02-19-0
+---------------------
+- Updated 'tz_handling' => 'date' for field: field_cmbs_event_datetime.
+
+Tag: tags/2017-02-19
+---------------------
+- p-92: Add Events to Search
+
+Tag: tags/2017-02-11
+---------------------
+- p-137: Following number not always accurate
+
+Tag: tags/2017-01-30
+---------------------
+- p-85: Custom Video List w/ Node Context

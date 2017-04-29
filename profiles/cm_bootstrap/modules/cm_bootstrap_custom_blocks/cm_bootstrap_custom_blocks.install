@@ -1,0 +1,119 @@
+<?php
+
+/**
+ * Implements hook_install().
+ *
+ * @see http://anthonypower.com/notebook/programmatically-set-node-type-visibility-blocks
+ * Set block visibility by content/node type.
+ *
+ * hook_uninstall() is not needed here b/c node module takes care of cleaning up db.
+ */
+function cm_bootstrap_custom_blocks_install() {
+  // @todo change this to an array/foreach loop to reduce redudant code.
+
+  // cb_pd_p_carousel
+  $query = db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(
+      array(
+        'type' => 'partner',
+        'module' => 'cm_bootstrap_custom_blocks',
+        'delta' => 'cb_pd_p_carousel',
+      )
+    )
+    ->execute();
+
+  // cb_pd_p_all_series
+  $query = db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(
+      array(
+        'type' => 'partner',
+        'module' => 'cm_bootstrap_custom_blocks',
+        'delta' => 'cb_pd_p_all_series',
+      )
+    )
+    ->execute();
+
+  // cb_genres_show_series_carousels
+  $query = db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(
+      array(
+        'type' => 'partner',
+        'module' => 'cm_bootstrap_custom_blocks',
+        'delta' => 'cb_genres_show_series_carousels',
+      )
+    )
+    ->execute();
+
+  // cb_show_node_meta
+  $query = db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(
+      array(
+        'type' => 'cm_show',
+        'module' => 'cm_bootstrap_custom_blocks',
+        'delta' => 'cb_show_node_meta',
+      )
+    )
+    ->execute();
+
+  // cb_show_right_sidebar
+  /*$query = db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(
+      array(
+        'type' => 'cm_show',
+        'module' => 'cm_bootstrap_custom_blocks',
+        'delta' => 'cb_show_right_sidebar',
+      )
+    )
+    ->execute();
+  */
+
+  // cmb_cb_shows_in_series [Show]
+  $query = db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(
+      array(
+        'type' => 'cm_show',
+        'module' => 'cm_bootstrap_custom_blocks',
+        'delta' => 'cmb_cb_shows_in_series',
+      )
+    )
+    ->execute();
+
+  // cmb_cb_shows_in_series [Series]
+  $query = db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(
+      array(
+        'type' => 'cm_project',
+        'module' => 'cm_bootstrap_custom_blocks',
+        'delta' => 'cmb_cb_shows_in_series',
+      )
+    )
+    ->execute();
+
+  // Disable 'taxonomy display' module b/c it conflicts w/ our code
+  if (module_exists('taxonomy_display')) {
+    module_disable(array('taxonomy_display'));
+    drupal_uninstall_modules(array('taxonomy_display'));
+  }
+
+  // Disable taxonomy Views that conflict w/ our code.
+  $viewnames = array(
+    'site_navigation_taxonomy',
+    'taxonomy_term',
+  );
+  $views_status = variable_get('views_defaults', array());
+  foreach ($viewnames as $key => $viewname) {
+    $views_status[$viewname] = TRUE;
+  }
+  variable_set('views_defaults', $views_status);
+  if (function_exists('views_invalidate_cache')) {
+    views_invalidate_cache();
+  }
+
+}

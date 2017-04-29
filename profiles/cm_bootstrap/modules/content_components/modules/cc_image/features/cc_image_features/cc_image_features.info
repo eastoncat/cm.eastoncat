@@ -1,0 +1,14 @@
+name = CC Image Features
+description = CC Image Config
+core = 7.x
+package = Content Components
+version = 7.x-1.0
+project = cc_image_features
+dependencies[] = features
+dependencies[] = image
+dependencies[] = paragraphs
+features[features_api][] = api:2
+features[field_base][] = field_cc_image
+features[field_instance][] = paragraphs_item-image-field_cc_image
+features[image][] = cc_image
+features[paragraphs][] = image

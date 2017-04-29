@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CMB Basic Page Features feature.
+ */
+
+include_once 'cmb_basic_page_features.features.inc';

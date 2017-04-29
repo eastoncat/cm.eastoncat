@@ -1,0 +1,5 @@
+name = CM Bootstrap Control Panel Default Images
+description = CM Bootstrap Control Panel Default Images
+package = CM Bootstrap
+core = 7.x
+dependencies[] = cm_bootstrap_cp

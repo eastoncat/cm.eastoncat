@@ -1,0 +1,26 @@
+<?php
+
+// Includes
+module_load_include('inc', 'cm_bootstrap_menus', 'cm_bootstrap_menus');
+
+/**
+ * Implements hook_install().
+ */
+function cm_bootstrap_menus_install() {    
+  // Navigation Menu
+  cm_bootstrap_menus_install_navigation_menu();
+  // Social Media Menu
+  cm_bootstrap_menus_install_social_media_menu();
+  // Clear menu cache
+  cache_clear_all('*', 'cache_menu', TRUE);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function cm_bootstrap_menus_uninstall() {    
+  // Navigation Menu
+  cm_bootstrap_menus_uninstall_navigation_menu();
+  // Social Media Menu
+  cm_bootstrap_menus_uninstall_social_media_menu();
+}

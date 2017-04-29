@@ -1,0 +1,111 @@
+<?php
+
+// Require Helpers
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/ImageHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/FieldHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/ColorHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/ParagraphHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/LinkHelper.php');
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cmb_producers_carousel_theme($existing, $type, $theme, $path) {
+  $theme = array();
+
+  $theme['paragraphs_item__cmb_producers_carousel'] = [
+    'template' => 'paragraphs-item--cmb_producers_carousel',
+    'path' => drupal_get_path('module', 'cmb_producers_carousel') . '/templates',
+  ];
+
+  // Paragraphs editor preview
+  $theme['paragraphs_item__cmb_producers_carousel__paragraphs_editor_preview'] = [
+    'template' => 'paragraphs-item--cmb_producers_carousel--paragraphs_editor_preview',
+    'path' => drupal_get_path('module', 'cmb_producers_carousel') . '/templates',
+  ];
+
+  return $theme;
+}
+
+/**
+ * Implements hook_preprocess_entity(&$variables).
+ */
+function cmb_producers_carousel_preprocess_entity(&$variables) {
+	if ($variables['entity_type'] == 'paragraphs_item' && $variables['elements']['#bundle'] == 'cmb_producers_carousel') {
+  	$paragraph = $variables['paragraphs_item'];
+
+  	switch($variables['view_mode']) {
+      case 'paragraphs_editor_preview':
+        $data = [
+          'id' => $paragraph->item_id,
+        ];
+        break;
+
+      case 'full':
+        // Attach CSS
+        drupal_add_css(drupal_get_path('module', 'cmb_producers_carousel') . '/css/cmb_producers_carousel.css');
+        // Attach JS
+        drupal_add_js(drupal_get_path('module', 'cmb_producers_carousel') . '/js/cmb_producers_carousel.js');
+        // Attach Flexloader
+        libraries_load('flexloader');
+
+        $field_cc_cmbpc_er = FALSE;
+        if (isset($paragraph->field_cc_cmbpc_er[LANGUAGE_NONE])) {
+          foreach($paragraph->field_cc_cmbpc_er[LANGUAGE_NONE] as $item) {
+            $nid = $item['target_id'];
+            $node = node_load($nid);
+
+            // Get User
+            $producer_uid = $node->field_cmbs_producer_uid[LANGUAGE_NONE][0]['target_id'];
+            $producer_user = user_load($producer_uid);
+
+            // Get user image
+            // Placeholder image
+            $placeholder_img = "data:image/svg+xml;charset=utf-8,<svg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'500'%20height%3D'281'><rect%20width%3D'100%25'%20height%3D'100%25'%20fill%3D'whitesmoke'%2F><%2Fsvg>";
+
+            $image = FALSE;
+            if (isset($producer_user->picture->uri)) {
+              $image = [
+                'img_src' => image_style_url('500x281', $producer_user->picture->uri),
+                'placeholder' => $placeholder_img,
+              ];
+            }
+            else {
+              // If default image field
+              if (isset($paragraph->field_cc_cmbpc_default_image[LANGUAGE_NONE])) {
+                $image = [
+                  'img_src' => image_style_url('500x281', $paragraph->field_cc_cmbpc_default_image[LANGUAGE_NONE][0]['uri']),
+                  'placeholder' => $placeholder_img,
+                ];
+              }
+              else {
+                $image = [
+                  'img_src' => $placeholder_img,
+                  'placeholder' => $placeholder_img,
+                ];
+              }
+            }
+
+            // Build item data array
+            $field_cc_cmbpc_er[] = [
+              'uid' => $producer_uid,
+              'link' => url('user/' . $producer_uid),
+              'name' => $node->title,
+              'image' => $image,
+            ];
+          }
+        }
+
+        $data = [
+          'id' => $paragraph->item_id,
+          'title' => \ContentComponents\Helper\FieldHelper::getValue($paragraph, 'field_cc_cmbpc_title'),
+          'more_text' => \ContentComponents\Helper\FieldHelper::getValue($paragraph, 'field_cc_cmbpc_more_text'),
+          'items' => $field_cc_cmbpc_er,
+        ];
+
+        break;
+  	}
+
+    $variables['cmb_producers_carousel'] = $data;
+  }
+}

@@ -1,0 +1,108 @@
+@media screen {
+  // General
+  .cc--twb {
+    margin-bottom: 1em;
+    .twb-text-wrapper {
+      padding: .5em 2em 3em 2em;
+      h2, p {
+        color:inherit;
+      }
+    }
+  }
+
+  .full-width-ee {
+    max-width:100% !important;
+    margin:0 auto !important;
+    .col-md-12 {
+      max-width:1170px;
+      margin: 0 auto;
+    }
+    .row {
+      padding:0;
+    }
+  }
+
+  // Background color
+  .cc--twb--bg-color {
+    max-width:1170px;
+    margin:0 auto;
+    .background-wrapper {
+      margin:0 1em;
+    }
+  }
+  .cc--twb--bg-color.full-width-ee {
+    .background-wrapper {
+      margin:0;
+    }
+  }
+
+  // Background image
+  .cc--twb--bg-image {
+    padding: 0 !important;
+    .background-wrapper {
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      padding: 0 !important;
+      margin: 0 1em;
+    }
+  }
+
+  // Background image full width e2e
+  .cc--twb--bg-image.full-width-ee {
+    .background-wrapper {
+      margin:0 !important;
+    }
+  }
+
+  // Overlay
+  .cc--twb--overlay.full-width-ee {
+    max-width:100%;
+    margin:0 auto;
+    .col-md-12 {
+      max-width:1170px;
+      margin: 0 auto;
+    }
+    .row {
+      padding:0;
+    }
+  }
+  .cc--twb--overlay {
+    max-width:1170px;
+    margin:0 auto;
+    .row {
+      padding-left:1em;
+      padding-right:1em;
+    }
+    .background-wrapper {
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      padding: 0 !important;
+    }
+  }
+
+  // Parallax
+  #main {
+    background: transparent !important;
+  }
+  .parallax-window {
+    background: transparent;
+  }
+  .parallax-slider {
+    /*min-height: 400px;*/
+    /*width:1449px !important;*/
+    /*height:842px !important;*/
+    /*max-width:1449px !important;*/
+    /*max-height:842px !important;*/
+  }
+  .cc--twb--parallax {
+    .twb-text-wrapper {
+      padding: 1em 2em 3em 1em;
+      h2, p {
+        color:inherit;
+      }
+    }
+  }
+
+}

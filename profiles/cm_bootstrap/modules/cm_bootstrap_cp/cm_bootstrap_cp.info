@@ -1,0 +1,4 @@
+name = CM Bootstrap Control Panel
+description = CM Bootstrap Control Panel
+package = CM Bootstrap
+core = 7.x

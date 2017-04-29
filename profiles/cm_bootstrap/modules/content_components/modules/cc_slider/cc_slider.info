@@ -1,0 +1,8 @@
+name = Content Component: Slider
+description = Slider content component
+package = Content Components
+core = 7.x
+
+dependencies[] = paragraphs
+dependencies[] = content_components
+dependencies[] = cc_slider_features

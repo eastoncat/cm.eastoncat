@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CMB Blog Features feature.
+ */
+
+include_once 'cmb_blog_features.features.inc';

@@ -1,0 +1,96 @@
+<?php
+
+// Require Helpers
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/ImageHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/FieldHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/ColorHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/ParagraphHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/LinkHelper.php');
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cmb_jumbotron_theme($existing, $type, $theme, $path) {
+  $theme = array();
+
+  $theme['paragraphs_item__cmb_jumbotron'] = array(
+    'template' => 'paragraphs-item--cmb_jumbotron',
+    'path' => drupal_get_path('module', 'cmb_jumbotron') . '/templates',
+  );
+
+  // Paragraphs editor preview
+  $theme['paragraphs_item__cmb_jumbotron__paragraphs_editor_preview'] = array(
+    'template' => 'paragraphs-item--cmb_jumbotron--paragraphs_editor_preview',
+    'path' => drupal_get_path('module', 'cmb_jumbotron') . '/templates',
+  );
+
+  return $theme;
+}
+
+/**
+ * Implements hook_preprocess_entity(&$variables).
+ */
+function cmb_jumbotron_preprocess_entity(&$variables) {
+	if ($variables['entity_type'] == 'paragraphs_item' && $variables['elements']['#bundle'] == 'cmb_jumbotron') {
+  	$paragraph = $variables['paragraphs_item'];
+
+  	switch($variables['view_mode']) {
+      case 'paragraphs_editor_preview':
+        $data = [
+          'id' => $paragraph->item_id,
+        ];
+        break;
+
+      case 'full':
+        // Attach css
+        drupal_add_css(drupal_get_path('module', 'cmb_jumbotron') . '/css/cmb_jumbotron.css');
+
+        // Attach Flexloader
+        libraries_load('flexloader');
+        //drupal_add_js(drupal_get_path('module', 'cc_slider') . '/js/jquery.flexloader.js');
+
+        // Attach JS
+        drupal_add_js(drupal_get_path('module', 'cmb_jumbotron') . '/js/cmb_jumbotron.js');
+
+        // Placeholder image
+        $placeholder_img = "data:image/svg+xml;charset=utf-8,<svg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'1440'%20height%3D'720'><rect%20width%3D'100%25'%20height%3D'100%25'%20fill%3D'whitesmoke'%2F><%2Fsvg>";
+
+        // Get Paragraph Items
+        $field_cc_cmbj_items = FALSE;
+
+        if ($items = \ContentComponents\Helper\ParagraphHelper::getChildren($paragraph, 'field_cc_cmbj_items')) {
+          foreach($items as $p_item) {
+            // Opacity
+            /*$overlay_opacity = '.3';
+            if (isset($p_item->field_cc_tiles_item_overlay_opac[LANGUAGE_NONE])) {
+              $overlay_opacity = $p_item->field_cc_tiles_item_overlay_opac[LANGUAGE_NONE][0]['value'];
+            }
+            */
+
+            $field_cc_cmbj_items[] = [
+              'id' => $p_item->item_id,
+              'title' => \ContentComponents\Helper\FieldHelper::getValue($p_item, 'field_cc_cmbji_title'),
+              'short_description' => \ContentComponents\Helper\FieldHelper::getValue($p_item, 'field_cc_cmbji_short_description'),
+              'image' => \ContentComponents\Helper\ImageHelper::getAttributes($p_item, 'field_cc_cmbji_image', 'cmb_jumbotron_slide', 'thumbnail'),
+              'placeholder_img' => $placeholder_img,
+              'overlay_color' => \ContentComponents\Helper\ColorHelper::jqueryColorPicker($p_item, 'field_cc_cmbji_overlay_color', 1),
+              'overlay_opacity' => \ContentComponents\Helper\FieldHelper::getValue($p_item, 'field_cc_cmbji_overlay_opacity'),
+              'link' => \ContentComponents\Helper\LinkHelper::getUrl($p_item, 'field_cc_cmbji_cta_button'),
+            ];
+          }
+        }
+
+        $data = [
+          'id' => $paragraph->item_id,
+          'items' => $field_cc_cmbj_items,
+          'cta_bg_color' => \ContentComponents\Helper\ColorHelper::jqueryColorPicker($paragraph, 'field_cc_cmbj_button_bg_color', 0),
+          'cta_color' => \ContentComponents\Helper\ColorHelper::jqueryColorPicker($paragraph, 'field_cc_cmbj_button_color', 0),
+        ];
+        break;
+  	}
+
+    //dpm($data);
+
+    $variables['cmb_jumbotron'] = $data;
+  }
+}
