@@ -1,3 +1,12 @@
+@font-face {
+  font-family: "Coolvetica";
+  src: url("../fonts/coolvetica/coolvetica-rg.ttf") format('truetype');
+}
+
+:not(.page-admin) h1, h2, h3, h4, h5, h6 {
+  font-family: "Coolvetica" !important;
+}
+
 nav#site-wrapper-main-menu li.item-2 ul.second-level li a:hover {
   background-color:#F16623 !important;
 }
