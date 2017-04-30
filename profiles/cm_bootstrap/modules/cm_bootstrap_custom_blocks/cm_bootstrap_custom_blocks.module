@@ -501,6 +501,8 @@ function cm_bootstrap_custom_blocks_menu_alter(&$items) {
 function cm_bootstrap_custom_blocks_term_page($term) {
   switch ($term->vocabulary_machine_name) {
     case 'tags':
+    // For ECAT
+    case 'vod_categories':
       $taxonmy_term_block = module_invoke('cm_bootstrap_custom_blocks', 'block_view', 'cb_taxonomy_term');
 
       if (isset($taxonmy_term_block['content'])) {
@@ -537,6 +539,5 @@ function cm_bootstrap_custom_blocks_term_page($term) {
       $build = taxonomy_term_page($term);
       return $build;
       break;
-
   }
 }
