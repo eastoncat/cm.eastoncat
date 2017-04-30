@@ -89,3 +89,8 @@ nav#site-wrapper-main-menu li.item-1 ul.third-level li a:hover {
 .node-type-book .book-navigation {
   display:none !important;
 }
+
+.container.not-legacy {
+  padding-right: 15px;
+  padding-left: 15px;
+}
