@@ -1,6 +1,6 @@
 <?php
   $node = node_load(arg(1));
-  $blog_bg_img = image_style_url('cmb_jumbotron', $node->field_image['und'][0]['uri']);
+  $blog_bg_img = image_style_url('cmb_archive_hero', $node->field_image['und'][0]['uri']);
 ?>
 
 <?php if(isset($blog_bg_img)): ?>

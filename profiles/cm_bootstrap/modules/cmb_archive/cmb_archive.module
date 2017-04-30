@@ -31,7 +31,7 @@ function cmb_archive_block_view($delta = '') {
             drupal_get_path('module', 'cmb_archive') . '/js/cmb_archive.js'
           ),
         ),
-      );      
+      );
       break;
   }
   return $block;
@@ -47,4 +47,26 @@ function cmb_archive_theme($existing, $type, $theme, $path) {
 		'path' => $path . '/templates',
 	);
 	return $theme;
+}
+
+/**
+ * Implements hook_image_default_styles().
+ */
+function cmb_archive_image_default_styles() {
+  $styles = array();
+  $styles['cmb_archive_hero'] = array(
+    'label' => 'CMB Archive Hero',
+    'effects' => array(
+      array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 1440,
+          'height' => 720,
+          'upscale' => 1,
+        ),
+        'weight' => 0,
+      ),
+    )
+  );
+  return $styles;
 }
