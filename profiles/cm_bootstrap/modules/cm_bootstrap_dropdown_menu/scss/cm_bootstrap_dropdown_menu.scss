@@ -1,0 +1,132 @@
+$large_bp: '767px';
+
+@media screen {
+  #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu {
+    nav {
+      display: table;
+      float: right;
+
+      ul.first-level {
+        list-style-type:none;
+        margin:0;
+        padding:0;
+        li.item-1 {
+          margin-right:5px;
+        }
+        li.item-1 > a {
+          padding:43px 45px;
+        }
+        li {
+          float:left;
+          margin-right:5px;
+          display:inline;
+          margin:0;
+          padding:0;
+          a {
+            -webkit-border-radius: 4px;
+            -moz-border-radius: 4px;
+            border-radius: 4px;
+            margin-bottom: 0;
+            font-size: 25px;
+            padding: 43px 55px;
+            text-align: center;
+            text-transform:uppercase;
+            display:block;
+            float:left;
+            width: 200px;
+            border-color: transparent;
+          }
+          a:hover {
+            text-decoration: none;
+          }
+        }
+      }
+
+      ul.second-level {
+        top: 118px;
+        z-index: 100;
+        border: 0;
+        border-top: none;
+        position: absolute;
+        margin: 0;
+        padding: 0;
+        border-radius: 0px;
+        width: 200px;
+        li {
+          display:block;
+          padding:0;
+          margin:0;
+          width: 100%;
+          a {
+            background:transparent;
+            font-size:1em;
+            display: block;
+            padding: 4px 8px;
+            min-width:199px;
+            text-align:left;
+            text-transform:none;
+            border:0;
+            border-radius:0;
+          }
+        }
+      }
+
+      ul.third-level {
+        position: absolute;
+        right: 199px;
+        padding: 0;
+        li {
+          a {
+            font-size:.85em;
+          }
+        }
+      }
+
+      li {
+        ul {
+          display:none;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $large_bp) {
+  #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu {
+    display: table;
+    margin: 0 auto;
+    padding: 1em 0;
+    nav #parent-trigger-1,
+    nav #parent-trigger-2 {
+      padding: 5px 20px 5px 10px;
+      font-size: 1.5em;
+      line-height: 1.5em;
+      width: initial;
+    }
+    nav #parent-trigger-1:before,
+    nav #parent-trigger-2:before {
+      font-family: "fontello";
+      content: '\e802';
+      vertical-align: top;
+      padding: 0 5px;
+      font-size: 1.25em;
+    }
+    nav ul li.item-2 {
+      ul.second-level {
+        left:0;
+      }
+    }
+    nav ul.second-level {
+      top:55px;
+      width:100%;
+      li {
+        a {
+          padding-left: 14px;
+          width: 100%;
+          border-top: 1px solid #FFF;
+        }
+      }
+    }
+  }
+
+}

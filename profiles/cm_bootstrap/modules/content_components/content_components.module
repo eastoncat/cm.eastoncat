@@ -1,0 +1,103 @@
+<?php
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function content_components_theme($existing, $type, $theme, $path) {
+  $theme = array();
+
+  $theme['field__field_content_components'] = array(
+    'template' => 'field--field-content-components',
+    'path' => drupal_get_path('module', 'content_components') . '/templates',
+   );
+
+  return $theme;
+}
+
+/**
+ * Implements hook_init().
+ */
+function content_components_init() {
+  drupal_add_css(drupal_get_path('module', 'content_components') . '/css/content_components.css');
+}
+
+/**
+ * Helper function to convert hex to rgb
+ */
+function content_components_hex_to_rgb($hex) {
+   $hex = str_replace("#", "", $hex);
+   if(strlen($hex) == 3) {
+    $r = hexdec(substr($hex,0,1).substr($hex,0,1));
+    $g = hexdec(substr($hex,1,1).substr($hex,1,1));
+    $b = hexdec(substr($hex,2,1).substr($hex,2,1));
+   }
+   else {
+    $r = hexdec(substr($hex,0,2));
+    $g = hexdec(substr($hex,2,2));
+    $b = hexdec(substr($hex,4,2));
+   }
+   $rgb = array($r, $g, $b);
+   // returns the rgb values separated by commas
+   return implode(",", $rgb);
+}
+
+/**
+ * Implements hook_element_info_alter().
+ *
+ * Sets the text format processor to a custom callback function.
+ * This code is taken from the Better Formats module.
+ * @see http://drupal.stackexchange.com/questions/16036/how-do-you-set-a-default-input-text-format-per-content-type
+ */
+/*function content_components_element_info_alter(&$type) {
+  if (isset($type['text_format']['#process'])) {
+    foreach ($type['text_format']['#process'] as &$callback) {
+      if ($callback === 'filter_process_format') {
+        $callback = 'content_components_filter_process_format';
+      }
+    }
+  }
+}
+*/
+
+/**
+ * Callback for os_blank_canvas_helper_element_info_alter().
+ */
+/*function content_components_filter_process_format($element) {
+  $element = filter_process_format($element);
+  if (isset($element['#bundle']) && isset($element['#field_name'])) {
+    // Set default value for Content Component text fields
+    if ($element['#bundle'] == 'page' && $element['#field_name'] == 'field_cc_text_paragraph') {
+      //dpm($element);
+      //die;
+      $element['format']['format']['#default_value'] = 'cc_text_paragraph';
+      $element['format']['#access'] = FALSE;
+    }
+  }
+
+  return $element;
+}
+*/
+
+/**
+ * Implements hook_node_update($node).
+ */
+function content_components_node_update($node) {
+  if ($node->type == 'page' || $node->type == 'blog') {
+    // @todo figure out why we need to do this, b/c paragraphs are getting
+    // some weird as fuck cacheing w/o this
+    //
+    // Don't clear cache_form - in-progress form submissions may break.
+    // Ordered so clearing the page cache will always be the last action.
+    $core = array(
+      'cache',
+      //'cache_path',
+      'cache_filter',
+      //'cache_bootstrap',
+      //'cache_page'
+    );
+    $cache_tables = array_merge(module_invoke_all('flush_caches'), $core);
+    foreach ($cache_tables as $table) {
+      cache_clear_all('*', $table, TRUE);
+    }
+  }
+}

@@ -1,0 +1,132 @@
+<?php
+
+define('CC_TWB_PARALLAX_LIBRARY', 'parallaxjs');
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cc_text_with_background_theme($existing, $type, $theme, $path) {
+  $theme = array();
+  $theme['paragraphs_item__text_with_background'] = array(
+    'template' => 'paragraphs-item--text-with-background',
+    'path' => drupal_get_path('module', 'cc_text_with_background') . '/templates',
+  );
+  return $theme;
+}
+
+/**
+ * Implements hook_libraries_info().
+ */
+function cc_text_with_background_libraries_info() {
+  $libraries[CC_TWB_PARALLAX_LIBRARY] = array(
+    'name' => 'Parallax.js',
+    'vendor url' => 'http://pixelcog.com/parallax.js',
+    'download url' => 'http://pixelcog.com/parallax.js',
+    'version arguments' => array(
+      'file' => 'parallax.js',
+      'pattern' => '/parallax.js v([0-9a-zA-Z\.\ -]+)/',
+    ),
+    'files' => array(
+      'js' => array('parallax.js'),
+    ),
+  );
+
+  return $libraries;
+}
+
+/**
+ * Implements hook_preprocess_entity(&$variables).
+ */
+function cc_text_with_background_preprocess_entity(&$variables) {
+	if ($variables['entity_type'] == 'paragraphs_item' && $variables['elements']['#bundle'] == 'text_with_background') {
+    $paragraph = $variables['paragraphs_item'];
+
+    $data = FALSE;
+
+    switch($variables['view_mode']) {
+      case 'full':
+        // @todo will this get aggregated properly?
+        drupal_add_css(drupal_get_path('module', 'cc_text_with_background') . '/css/cc_text_with_background.css');
+        //drupal_add_js(drupal_get_path('module', 'cc_text_with_background') . '/js/cc_text_with_background.js');
+
+        // Display mode
+        if (isset($paragraph->field_cc_twb_display_mode[LANGUAGE_NONE])) {
+          $display_mode = $paragraph->field_cc_twb_display_mode[LANGUAGE_NONE][0]['value'];
+
+          $parallax_img_src = FALSE;
+          if ($display_mode == 'parallax') {
+            // Load parallax.js library
+            if (($library = libraries_load(CC_TWB_PARALLAX_LIBRARY)) && !empty($library['loaded'])) {
+              if (isset($paragraph->field_cc_twb_bg_image[LANGUAGE_NONE])) {
+                $parallax_img_src = image_style_url('cc_twb_parallax', $paragraph->field_cc_twb_bg_image[LANGUAGE_NONE][0]['uri']);
+                //$parallax_img_src = file_create_url($paragraph->field_cc_twb_bg_image[LANGUAGE_NONE][0]['uri']);
+              }
+
+              // Image must exist.
+              if (!empty($parallax_img_src)) {
+                // Build options.
+                /*$options = array(
+                  'imageSrc' => $parallax_img_src,
+                );
+                */
+                // Add speed if present.
+                /*if (!empty($speed)) {
+                  $options['speed'] = $speed;
+                }*/
+
+                //$js_settings = array($selector => $options);
+                //drupal_add_js(array('cc_text_with_background_parallax' => $js_settings), 'setting');
+                //drupal_add_js(drupal_get_path('module', 'cc_text_with_background') . '/js/cc_text_with_background_parallax.js');
+              }
+            }
+          }
+        }
+
+        // Image
+        $img_src = FALSE;
+        if (isset($paragraph->field_cc_twb_bg_image[LANGUAGE_NONE])) {
+          $img_src = image_style_url('cc_slider_image', $paragraph->field_cc_twb_bg_image[LANGUAGE_NONE][0]['uri']);
+        }
+
+        // Background color
+        $bg_color = '255,255,255';
+        if (isset($paragraph->field_cc_twb_bg_color[LANGUAGE_NONE])) {
+          $bg_color = content_components_hex_to_rgb($paragraph->field_cc_twb_bg_color[LANGUAGE_NONE][0]['jquery_colorpicker']);
+        }
+
+        // Text color
+        $text_color = '#000000';
+        if (isset($paragraph->field_cc_twb_text_color[LANGUAGE_NONE])) {
+          $text_color = '#' . $paragraph->field_cc_twb_text_color[LANGUAGE_NONE][0]['jquery_colorpicker'];
+        }
+
+        // Full width edge
+        $full_width_edge = FALSE;
+        if (isset($paragraph->field_cc_twb_fwidth_edge[LANGUAGE_NONE])) {
+          $full_width_edge = $paragraph->field_cc_twb_fwidth_edge[LANGUAGE_NONE][0]['value'];
+        }
+
+        $fw_class = FALSE;
+        if ($full_width_edge) {
+          $fw_class = 'full-width-ee';
+        }
+
+        $data = array(
+          'field_cc_twb_text' => $paragraph->field_cc_twb_text[LANGUAGE_NONE][0]['value'],
+          'bg_color' => $bg_color,
+          'text_color' => $text_color,
+          'background_image' => $img_src,
+          'display_mode' => $display_mode,
+          'parallax_image' => $parallax_img_src,
+          'fw_class' => $fw_class,
+        );
+
+        //dpm($data);
+        break;
+    }
+
+    //dpm($data);
+
+    $variables['cc_twb'] = $data;
+  }
+}

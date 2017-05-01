@@ -1,0 +1,27 @@
+<?php
+
+/**
+ * Implements hook_libraries_info().
+ */
+function flexloader_libraries_info() {
+  return array(
+    'flexloader' => array(
+      'name' => 'Flexloader',
+      'vendor url' => 'https://github.com/shaekuronen/jquery.flexloader',
+      'download url' => 'https://github.com/shaekuronen/jquery.flexloader',
+      'version callback' => 'flexloader_version',
+      'files' => array(
+        'js' => array(
+          'jquery.flexloader.js',
+        ),
+      ),
+    ),
+  );
+}
+
+/**
+* Short-circuit the version argument.
+*/
+function flexloader_version() {
+  return TRUE;
+}

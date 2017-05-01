@@ -1,0 +1,180 @@
+<?php
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cc_slider_theme($existing, $type, $theme, $path) {
+  $theme = array();
+
+  $theme['paragraphs_item__slider'] = array(
+    'template' => 'paragraphs-item--slider',
+    'path' => drupal_get_path('module', 'cc_slider') . '/templates',
+  );
+
+  $theme['paragraphs_item__slider__paragraphs_editor_preview'] = array(
+    'template' => 'paragraphs-item--slider--paragraphs_editor_preview',
+    'path' => drupal_get_path('module', 'cc_slider') . '/templates',
+  );
+  return $theme;
+}
+
+/**
+ * Implements hook_preprocess_entity(&$variables).
+ */
+function cc_slider_preprocess_entity(&$variables) {
+	if ($variables['entity_type'] == 'paragraphs_item' && $variables['elements']['#bundle'] == 'slider') {
+    $paragraph = $variables['paragraphs_item'];
+
+    switch($variables['view_mode']) {
+    	case 'paragraphs_editor_preview':
+    	  $data = array(
+          'placeholder' => '/' . drupal_get_path('module', 'cc_slider') . '/images/cc-slider.png',
+        );
+    	  break;
+
+      case 'full':
+        // Attach module CSS
+        drupal_add_css(drupal_get_path('module', 'cc_slider') . '/css/cc_slider.css');
+
+        // Attach Flexloader
+        libraries_load('flexloader');
+
+        // Attach module JS
+        drupal_add_js(drupal_get_path('module', 'cc_slider') . '/js/cc_slider.js');
+
+        // Get content list items
+        foreach ($paragraph->field_cc_s_items[LANGUAGE_NONE] as $item) {
+          $s_item_id = $item['value'];
+          $s_item_array[] = entity_load('paragraphs_item', array($s_item_id));
+        }
+
+        // Placeholder image
+        $placeholder_img = "data:image/svg+xml;charset=utf-8,<svg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'1140'%20height%3D'544'><rect%20width%3D'100%25'%20height%3D'100%25'%20fill%3D'whitesmoke'%2F><%2Fsvg>";
+
+        foreach($s_item_array as $s_item) {
+          $s_item = reset($s_item);
+
+          // Media
+          // Build the URI.
+          $video = FALSE;
+          $img_src = FALSE;
+          if (isset($s_item->field_cc_s_item_media[LANGUAGE_NONE])) {
+            // Image
+            if ($s_item->field_cc_s_item_media[LANGUAGE_NONE][0]['type'] == 'image') {
+              $img_uri = $s_item->field_cc_s_item_media[LANGUAGE_NONE][0]['uri'];
+              $img_src = image_style_url('cc_slider_image', $img_uri);
+
+              $grid_classes_1 = 'col-md-12';
+              $grid_classes_2 = 'col-md-12';
+            }
+
+            // Video only.
+            else if ($s_item->field_cc_s_item_media[LANGUAGE_NONE][0]['type'] == 'video') {
+              $wrapper = file_stream_wrapper_get_instance_by_uri($s_item->field_cc_s_item_media[LANGUAGE_NONE][0]['uri']);
+              $parts = $wrapper->get_parameters();
+              $video_id = check_plain($parts['v']);
+
+              // Make the file object available.
+              $file_object = file_uri_to_object($s_item->field_cc_s_item_media[LANGUAGE_NONE][0]['uri']);
+
+              // Protocol
+              $protocol = '';
+
+              // URL base, @todo make this conditonal based on video type.
+              switch ($s_item->field_cc_s_item_media[LANGUAGE_NONE][0]['filemime']) {
+                case 'video/youtube':
+                  $url_base = 'youtube.com';
+                  break;
+              }
+
+              // Query
+              $query = '';
+
+              // Get thumbnail
+              $video_thumbnail_uri = $wrapper->getLocalThumbnailPath();
+              $video_thumbnail = image_style_url('cc_slider_image_thumbnail', $video_thumbnail_uri);
+
+              $video = array(
+                'url' => url($protocol . '//www.' . $url_base . '/embed/' . $video_id, array('query' => $query, 'external' => TRUE)),
+                'thumbnail' => $video_thumbnail,
+              );
+
+              $grid_classes_1 = 'col-md-12';
+              $grid_classes_2 = 'col-md-12';
+
+              //dpm($video_url);
+            }
+          }
+
+          // Thumbnail
+          if ($video) {
+            $thumbnail = $video['thumbnail'];
+          }
+          else {
+            $thumbnail = image_style_url('cc_slider_image_thumbnail', $img_uri);
+          }
+
+          // Display mode
+          $display_mode = 'full_width';
+          if (isset($s_item->field_cc_s_item_display_mode[LANGUAGE_NONE])) {
+            $display_mode = $s_item->field_cc_s_item_display_mode[LANGUAGE_NONE][0]['value'];
+          }
+
+          // Text
+          $text = FALSE;
+          if (isset($s_item->field_cc_s_item_text[LANGUAGE_NONE])) {
+            $text = $s_item->field_cc_s_item_text[LANGUAGE_NONE][0]['value'];
+            //$grid_classes_1 = 'col-sm-12 col-md-5';
+            //$grid_classes_2 = 'col-sm-12 col-md-7';
+          }
+
+          switch($display_mode) {
+            case 'full_width':
+              $grid_classes_1 = 'col-md-12';
+              $grid_classes_2 = 'col-md-12';
+              break;
+
+            case 'text_and_media':
+              $grid_classes_1 = 'col-sm-12 col-md-5';
+              $grid_classes_2 = 'col-sm-12 col-md-7';
+              break;
+          }
+
+          $s_items[] = array(
+            'placeholder_img' => $placeholder_img,
+            'data_original' => $img_src,
+            'thumbnail' => $thumbnail,
+            'video' => $video,
+            'text' => $text,
+            'display_mode' => $display_mode,
+            'grid_classes_1' => $grid_classes_1,
+            'grid_classes_2' => $grid_classes_2,
+          );
+        }
+
+        // Title
+        $title = FALSE;
+        if (isset($paragraph->field_cc_s_title[LANGUAGE_NONE])) {
+          $title = $paragraph->field_cc_s_title[LANGUAGE_NONE][0]['value'];
+        }
+
+        // Thumbnail toggle
+        $thumbnails = FALSE;
+        if (isset($paragraph->field_cc_s_thumbnails_toggle[LANGUAGE_NONE])) {
+          $thumbnails = $paragraph->field_cc_s_thumbnails_toggle[LANGUAGE_NONE][0]['value'];
+        }
+
+        $data = array(
+          'title' => $title,
+          'thumbnails' => $thumbnails,
+          's_items' => $s_items,
+        );
+
+        //dpm($data);
+
+        break;
+    }
+
+    $variables['slider'] = $data;
+  }
+}

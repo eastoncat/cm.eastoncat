@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CC Content List Features feature.
+ */
+
+include_once 'cc_content_list_features.features.inc';

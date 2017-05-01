@@ -1,0 +1,47 @@
+.menu-name-social-media-menu ul {
+  list-style-type:none;
+  display:block;
+  float:right;
+  margin: 0;
+  padding: 0;
+}
+.menu-name-social-media-menu ul li {
+  float:left;
+}
+.menu-name-social-media-menu ul li a {
+  padding:10px;
+  font-size:2em;
+}
+.menu-name-social-media-menu ul li a:hover {
+  text-decoration:none;
+}
+
+
+.menu-name-social-media-menu ul li a.twitter:before {
+  font-family: "fontello";
+  content: '\e81e';
+}
+.menu-name-social-media-menu ul li a.facebook:before {
+  font-family: "fontello";
+  content: '\e81f';
+}
+.menu-name-social-media-menu ul li a.youtube:before {
+  font-family: "fontello";
+  content: '\e82d';
+}
+.menu-name-social-media-menu ul li a.vimeo:before {
+  font-family: "fontello";
+  content: '\e81d';
+}
+.menu-name-social-media-menu ul li a.instagram:before {
+  font-family: "fontello";
+  content: '\e823';
+}
+.menu-name-social-media-menu ul li a.tumblr:before {
+  font-family: "fontello";
+  content: '\e828';
+}
+.menu-name-social-media-menu ul li a.blog:before {
+  font-family: "fontello";
+  content: '\e832';
+}

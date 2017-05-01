@@ -1,0 +1,54 @@
+<?php
+/**
+ * @file
+ * cm_bootstrap_cp.install
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function cm_bootstrap_cp_schema() {
+  // Show Buttons
+  $schema['cm_bootstrap_cp_show_buttons'] = array(
+    'description' => 'Stores Show Button Data.',
+    'fields' => array(
+      'machine_name' => array(
+        'description' => 'Machine name of the button.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'title' => array(
+        'description' => 'The title of the button.',
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'url' => array(
+        'description' => 'URL of the button.',
+        'type' => 'varchar',
+        'length' => 256,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+      'icon_class' => array(
+        'description' => 'icon class of the button.',
+        'type' => 'varchar',
+        'length' => 64,
+        'not null' => TRUE,
+        'default' => '',
+      ),
+    ),
+    'primary key' => array('machine_name'),
+  );  
+  return $schema;
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function cm_bootstrap_cp_uninstall() {
+  drupal_uninstall_schema('cm_bootstrap_cp_show_buttons');
+}

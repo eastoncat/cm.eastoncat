@@ -1,0 +1,8 @@
+name = Content Component: Text and Image
+description = Text and Image Content Component/Paragraph
+package = Content Components
+core = 7.x
+
+dependencies[] = paragraphs
+dependencies[] = content_components
+dependencies[] = cc_text_and_image_features

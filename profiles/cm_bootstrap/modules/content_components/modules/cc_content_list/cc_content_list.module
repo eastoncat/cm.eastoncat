@@ -1,0 +1,117 @@
+<?php
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cc_content_list_theme($existing, $type, $theme, $path) {
+  $theme = array();
+
+  $theme['paragraphs_item__content_list'] = array(
+    'template' => 'paragraphs-item--content-list',
+    'path' => drupal_get_path('module', 'cc_content_list') . '/templates',
+  );
+
+  $theme['paragraphs_item__content_list__paragraphs_editor_preview'] = array(
+    'template' => 'paragraphs-item--content-list--paragraphs_editor_preview',
+    'path' => drupal_get_path('module', 'cc_content_list') . '/templates',
+  );
+
+  return $theme;
+}
+
+/**
+ * Implements hook_preprocess_entity(&$variables).
+ */
+function cc_content_list_preprocess_entity(&$variables) {
+	if ($variables['entity_type'] == 'paragraphs_item' && $variables['elements']['#bundle'] == 'content_list') {
+    $paragraph = $variables['paragraphs_item'];
+
+    switch($variables['view_mode']) {
+    	case 'paragraphs_editor_preview':
+    	  $data = array(
+          'placeholder' => '/' . drupal_get_path('module', 'cc_content_list') . '/images/cc-content-list-3cols.png',
+        );
+    	  break;
+
+      case 'full':
+        drupal_add_css(drupal_get_path('module', 'cc_content_list') . '/css/cc_content_list.css');
+
+        // Get content list items
+        foreach ($paragraph->field_cc_cl_items[LANGUAGE_NONE] as $item) {
+          $p_item_id = $item['value'];
+          $p_item_array = entity_load('paragraphs_item', array($p_item_id));
+
+          foreach($p_item_array as $p_item) {
+            //dpm($p_item);
+
+            // Image
+            $img_src = FALSE;
+            if (isset($p_item->field_cc_cl_item_image[LANGUAGE_NONE])) {
+              $img_src = image_style_url('cc_content_list_item', $p_item->field_cc_cl_item_image[LANGUAGE_NONE][0]['uri']);
+            }
+
+            // Link
+            $link = FALSE;
+            if (isset($p_item->field_cc_cl_item_link[LANGUAGE_NONE])) {
+              $field_cc_cl_item_link_uri = $p_item->field_cc_cl_item_link[LANGUAGE_NONE][0]['url'];
+              $http_check = strpos($field_cc_cl_item_link_uri, 'http://');
+              $https_check = strpos($field_cc_cl_item_link_uri, 'https://');
+
+              if ($http_check !== false || $https_check !== false) {
+                $href = $field_cc_cl_item_link_uri;
+                $target = '_blank';
+              }
+              else {
+                $href = '/' . $field_cc_cl_item_link_uri;
+                $target = '_self';
+              }
+
+              $link = array(
+                'href' => $href,
+                'target' => $target,
+              );
+            }
+
+            // Title
+            $title = FALSE;
+            if (isset($p_item->field_cc_cl_item_title[LANGUAGE_NONE])) {
+              $title = $p_item->field_cc_cl_item_title[LANGUAGE_NONE][0]['value'];
+            }
+
+            // Abstract
+            $abstract = FALSE;
+            if (isset($p_item->field_cc_cl_item_abstract[LANGUAGE_NONE])) {
+              $abstract = $p_item->field_cc_cl_item_abstract[LANGUAGE_NONE][0]['value'];
+            }
+
+            $cl_item[] = array(
+              'title' => $title,
+              'abstract' => $abstract,
+              'img_src' => $img_src,
+              'link' => $link,
+            );
+          }
+        }
+
+        $title_display_overlay = FALSE;
+        if ($paragraph->field_cc_cl_titles_display[LANGUAGE_NONE][0]['value']) {
+          $title_display_overlay = TRUE;
+        }
+
+        $description = FALSE;
+        if (isset($paragraph->field_cc_cl_description[LANGUAGE_NONE])) {
+          $description = $paragraph->field_cc_cl_description[LANGUAGE_NONE][0]['value'];
+        }
+
+        $data = array(
+          'title' => $paragraph->field_cc_cl_title[LANGUAGE_NONE][0]['value'],
+          'description' => $description,
+          'cl_items' => $cl_item,
+          'title_display_overlay' => $title_display_overlay,
+        );
+        break;
+    }
+
+    $variables['content_list'] = $data;
+  }
+}

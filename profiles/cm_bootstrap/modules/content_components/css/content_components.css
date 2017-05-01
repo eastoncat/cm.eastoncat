@@ -1,0 +1,4 @@
+.field-type-paragraphs .filter-wrapper.form-wrapper,
+.field-type-paragraphs .ckeditor_links {
+  display:none !important;
+}

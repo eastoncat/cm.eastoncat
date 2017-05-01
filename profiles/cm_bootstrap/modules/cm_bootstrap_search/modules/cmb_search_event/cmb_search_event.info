@@ -1,0 +1,5 @@
+name = CM Bootstrap Search Event
+description = Adds Event Content Type for Search, Syncs Event Nodes to Civi Events
+core = 7.x
+package = CM Bootstrap: Solr Search
+dependencies[] = cmb_search_event_features

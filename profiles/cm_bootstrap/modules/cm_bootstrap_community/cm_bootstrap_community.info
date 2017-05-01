@@ -1,0 +1,6 @@
+name = CM Bootstrap Community
+description = Provides community building features such as following users, liking videos and a video feed.
+core = 7.x
+package = CM Bootstrap
+dependencies[] = flag
+dependencies[] = views

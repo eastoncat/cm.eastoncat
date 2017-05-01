@@ -1,0 +1,96 @@
+@font-face {
+  font-family: "Coolvetica";
+  src: url("../fonts/coolvetica/coolvetica-rg.ttf") format('truetype');
+}
+
+:not(.page-admin) h1, h2, h3, h4, h5, h6 {
+  font-family: "Coolvetica" !important;
+}
+
+nav#site-wrapper-main-menu li.item-2 ul.second-level li a:hover {
+  background-color:#F16623 !important;
+}
+
+nav#site-wrapper-main-menu li.item-1 ul.third-level li a:hover {
+  background-color:#F16623 !important;
+}
+
+/* Set colors of 2 parent menu items */
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li a#parent-trigger-1 {
+  background-color:#F16623;
+  color:#FFF;
+  font-family: "Verdana",Helvetica,Arial,sans-serif;
+  font-size: 1.5em;
+}
+
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li a#parent-trigger-2 {
+  background-color: #6c2417;
+  color:#FFF;
+  font-family: "Verdana",Helvetica,Arial,sans-serif;
+  font-size: 1.5em;
+}
+
+@media screen and (min-width: 767px) {
+  #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li a#parent-trigger-1,
+  #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li a#parent-trigger-2 {
+    padding:43px;
+    font-size: 1.75em;
+  }
+}
+
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li.hover-color a#parent-trigger-1 {
+  background-color:#f16623;
+}
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li.hover-color a#parent-trigger-2 {
+  background-color:#6c2417;
+}
+
+/* second level, item 1 background color */
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li.item-1 ul.second-level {
+  background-color: #F16623;
+}
+/* second level, item 2 background color */
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li.item-2 ul.second-level {
+  background-color: #F16623;
+}
+
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu ul.second-level li a {
+  color:#FFF;
+  font-size:.75em;
+}
+
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu ul.second-level li.hover-color a {
+  background-color: #c86b6b;
+}
+
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li.item-1 ul.second-level li a:hover {
+  background-color:#b765ce;
+}
+
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li.item-2 ul.second-level li a:hover {
+  background-color:#b765ce;
+}
+
+/* START: 3rd level */
+/* 3rd level item-1 */
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu li.item-1 ul.third-level {
+  background:#f16623;
+}
+/* 3rd level item-2 */
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu li.item-2 ul.third-level {
+  background:f16623;
+}
+
+#block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu li.item-1 ul.third-level li a:hover {
+  background:#f16623;
+}
+
+/* START: Book node */
+.node-type-book .book-navigation {
+  display:none !important;
+}
+
+.container.not-legacy {
+  padding-right: 15px;
+  padding-left: 15px;
+}

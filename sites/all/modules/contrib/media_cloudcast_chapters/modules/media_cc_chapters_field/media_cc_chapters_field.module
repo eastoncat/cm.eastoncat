@@ -91,7 +91,7 @@ function media_cc_chapters_field_field_formatter_view($entity_type, $entity, $fi
   );
   foreach ($items as $delta => $item) {
     $element[$delta] = array(
-        '#markup' => "<li id='chapter-{$item['cid']}' class='chapter-trigger' data-cid='{$item['cid']}' data-fid='{$entity->fid}'><span class='chapter-title'>{$item['title']}</span> - <span class='chapter-start'>" . gmdate('H:i:s', $item['start']) . "</span></li>",
+        '#markup' => "<li id='chapter-{$item['cid']}' class='chapter-trigger' data-cid='{$item['cid']}' data-fid='{$entity->fid}'><span class='chapter-title'>{$item['title']}</span> - <span class='chapter-start'>" . gmdate('H:i:s', $item['start']) . "</span>><div class='chapter-description'>" . $item['description'] . "</div></li>",
     );
   }
   return $element;
@@ -101,5 +101,5 @@ function media_cc_chapters_field_field_formatter_view($entity_type, $entity, $fi
  * Implements hook_field_is_empty
  */
 function media_cc_chapters_field_field_is_empty($item) {
-  return !$item;
+  return empty($item['cid']);
 }

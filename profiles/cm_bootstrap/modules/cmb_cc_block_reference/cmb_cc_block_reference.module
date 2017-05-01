@@ -1,0 +1,66 @@
+<?php
+
+// Require Helpers
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/ImageHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/FieldHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/ColorHelper.php');
+require_once(drupal_get_path('module', 'cc_helper') . '/lib/ParagraphHelper.php');
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cmb_cc_block_reference_theme($existing, $type, $theme, $path) {
+  $theme = array();
+
+  $theme['paragraphs_item__cmb_block_reference'] = array(
+    'template' => 'paragraphs-item--cmb_block_reference',
+    'path' => drupal_get_path('module', 'cmb_cc_block_reference') . '/templates',
+  );
+
+  // Paragraphs editor preview
+  $theme['paragraphs_item__cmb_block_reference__paragraphs_editor_preview'] = array(
+    'template' => 'paragraphs-item--cmb_block_reference--paragraphs_editor_preview',
+    'path' => drupal_get_path('module', 'cmb_cc_block_reference') . '/templates',
+  );
+
+  return $theme;
+}
+
+/**
+ * Implements hook_preprocess_entity(&$variables).
+ */
+function cmb_cc_block_reference_preprocess_entity(&$variables) {
+	if ($variables['entity_type'] == 'paragraphs_item' && $variables['elements']['#bundle'] == 'cmb_block_reference') {
+  	$paragraph = $variables['paragraphs_item'];
+
+  	switch($variables['view_mode']) {
+      case 'paragraphs_editor_preview':
+        $data = [
+          'id' => $paragraph->item_id,
+        ];
+        break;
+
+      case 'full':
+        // Attach css
+        drupal_add_css(drupal_get_path('module', 'cmb_cc_block_reference') . '/css/cmb_cc_block_reference.css');
+
+        // Attach JS
+        drupal_add_js(drupal_get_path('module', 'cmb_cc_block_reference') . '/js/cmb_cc_block_reference.js');
+
+        // Full width
+        $full_width_class = 'fixed-width';
+        if ($full_width = \ContentComponents\Helper\FieldHelper::getValue($paragraph, 'field_cmb_cc_br_full_width')) {
+          $full_width_class = 'full-width';
+        }
+
+        $data = [
+          'id' => $paragraph->item_id,
+          'full_width_class' => $full_width_class,
+          'bg_color' => \ContentComponents\Helper\ColorHelper::jqueryColorPicker($paragraph, 'field_cmb_cc_br_bg_color', 0),
+        ];
+        break;
+  	}
+
+    $variables['cmb_block_reference'] = $data;
+  }
+}

@@ -1,0 +1,51 @@
+<?php
+  
+/**
+ * Implements hook_block_info().
+ */
+function cm_bootstrap_dropdown_menu_block_info() {  
+  $blocks['cmb_dropdown_menu'] = array(
+    'info' => t('Drop Down Menu [module: cm_bootstrap_dropdown_menu]'),
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '<none>',
+    'region' => 'below_navigation',
+    'status' => TRUE,
+    'weight' => '1',
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cm_bootstrap_dropdown_menu_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {  
+    case 'cmb_dropdown_menu': 
+      module_load_include('inc', 'cm_bootstrap_dropdown_menu', 'cm_bootstrap_dropdown_menu');         
+      $block['content'] = array(
+        '#markup' => _cm_bootstrap_dropdown_menu_main_menu_data_query(),
+        '#attached' => array(
+          'js' => array(
+            drupal_get_path('module', 'cm_bootstrap_dropdown_menu') . '/js/cm_bootstrap_dropdown_menu.js'
+          ),
+          'css' => array(
+            drupal_get_path('module', 'cm_bootstrap_dropdown_menu') . '/css/cm_bootstrap_dropdown_menu.css'
+          ),
+        ),
+      );      
+      break;
+  }  
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cm_bootstrap_dropdown_menu_theme() {
+  return array(
+    'cm_bootstrap_dropdown_menu_main_menu' => array(
+      'template' => 'templates/cm-bootstrap-dropdown-menu-main-menu',
+    ),
+  );
+}

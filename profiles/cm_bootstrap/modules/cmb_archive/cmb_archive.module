@@ -1,0 +1,72 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function cmb_archive_block_info() {
+  $blocks['cmb_archive_two_col'] = array(
+    'info' => t('cmb_archive: Archive Two Columns'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cmb_archive_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'cmb_archive_two_col':
+      module_load_include('inc', 'cmb_archive', 'blocks/cmb_archive_two_col');
+
+      $block['content'] = array(
+        '#markup' => _cmb_archive_two_col(),
+        '#attached' => array(
+          'css' => array(
+            drupal_get_path('module', 'cmb_archive') . '/css/cmb_archive.css'
+          ),
+          'js' => array(
+            drupal_get_path('module', 'cmb_archive') . '/js/cmb_archive.js'
+          ),
+        ),
+      );
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cmb_archive_theme($existing, $type, $theme, $path) {
+	$theme = array();
+	$theme['cmb_archive_two_col'] = array(
+		'template' => 'cmb-archive-two-col',
+		'path' => $path . '/templates',
+	);
+	return $theme;
+}
+
+/**
+ * Implements hook_image_default_styles().
+ */
+function cmb_archive_image_default_styles() {
+  $styles = array();
+  $styles['cmb_archive_hero'] = array(
+    'label' => 'CMB Archive Hero',
+    'effects' => array(
+      array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 1440,
+          'height' => 720,
+          'upscale' => 1,
+        ),
+        'weight' => 0,
+      ),
+    )
+  );
+  return $styles;
+}

@@ -1,0 +1,4 @@
+name = CM Bootstrap Search Producer
+description = Adds Producer Content Type for Search, Syncs Producer Users to Producer Content Type
+core = 7.x
+package = CM Bootstrap: Solr Search

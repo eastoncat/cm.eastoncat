@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Settings form for admin/config/media/chapters.
  * 
@@ -119,7 +118,7 @@ function _media_cc_chapters_import_shows($limit, &$context) {
     $context['results']['total'] = 0;
     $context['results']['files'] = array();
     $context['sandbox']['progress'] = 0;
-    $context['sandbox']['max'] = $limit > 0 ? $limit : db_query("SELECT COUNT(*) FROM {file_managed} WHERE filemime = 'video/cloudcast'")->fetchField();
+    $context['sandbox']['max'] = $limit > 0 ? $limit : db_query("SELECT COUNT(*) FROM {file_managed} WHERE filemime = :filemime", array(":filemime" => "video/cloudcast"))->fetchField();
   }
 
   // do import
@@ -133,7 +132,7 @@ function _media_cc_chapters_import_shows($limit, &$context) {
 
   // inform batch engine that we are not finished and provide an estimation for completion
   if ($context['sandbox']['progress'] < $context['sandbox']['max']) {
-    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];    
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
   } else {
     $context['message'] = 'Finished!';
   }
@@ -150,13 +149,14 @@ function _media_cc_chapters_do_import($start, $length) {
   // set initial totals
   $totals = array(
       'total' => 0,
-      'files' => array()
+      'files' => array(),
+      'errors' => array()
   );
   // get url from settings
   $url = variable_get("media_cc_chapters_xml_feed_url", "http://cloudcast.telvue.com/pegtv/chapters.xml");
   // get files
   $result = db_select('file_managed')
-          ->fields('file_managed', array('filename', 'fid'))
+          ->fields('file_managed', array('filename', 'fid', 'uri'))
           ->condition('filemime', 'video/cloudcast', '=')
           ->orderBy('fid', 'DESC')
           ->range($start, $length)
@@ -166,7 +166,12 @@ function _media_cc_chapters_do_import($start, $length) {
     // add one to the total
     $totals['total'] ++;
     // load chapters from thr url
-    $xml = simplexml_load_file("$url?video_id={$row->filename}");
+    $video_id = substr($row->uri, strrpos($row->uri, '/') + 1);
+    if (!is_numeric($video_id)) {
+      $totals['errors'][] = "Unable to find Video Id: {$row->filename}";
+      continue;
+    }
+    $xml = simplexml_load_file("$url?video_id=$video_id");
     // skip if there are no chapters
     if (!isset($xml->chapter))
       continue;
@@ -181,7 +186,7 @@ function _media_cc_chapters_do_import($start, $length) {
           'title' => (string) _media_cc_chapters_clean_string($chapter->title),
           'description' => (string) _media_cc_chapters_clean_string($chapter->description)
       );
-    }   
+    }
 
     $file = file_load($row->fid);
     $file->video_chapters[LANGUAGE_NONE] = $chapters;
@@ -204,11 +209,15 @@ function _media_cc_chapters_import_finished($success, $results, $operations) {
     foreach ($results['files'] as $file) {
       drupal_set_message("Retrieved chapters for File " . l($file['filename'], url("file/{$file['fid']}/usage", array('absolute' => true))));
     }
+    if (isset($results['errors'])) {
+      foreach ($results['errors'] as $error) {
+        drupal_set_message($error, 'error');
+      }
+    }
   } else {
     drupal_set_message("Finished with an error", 'error');
   }
 }
-
 
 function _media_cc_chapters_clean_string($string) {
   $string = iconv('UTF-8', 'UTF-8//IGNORE', $string);

@@ -1,0 +1,6 @@
+name = CM Bootstrap Custom Blocks
+description = Generates custom blocks
+core = 7.x
+package = CM Bootstrap
+
+dependencies[] = cmb_helper

@@ -1,0 +1,123 @@
+@media screen {
+  /* line 3, ../scss/cc_text_with_background.scss */
+  .cc--twb {
+    margin-bottom: 1em;
+  }
+  /* line 5, ../scss/cc_text_with_background.scss */
+  .cc--twb .twb-text-wrapper {
+    padding: .5em 2em 3em 2em;
+  }
+  /* line 7, ../scss/cc_text_with_background.scss */
+  .cc--twb .twb-text-wrapper h2, .cc--twb .twb-text-wrapper p {
+    color: inherit;
+  }
+
+  /* line 13, ../scss/cc_text_with_background.scss */
+  .full-width-ee {
+    max-width: 100% !important;
+    margin: 0 auto !important;
+  }
+  /* line 16, ../scss/cc_text_with_background.scss */
+  .full-width-ee .col-md-12 {
+    max-width: 1170px;
+    margin: 0 auto;
+  }
+  /* line 20, ../scss/cc_text_with_background.scss */
+  .full-width-ee .row {
+    padding: 0;
+  }
+
+  /* line 26, ../scss/cc_text_with_background.scss */
+  .cc--twb--bg-color {
+    max-width: 1170px;
+    margin: 0 auto;
+  }
+  /* line 29, ../scss/cc_text_with_background.scss */
+  .cc--twb--bg-color .background-wrapper {
+    margin: 0 1em;
+  }
+
+  /* line 34, ../scss/cc_text_with_background.scss */
+  .cc--twb--bg-color.full-width-ee .background-wrapper {
+    margin: 0;
+  }
+
+  /* line 40, ../scss/cc_text_with_background.scss */
+  .cc--twb--bg-image {
+    padding: 0 !important;
+  }
+  /* line 42, ../scss/cc_text_with_background.scss */
+  .cc--twb--bg-image .background-wrapper {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0 !important;
+    margin: 0 1em;
+  }
+
+  /* line 53, ../scss/cc_text_with_background.scss */
+  .cc--twb--bg-image.full-width-ee .background-wrapper {
+    margin: 0 !important;
+  }
+
+  /* line 59, ../scss/cc_text_with_background.scss */
+  .cc--twb--overlay.full-width-ee {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  /* line 62, ../scss/cc_text_with_background.scss */
+  .cc--twb--overlay.full-width-ee .col-md-12 {
+    max-width: 1170px;
+    margin: 0 auto;
+  }
+  /* line 66, ../scss/cc_text_with_background.scss */
+  .cc--twb--overlay.full-width-ee .row {
+    padding: 0;
+  }
+
+  /* line 70, ../scss/cc_text_with_background.scss */
+  .cc--twb--overlay {
+    max-width: 1170px;
+    margin: 0 auto;
+  }
+  /* line 73, ../scss/cc_text_with_background.scss */
+  .cc--twb--overlay .row {
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+  /* line 77, ../scss/cc_text_with_background.scss */
+  .cc--twb--overlay .background-wrapper {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0 !important;
+  }
+
+  /* line 86, ../scss/cc_text_with_background.scss */
+  #main {
+    background: transparent !important;
+  }
+
+  /* line 89, ../scss/cc_text_with_background.scss */
+  .parallax-window {
+    background: transparent;
+  }
+
+  /* line 92, ../scss/cc_text_with_background.scss */
+  .parallax-slider {
+    /*min-height: 400px;*/
+    /*width:1449px !important;*/
+    /*height:842px !important;*/
+    /*max-width:1449px !important;*/
+    /*max-height:842px !important;*/
+  }
+
+  /* line 100, ../scss/cc_text_with_background.scss */
+  .cc--twb--parallax .twb-text-wrapper {
+    padding: 1em 2em 3em 1em;
+  }
+  /* line 102, ../scss/cc_text_with_background.scss */
+  .cc--twb--parallax .twb-text-wrapper h2, .cc--twb--parallax .twb-text-wrapper p {
+    color: inherit;
+  }
+}

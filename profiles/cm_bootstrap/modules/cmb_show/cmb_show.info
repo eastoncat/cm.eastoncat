@@ -1,0 +1,5 @@
+name = CMB Show
+description = CMB Show
+package = CM Bootstrap: Show
+core = 7.x
+dependencies[] = cmb_helper

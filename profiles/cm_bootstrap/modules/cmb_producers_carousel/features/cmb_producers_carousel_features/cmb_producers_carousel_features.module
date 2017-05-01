@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CMB Producers Carousel Features feature.
+ */
+
+include_once 'cmb_producers_carousel_features.features.inc';

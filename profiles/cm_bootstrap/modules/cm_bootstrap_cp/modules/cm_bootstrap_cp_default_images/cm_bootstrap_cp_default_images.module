@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * Implements hook_menu().
+ */
+function cm_bootstrap_cp_default_images_menu() {
+  $items['cp/default-images'] = array(
+    'title' => 'Control Panel: Default Images',
+    'description' => 'Control Panel: Default Images',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cm_bootstrap_cp_default_images_form'),
+    'access arguments' => array('access control panel'),
+    'file' => 'forms/cm_bootstrap_cp_default_images.form.inc',
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+/**
+ * Helper function to default image by content type.
+ */
+function cm_bootstrap_cp_default_images_load_image($content_type) {  
+  $fid = db_query('SELECT fid FROM {cm_bootstrap_cp_default_images} WHERE content_type = :content_type', 
+    array(
+      ':content_type' => $content_type,
+    ))->fetchField();  
+  if (isset($fid)) { 
+    $file = file_load($fid);
+    return $file;
+  }  
+}
+
+/**
+ * Implements hook_image_default_styles().
+ */
+function cm_bootstrap_cp_default_images_image_default_styles() {
+  $styles = array();
+  $styles['cm_bootstrap_cp_default_images_cm_show_video'] = array(
+    'label' => 'Default Image Video (780x493)',
+    'effects' => array(
+      array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 780, 
+          'height' => 493, 
+          'upscale' => 1,
+        ),
+        'weight' => 0,
+      ),
+    )
+  );
+  return $styles;
+}
+

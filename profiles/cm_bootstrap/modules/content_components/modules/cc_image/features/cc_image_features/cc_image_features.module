@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CC Image Features feature.
+ */
+
+include_once 'cc_image_features.features.inc';

@@ -16,7 +16,26 @@ media_cc_chapters = {
     $ = jQuery;
     $(selector).off('click').on('click', function(e){
       e.preventDefault();
+      var description = $(this).find('.chapter-description');
+      media_cc_chapters.toggleDescription(description);
+      media_cc_chapters.hideDescriptions(description);
       media_cc_chapters.goToChapter($(this).data('cid'), $(this));
+    });
+  },
+  toggleDescription: function(elem) {
+    $ = jQuery;
+    if ($(elem).is(':visible')) {
+      $(elem).hide();
+    } else {
+      $(elem).show();
+    }
+  },
+  hideDescriptions: function(exlude_element) {
+    $ = jQuery;
+    $('.chapter-description').each(function() {
+      if (!$(this).is($(exlude_element))) {
+        $(this).hide();
+      }
     });
   },
   goToChapter: function (cid, elem) {

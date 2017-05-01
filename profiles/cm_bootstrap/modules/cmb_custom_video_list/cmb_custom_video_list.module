@@ -1,0 +1,193 @@
+<?php
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cmb_custom_video_list_theme($existing, $type, $theme, $path) {
+  $theme = array();
+  // Full
+  $theme['paragraphs_item__custom_video_list'] = array(
+    'template' => 'paragraphs-item--custom-video-list',
+    'path' => drupal_get_path('module', 'cmb_custom_video_list') . '/templates',
+  );
+  // Paragraphs editor preview
+  $theme['paragraphs_item__custom_video_list__paragraphs_editor_preview'] = array(
+    'template' => 'paragraphs-item--custom-video-list--paragraphs_editor_preview',
+    'path' => drupal_get_path('module', 'cmb_custom_video_list') . '/templates',
+  );
+  return $theme;
+}
+
+/**
+ * Implements hook_preprocess_entity(&$variables).
+ */
+function cmb_custom_video_list_preprocess_entity(&$variables) {
+	if ($variables['entity_type'] == 'paragraphs_item' && $variables['elements']['#bundle'] == 'custom_video_list') {
+  	$paragraph = $variables['paragraphs_item'];
+
+  	switch($variables['view_mode']) {
+
+      case 'paragraphs_editor_preview':
+        $data = array(
+          'id' => $paragraph->item_id,
+        );
+        break;
+
+      case 'full':
+        // Attach CSS
+        drupal_add_css(drupal_get_path('module', 'cmb_custom_video_list') . '/css/cmb_custom_video_list.css');
+        // Attach JS
+        drupal_add_js(drupal_get_path('module', 'cmb_custom_video_list') . '/js/cmb_custom_video_list.js');
+        // Attach Flexloader
+        libraries_load('flexloader');
+
+        // Colors
+        if (module_exists('cm_bootstrap_cp_colors')) {
+          $colors = cm_bootstrap_cp_colors_get();
+
+          $vs_heading_bg_color_1 = 'black';
+          if (isset($colors['vs_heading_bg_color_1'])) {
+            $vs_heading_bg_color_1 = $colors['vs_heading_bg_color_1'];
+          }
+
+          $vs_heading_text_color = 'white';
+          if (isset($colors['vs_heading_text_color'])) {
+            $vs_heading_text_color = $colors['vs_heading_text_color'];
+          }
+        }
+
+        // Nid
+        $nid = FALSE;
+        if (isset($paragraph->field_cc_cvl_er[LANGUAGE_NONE])) {
+          $nid = $paragraph->field_cc_cvl_er[LANGUAGE_NONE][0]['target_id'];
+        }
+
+        if ($node = node_load($nid)) {
+          // Placeholder image
+          $placeholder_img = "data:image/svg+xml;charset=utf-8,<svg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'500'%20height%3D'281'><rect%20width%3D'100%25'%20height%3D'100%25'%20fill%3D'whitesmoke'%2F><%2Fsvg>";
+          /*if (module_exists('cm_bootstrap_cp_default_images')) {
+            $p_file = cm_bootstrap_cp_default_images_load_image('cm_show');
+            if ($p_file) {
+              $p_image_uri = $p_file->uri;
+              $placeholder_img = image_style_url('500x281', $p_image_uri);
+            }
+          }*/
+
+          // Get shows and series nodes.
+          if (isset($node->field_videos_to_highlight[LANGUAGE_NONE])) {
+            foreach($node->field_videos_to_highlight[LANGUAGE_NONE] as $item) {
+              $ref_nids[] = $item['target_id'];
+            }
+
+            foreach($ref_nids as $ref_nid) {
+              $ref_node_object = node_load($ref_nid);
+              $ref_nodes[] = $ref_node_object;
+            }
+
+            foreach($ref_nodes as $ref_node) {
+              switch($ref_node->type) {
+                case 'cm_show':
+                  // Image
+                  $img_src = FALSE;
+                  if (isset($ref_node->field_show_vod[LANGUAGE_NONE])) {
+                    $wrapper = file_stream_wrapper_get_instance_by_uri($ref_node->field_show_vod[LANGUAGE_NONE][0]['uri']);
+                    $image_uri = $wrapper->getLocalThumbnailPath();
+                    $img_src = image_style_url('500x281', $image_uri);
+                  }
+                  else {
+                    if (module_exists('cm_bootstrap_cp_default_images')) {
+                      $file = cm_bootstrap_cp_default_images_load_image($ref_node->type);
+                      $image_uri = $file->uri;
+                      $img_src = image_style_url('500x281', $image_uri);
+                    }
+                  }
+
+                  // Description
+                  $description = FALSE;
+                  $allowable_tags = '<i>';
+                  if (isset($ref_node->field_description[LANGUAGE_NONE])) {
+                    $description = strip_tags($ref_node->field_description[LANGUAGE_NONE][0]['value'], $allowable_tags);
+                    $description = cmb_helper_truncate($description, $length = 125, array('html' => true, 'ending' => ' . . .', 'exact' => FALSE));
+                  }
+
+                  // Series title
+                  $series_title = FALSE;
+                  if (isset($ref_node->og_group_ref[LANGUAGE_NONE])) {
+                    $nid = $ref_node->og_group_ref[LANGUAGE_NONE][0]['target_id'];
+                    $series_title = db_query("SELECT title FROM {node} WHERE nid = :nid", array(':nid' => $nid))->fetchField();
+                  }
+
+                  // Data
+                  $ref_node_data[] = array(
+                    'nid' => $ref_node->nid,
+                    'title' => $ref_node->title,
+                    'description' => $description,
+                    'series_title' => $series_title,
+                    'type' => $ref_node->type,
+                    'img_src' => $img_src,
+                    'placeholder_img' => $placeholder_img,
+                    'url' => url('node/' . $ref_node->nid),
+                  );
+                  break;
+
+                case 'cm_project':
+                  // Description
+                  $description = FALSE;
+                  $allowable_tags = '<i>';
+                  if (isset($ref_node->field_description[LANGUAGE_NONE])) {
+                    $description = strip_tags($ref_node->field_description[LANGUAGE_NONE][0]['value'], $allowable_tags);
+                    $description = cmb_helper_truncate($description, $length = 125, array('html' => true, 'ending' => ' . . .', 'exact' => FALSE));
+                  }
+
+                  // Image
+                  $img_src = FALSE;
+                  if (isset($ref_node->field_series_image[LANGUAGE_NONE][0]['uri'])) {
+                    $img_src = image_style_url('500x281', $ref_node->field_series_image[LANGUAGE_NONE][0]['uri']);
+                  }
+                  // @todo Temp hack for ECAT, need to change field_project_image -> field_series_image
+                  else {
+                    if (isset($ref_node->field_project_image[LANGUAGE_NONE][0]['uri'])) {
+                      $img_src = image_style_url('500x281', $ref_node->field_project_image[LANGUAGE_NONE][0]['uri']);
+                    }
+                    else {
+                      if (module_exists('cm_bootstrap_cp_default_images')) {
+                        $file = cm_bootstrap_cp_default_images_load_image('cm_project');
+                        if ($file) {
+                          $image_uri = $file->uri;
+                          $img_src = image_style_url('500x281', $image_uri);
+                        }
+                      }
+                    }
+                  }
+
+                  $ref_node_data[] = array(
+                    'nid' => $ref_node->nid,
+                    'title' => $ref_node->title,
+                    'description' => $description,
+                    'series_title' => FALSE,
+                    'type' => $ref_node->type,
+                    'img_src' => $img_src,
+                    'placeholder_img' => $placeholder_img,
+                    'url' => url('node/' . $ref_node->nid),
+                  );
+                  break;
+              }
+            }
+
+          }
+        }
+
+        $data = array(
+          'id' => $paragraph->item_id,
+          'title' => $node->title,
+          'bg_color' => $vs_heading_bg_color_1,
+          'text_color' => $vs_heading_text_color,
+          'ref_node_data' => $ref_node_data,
+        );
+        break;
+    }
+
+    //dpm($data);
+    $variables['custom_video_list'] = $data;
+  }
+}

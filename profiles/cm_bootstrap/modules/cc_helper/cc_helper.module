@@ -1,0 +1,19 @@
+<?php
+
+/**
+ * Implements hook_preprocess_page($variables).
+ */
+/*function cc_helper_preprocess_page($variables) {
+  if (!path_is_admin(current_path())) {
+    // Add Foundation
+    drupal_add_css(drupal_get_path('module', 'cc_helper') . '/foundation/css/normalize.css');
+    drupal_add_css(drupal_get_path('module', 'cc_helper') . '/foundation/css/foundation.css');
+
+    // Add CSS Helper
+    drupal_add_css(drupal_get_path('module', 'cc_helper') . '/css/cc_helper.css');
+
+    // Add Fontello
+    drupal_add_css(drupal_get_path('module', 'cc_helper') . '/fontello/css/fontello.css');
+  }
+}
+*/

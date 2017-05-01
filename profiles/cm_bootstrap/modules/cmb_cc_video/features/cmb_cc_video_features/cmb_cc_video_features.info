@@ -1,0 +1,14 @@
+name = CMB CC Video Features
+description = CMB CC Video Features
+core = 7.x
+package = CM Bootstrap: Content Components
+version = 7.x-1.0
+dependencies[] = features
+dependencies[] = file
+dependencies[] = file_entity
+dependencies[] = media
+dependencies[] = paragraphs
+features[features_api][] = api:2
+features[field_base][] = field_cc_cmb_v_video
+features[field_instance][] = paragraphs_item-cmb_video-field_cc_cmb_v_video
+features[paragraphs][] = cmb_video

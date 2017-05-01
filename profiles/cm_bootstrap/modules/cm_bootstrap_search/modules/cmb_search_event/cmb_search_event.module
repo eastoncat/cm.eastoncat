@@ -1,0 +1,201 @@
+<?php
+
+// Include helper functions
+module_load_include('inc', 'cmb_search_event', 'cmb_search_event');
+
+/**
+ * Implements hook_permission().
+ */
+function cmb_search_event_permission() {
+  return array(
+    'cmb search events batch' => array(
+      'title' => t('Run Batch to Sync Civi Events to CMBS Event Nodes'),
+      'description' => t('** Grant to Trusted Admin Users Only **'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_menu().
+ */
+function cmb_search_event_menu() {
+  $items = array();
+
+  $items['admin/cmb-search-events-sync'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('cmb_search_event_form'),
+    'access arguments' => array('cmb search events batch'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['wluisi_test/cmb-search-events'] = array(
+    'page callback' => 'cmb_search_event_test',
+    'access callback' => TRUE,
+    'access arguments' => array('cmb search events batch'),
+  );
+
+  return $items;
+}
+
+/**
+ * Test Route Callback
+ */
+function cmb_search_event_test() {
+  return 'cmb_search_event_test()';
+}
+
+/**
+ * Implements hook_civicrm_post($op, $objectName, $objectId, &$objectRef).
+ */
+function cmb_search_event_civicrm_post($op, $objectName, $objectId, &$objectRef) {
+  if ($objectName == 'Event') {
+    switch ($op) {
+      case 'create':
+        cmb_search_event_create_node($objectRef);
+        break;
+
+      case 'edit':
+        if ($nid = cmb_search_event_node_exists($objectRef->id)) {
+          cmb_search_event_update_node($objectRef, $nid);
+        }
+        break;
+
+      case 'delete':
+        if ($nid = cmb_search_event_node_exists($objectRef->id)) {
+          node_delete($nid);
+        }
+        break;
+    }
+  }
+}
+
+/**
+ * Implements hook_cronapi($op, $job = NULL).
+ */
+function cmb_search_event_cronapi($op, $job = NULL) {
+  $items = array();
+
+  $items['cmb_search_event_events_unpublish'] = array(
+    'description' => 'Unpublish old events.',
+    'rule' => '0 */6 * * *',
+    'file' => 'inc/cmb_search_event.events_unpublish.inc',
+    'callback' => '_cmb_search_event_events_unpublish',
+    'weight' => 12,
+  );
+
+  return $items;
+}
+
+// ** START: BATCH **
+
+/**
+ * Form.
+ */
+function cmb_search_event_form($form, &$form_state) {
+  $form['vfm_message'] = array (
+		'#type' => 'item',
+		'#markup' => 'Clicking this button will run a batch that syncs Civi Events to CMBS Event nodes',
+	);
+
+  $form['cmb_search_eventr'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+
+  return $form;
+}
+
+/**
+ * Form Submit.
+ */
+function cmb_search_event_form_submit($form, &$form_state) {
+  // Get total # of events.
+  $civi_events = cmb_search_event_query_events();
+
+  // Get max count
+  $max_count = count($civi_events);
+
+  if ($max_count > 0) {
+    $form_values = array(
+  	  'max' => $max_count,
+    );
+
+    $operations[] = array('cmb_search_event_batch_op', array($form_values));
+
+    $batch = array(
+      'operations' => $operations,
+      'finished' => 'cmb_search_event_batch_finished',
+      'title' => t("CMB CiviCRM Event/EventNode Sync"),
+      'init_message' => t('Sync CiviCRM Events for Solr Index'),
+      'error_message' => t('Error!'),
+    );
+    batch_set($batch);
+  }
+  else {
+    drupal_set_message(t('No data to process.'));
+  }
+}
+
+/**
+ * Batch operation
+ */
+function cmb_search_event_batch_op($form_values, &$context) {
+  if (empty($context['sandbox'])) {
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['current_event'] = 0;
+    $context['sandbox']['max'] = $form_values['max'];
+  }
+  $limit = 10;
+
+  if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+    if ($civi_events = cmb_search_event_query_events()) {
+      foreach ($civi_events as $civi_event) {
+        // Update Event
+        if ($nid = cmb_search_event_node_exists($civi_event->id)) {
+          cmb_search_event_update_node($civi_event, $nid);
+        }
+        // Create Event
+        else {
+          cmb_search_event_create_node($civi_event);
+        }
+        // Update batch stuff
+        $context['results'][] = $civi_event->id . ' : ' . check_plain($civi_event->id);
+        $context['sandbox']['progress']++;
+        $context['sandbox']['current_event'] = $civi_event->id;
+        $context['message'] = 'Processed ' . $context['sandbox']['progress'] . ' of ' . $context['sandbox']['max'] . ' events.';
+      }
+    }
+  }
+  else {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+
+  if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+}
+
+/**
+ * Batch 'finished' callback
+ */
+function cmb_search_event_batch_finished($success, $results, $operations) {
+  if ($success) {
+    drupal_set_message(t('Data process is complete!'));
+    //dpm($results);
+  }
+  else {
+    // An error occurred.
+    // $operations contains the operations that remained unprocessed.
+    $error_operation = reset($operations);
+    drupal_set_message(
+      t('An error occurred while processing @operation with arguments : @args',
+        array(
+          '@operation' => $error_operation[0],
+          '@args' => print_r($error_operation[0], TRUE),
+        )
+      )
+    );
+  }
+}
+
+// ** END: BATCH **

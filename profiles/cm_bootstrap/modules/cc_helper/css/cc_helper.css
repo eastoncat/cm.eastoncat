@@ -1,0 +1,60 @@
+/* line 1, ../scss/cc_helper.scss */
+.vertical-center {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  -webkit-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  text-align: center;
+}
+
+/* line 12, ../scss/cc_helper.scss */
+.clean-ul-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* line 18, ../scss/cc_helper.scss */
+.full-width {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* line 23, ../scss/cc_helper.scss */
+.fixed-width {
+  margin: 0 auto;
+  max-width: 62.5em;
+  width: 100%;
+}
+
+/* line 29, ../scss/cc_helper.scss */
+.fixed-width-1500 {
+  width: 100% !important;
+  max-width: 1500px !important;
+  margin:0 auto;
+}
+
+/* line 34, ../scss/cc_helper.scss */
+.no-padding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* line 39, ../scss/cc_helper.scss */
+.vertical-center {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  -webkit-transform: translate(0, -50%);
+  -ms-transform: translate(0, -50%);
+  transform: translate(0, -50%);
+  text-align: center;
+}
+
+.center {
+  text-align: center;
+}

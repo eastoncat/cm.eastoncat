@@ -1,0 +1,1 @@
+<?php print render($element['spectrum_field']); ?>

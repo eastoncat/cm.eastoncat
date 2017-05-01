@@ -1,0 +1,12 @@
+name = CMB Custom Video List Features
+description = CMB Custom Video List Features
+core = 7.x
+package = CM Bootstrap: Content Components
+version = 7.x-1.0
+dependencies[] = entityreference
+dependencies[] = features
+dependencies[] = paragraphs
+features[features_api][] = api:2
+features[field_base][] = field_cc_cvl_er
+features[field_instance][] = paragraphs_item-custom_video_list-field_cc_cvl_er
+features[paragraphs][] = custom_video_list

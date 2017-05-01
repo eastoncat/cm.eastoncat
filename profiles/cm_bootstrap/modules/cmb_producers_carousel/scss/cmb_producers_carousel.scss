@@ -1,0 +1,130 @@
+@media screen {
+  .cc-cmb-producers-carousel {
+    max-width: 100% !important;
+    padding: 0 !important;
+
+    h2.title {
+      text-align: center;
+      background: lightgray;
+      color: #000;
+      margin: 0;
+      padding: 1.3em 0;
+      font-size: 28px;
+    }
+
+    .flexslider {
+      margin:0 !important;
+    }
+
+    ul.slides {
+      li {
+        position: relative;
+        a {
+          display:block;
+          .overlay {
+            box-sizing: border-box;
+            opacity: 0;
+            height: 8em;
+            font-weight: 700;
+            position: relative;
+            bottom: 0;
+            color: #FFF;
+            opacity: 1;
+            padding: 20px;
+            display: block;
+            background-color: #0099d9 !important;
+
+            .title {
+              font-size: 1em;
+              line-height: 1em;
+              letter-spacing: .35px;
+              margin: 0 0 3px;
+              color: #FFF !important;
+            }
+            .series-title {
+              font-style: italic;
+              text-transform: uppercase;
+              letter-spacing: .35px;
+              font-size: .75em;
+              position: absolute;
+            }
+            .watch-now {
+              position: absolute;
+              bottom: 10px;
+              text-transform: uppercase;
+              letter-spacing: 1px;
+              font-size: .75em;
+            }
+          }
+          .overlay:hover {
+            opacity:.95;
+          }
+        }
+        a:hover {
+          text-decoration:underline;
+          color:#FFF;
+          .overlay {
+            opacity:.95;
+          }
+        }
+
+      }
+    }
+
+    .flex-direction-nav {
+      a.flex-prev {
+        opacity: 1 !important;
+        left: 0px;
+        padding: 2px 8px;
+      }
+      a.flex-next {
+        opacity: 1 !important;
+        right: 0px;
+        padding: 2px 8px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 767px) {
+  .cc-cmb-producers-carousel {
+    ul.slides {
+      li {
+        a {
+          .overlay {
+            -webkit-transition: 250ms ease-out;
+            -moz-transition: 250ms ease-out;
+            -o-transition: 250ms ease-out;
+            transition: 250ms ease-out;
+            box-sizing: border-box;
+            width: 100%;
+            opacity: 0;
+            height: 100%;
+            font-weight: 700;
+            position: absolute;
+            bottom: 0;
+            color: #FFF;
+            padding: 20px;
+            background-color: #0099d9 !important;
+            .play-button {
+              width:100%;
+            }
+            .title {
+              font-size: 1.35em;
+            }
+            .series-title {
+              font-size: 1em;
+            }
+            .watch-now {
+              letter-spacing: .35px;
+              font-size:1em;
+            }
+          }
+          .overlay:hover {
+            opacity:.95;
+          }
+        }
+      }
+    }
+  }
+}

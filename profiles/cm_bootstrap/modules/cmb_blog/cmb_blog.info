@@ -1,0 +1,4 @@
+name = CMB Blog
+description = CMB Blog
+package = CM Bootstrap
+core = 7.x

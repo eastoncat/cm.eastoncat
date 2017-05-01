@@ -1,0 +1,9 @@
+name = CM Bootstrap: Custom Video List
+description = CM Bootstrap: Custom Video List Content Component
+package = CM Bootstrap: Content Components
+core = 7.x
+
+dependencies[] = paragraphs
+dependencies[] = cmb_custom_video_list_features
+dependencies[] = cmb_helper
+dependencies[] = flexloader

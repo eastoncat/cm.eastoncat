@@ -1,0 +1,543 @@
+<?php
+
+/**
+ * Implements hook_block_info().
+ */
+function cm_bootstrap_custom_blocks_block_info() {
+  $blocks['front_pg_fv_carousel'] = array(
+    'info' => t('Front Pg Featured Videos Carousel'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '6',
+    'title' => 'Featured Videos',
+    'region' => 'below_content',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+  );
+  $blocks['front_pg_ls_carousel'] = array(
+    'info' => t('Front Pg Latest Shows Carousel'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '3',
+    'title' => 'Latest Shows',
+    'region' => 'below_content',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+  );
+  // NOT USED
+  $blocks['cb_partners_list'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: cb_partners_list'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+  $blocks['cb_custom_video_lists'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: cb_custom_video_lists'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '9',
+    'title' => '<none>',
+    'region' => 'below_content',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => '<front>',
+  );
+  $blocks['cb_custom_video_lists_front'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: cb_custom_video_lists_front'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '4',
+    'title' => '<none>',
+    'region' => 'below_content',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => '<front>',
+  );
+  // NOT USED
+  $blocks['learn_videos_two_col'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Learn Videos Two Columns'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+  // To list on multiple pages ** MUST USE ** "" NOT ''
+  $blocks['cb_partner_carousels'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Partners Carousel'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '1',
+    'title' => '<none>',
+    'region' => 'below_content',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => "partners\nchannels\nwatch/partners",
+  );
+  // NOT USED
+  /*$blocks['cb_archive_two_col'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Archive Two Columns'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );*/
+  //
+  $blocks['cb_social_media_menu'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Social Media Menu'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '2',
+    'title' => '<none>',
+    'region' => 'footer_bottom',
+    'status' => TRUE,
+  );
+  // Set through Block UI
+  $blocks['cb_social_media_menu_2'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Social Media Menu 2'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+  $blocks['cb_video_grid'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Video Grid'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '1',
+    'title' => '<none>',
+    'region' => 'below_content',
+    'status' => TRUE,
+  );
+  // Node type visibility set in cm_bootstrap_custom_blocks_install()
+  $blocks['cb_pd_p_carousel'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Partner Detail Pg -- Partners Carousel [Show + Series]'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '7',
+    'title' => '<none>',
+    'region' => 'below_content',
+    'status' => TRUE,
+  );
+  // Node type visibility set in cm_bootstrap_custom_blocks_install()
+  $blocks['cb_pd_p_all_series'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Partner Detail Pg -- All Series Carousel'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '8',
+    'title' => '<none>',
+    'region' => 'below_content',
+    'status' => TRUE,
+  );
+  $blocks['cb_genres_carousels'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Genres Carousel'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '2',
+    'title' => '<none>',
+    'region' => 'below_content',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_LISTED,
+    'pages' => "genres",
+  );
+  // Node type visibility set in cm_bootstrap_custom_blocks_install()
+  $blocks['cb_genres_show_series_carousels'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Genres Show Series Carousel'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '10',
+    'title' => '<none>',
+    'region' => 'below_content',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => "node/9663\nnode/9689\nnode/9828",
+  );
+  // Node type visibility set in cm_bootstrap_custom_blocks_install()
+  $blocks['cb_show_node_meta'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Show Node Meta Data'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '1',
+    'title' => '<none>',
+    'region' => 'below_content_fwidth',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => "node/*/edit",
+  );
+  // Not set through blocks UI
+  $blocks['cb_taxonomy_term'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Taxonomy Term Pg'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+  $blocks['cb_recent_news'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Recent News [cb_recent_news]'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+  $blocks['cmb_cb_shows_in_series'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Shows in Series Block'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '11',
+    'title' => '<none>',
+    'region' => 'below_content',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+  );
+  $blocks['cmb_cb_sitename'] = array(
+    'info' => t('cmb_cb_sitename: Site Name Block [module: cm_bootstrap_custom_blocks]'),
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '<none>',
+    'region' => 'navigation',
+    'status' => TRUE,
+    'weight' => '-1',
+  );
+  $blocks['cmb_cb_logo'] = array(
+    'info' => t('cmb_cb_logo: Site Logo Block [module: cm_bootstrap_custom_blocks]'),
+    'cache' => DRUPAL_NO_CACHE,
+    'title' => '<none>',
+    'region' => 'below_navigation',
+    'status' => TRUE,
+    'weight' => '0',
+  );
+
+  // Not set through blocks UI
+  $blocks['cb_taxonomy_term_blog'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Taxonomy Term Blog Pg'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+
+  $blocks['cb_taxonomy_term_participants'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Taxonomy Term Participants Pg'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+
+  $blocks['cmb_cb_genre_carousel'] = array(
+    'info' => t('cm_bootstrap_custom_blocks: Genre Detail Pg Genre Block [ cmb_cb_genre_carousel ]'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cm_bootstrap_custom_blocks_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'front_pg_fv_carousel':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/front_pg_fv_carousel');
+      $block['subject'] = t('Featured Videos');
+      $block['content'] = _front_pg_featured_videos_carousel_data();
+      break;
+    case 'front_pg_ls_carousel':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/front_pg_ls_carousel');
+      $block['subject'] = t('Latest Shows');
+      $block['content'] = _front_pg_latest_shows_carousel_data();
+      break;
+    case 'cb_partners_list':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_partners_list_view');
+      $block['content'] = _cb_partners_list_view();
+      break;
+    case 'cb_custom_video_lists':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_custom_video_lists');
+      $block['content'] = _cb_custom_video_lists();
+      break;
+    case 'cb_custom_video_lists_front':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_custom_video_lists');
+      $block['content'] = _cb_custom_video_lists();
+      break;
+    case 'learn_videos_two_col':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/learn_videos_two_col');
+      $block['content'] = cm_bootstrap_custom_blocks_learn_videos_two_col_data();
+      break;
+    case 'cb_partner_carousels':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_partner_carousels');
+      $block['content'] = _cb_partner_carousels_data();
+      break;
+    /*case 'cb_archive_two_col':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_archive_two_col');
+      $block['content'] = _cb_archive_two_col();
+      break;
+    */
+    case 'cb_social_media_menu':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_social_media_menu');
+      $block['content'] = _cb_social_media_menu();
+      break;
+    case 'cb_social_media_menu_2':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_social_media_menu');
+      $block['content'] = _cb_social_media_menu();
+      break;
+    case 'cb_video_grid':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_video_grid');
+      $block['content'] = _cb_video_grid();
+      break;
+    case 'cb_pd_p_carousel':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_pd_p_carousel');
+      $block['subject'] = t('Partner Detail Pg -- Partners Carousel [Show + Series]');
+      $block['content'] = _cb_pd_p_carousel();
+      break;
+    case 'cb_pd_p_all_series':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_pd_p_all_series');
+      $block['subject'] = t('All Series');
+      $block['content'] = _cb_pd_p_all_series();
+      break;
+    case 'cb_genres_carousels':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_genres_carousels');
+      $block['content'] = _cb_genres_carousels();
+      break;
+    case 'cb_genres_show_series_carousels':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_genres_show_series_carousels');
+      $block['content'] = _cb_genres_show_series_carousels();
+      break;
+    case 'cb_show_node_meta':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_show_node_meta');
+      $block['content'] = _cb_show_node_meta();
+      break;
+    case 'cb_recent_news':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_recent_news');
+      $block['content'] = _cb_recent_news();
+      break;
+    case 'cb_taxonomy_term':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_taxonomy_term');
+      $block['content'] = _cb_taxonomy_term();
+      break;
+    // From custom_video_lists
+    case 'cmb_cb_shows_in_series':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cmb_cb_shows_in_series');
+      $block['content'] = _cmb_cb_shows_in_series();
+      break;
+    case 'cmb_cb_sitename':
+      $sitename = l(t(variable_get('site_name')), '<front>', array('attributes' => array('class' => array('name navbar-brand'))));
+      $block['content']  = $sitename;
+      break;
+    case 'cmb_cb_logo':
+      $logo = '<a href="/"><img src="' . theme_get_setting('logo') . '" /></a>';
+      $block['content'] = $logo;
+      break;
+
+    case 'cb_taxonomy_term_blog':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_taxonomy_term_blog');
+
+      $block['content'] = array(
+        '#markup' => _cb_taxonomy_term_blog(),
+        '#attached' => array(
+          'css' => array(
+            drupal_get_path('module', 'cm_bootstrap_archive') . '/css/cm_bootstrap_archive.css'
+          ),
+          'js' => array(
+            drupal_get_path('module', 'cm_bootstrap_archive') . '/js/cm_bootstrap_archive.js'
+          ),
+        ),
+      );
+      break;
+
+    case 'cb_taxonomy_term_participants':
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cb_taxonomy_term_participants');
+      $block['content'] = _cb_taxonomy_term_participants();
+      break;
+
+    case 'cmb_cb_genre_carousel':
+      // Attach Flexloader
+      //libraries_load('flexloader');
+
+      module_load_include('inc', 'cm_bootstrap_custom_blocks', 'blocks/cmb_cb_genre_carousel');
+      $block['content'] = _cmb_cb_genre_carousel();
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cm_bootstrap_custom_blocks_theme($existing, $type, $theme, $path) {
+	$theme = array();
+	$theme['front_pg_featured_videos'] = array(
+		'template' => 'front-pg-portfolio-list',
+		'path' => $path . '/templates',
+	);
+	$theme['front_pg_fv_carousel'] = array(
+		'template' => 'front-pg-fv-carousel',
+		'path' => $path . '/templates',
+	);
+	// Latest Shows
+	$theme['front_pg_ls_carousel'] = array(
+		'template' => 'front-pg-ls-carousel',
+		'path' => $path . '/templates',
+	);
+	$theme['cb_partners_list'] = array(
+		'template' => 'cb-partners-list',
+		'path' => $path . '/templates',
+	);
+	$theme['cb_custom_video_lists'] = array(
+		'template' => 'cb-custom-video-lists',
+		'path' => $path . '/templates',
+	);
+	$theme['learn_videos_two_col'] = array(
+		'template' => 'learn-videos-two-col',
+		'path' => $path . '/templates',
+	);
+	$theme['cb_partner_carousels'] = array(
+		'template' => 'cb-partner-carousels',
+		'path' => $path . '/templates',
+	);
+	/*$theme['cb_archive_two_col'] = array(
+		'template' => 'cb-archive-two-col',
+		'path' => $path . '/templates',
+	);*/
+	$theme['cb_social_media_menu'] = array(
+		'template' => 'cb-social-media-menu',
+		'path' => $path . '/templates',
+	);
+	$theme['cb_video_grid'] = array(
+		'template' => 'cb-video-grid',
+		'path' => $path . '/templates',
+	);
+	$theme['cb_pd_p_carousel'] = array(
+		'template' => 'cb-pd-p-carousel',
+		'path' => $path . '/templates',
+	);
+	$theme['cb_pd_p_all_series'] = array(
+		'template' => 'cb-pd-p-all-series',
+		'path' => $path . '/templates',
+	);
+	$theme['cb_genres_carousels'] = array(
+		'template' => 'cb-genres-carousels',
+		'path' => $path . '/templates',
+	);
+	$theme['cb_genres_show_series_carousels'] = array(
+		'template' => 'cb-genres-show-series-carousels',
+		'path' => $path . '/templates',
+	);
+	$theme['cb_recent_news'] = array(
+		'template' => 'cb-recent-news',
+		'path' => $path . '/templates',
+	);
+  $theme['cb_taxonomy_term'] = array(
+		'template' => 'cb-taxonomy-term',
+		'path' => $path . '/templates',
+	);
+	$theme['cmb_cb_shows_in_series'] = array(
+		'template' => 'cmb-cb-shows-in-series',
+		'path' => $path . '/templates',
+	);
+
+	$theme['cb_taxonomy_term_blog'] = array(
+		'template' => 'cb-taxonomy-term-blog',
+		'path' => $path . '/templates',
+	);
+
+  $theme['cmb_cb_genre_carousel'] = array(
+    'template' => 'cmb-cb-genre-carousel',
+    'path' => $path . '/templates',
+  );
+	return $theme;
+}
+
+/**
+ * Implements hook_image_default_styles().
+ */
+function cm_bootstrap_custom_blocks_image_default_styles() {
+  $styles = array();
+  $styles['500x281'] = array(
+    'label' => '500x281)',
+    'effects' => array(
+      array(
+        'name' => 'image_scale_and_crop',
+        'data' => array(
+          'width' => 500,
+          'height' => 281,
+          'upscale' => 1,
+        ),
+        'weight' => 0,
+      ),
+    )
+  );
+  return $styles;
+}
+
+/**
+ * Implements hook_entity_info_alter().
+ * The first attribute in the array defines an arbitrary label for the view mode machine name.
+ * 'custom settings' => TRUE displays the view mode as a default at the top of the display modes settings screen
+ */
+function cm_bootstrap_custom_blocks_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes'] += array(
+    'two_column_list' => array(
+      'label' => t('Two Column List'),
+      'custom settings' => FALSE,
+    ),
+  );
+}
+
+/**
+ * Helper function to render a node in 'teaser' view mode.
+ */
+function cm_bootstrap_custom_blocks_render_node_teaser($node) {
+  $view = node_view($node, 'two_column_list');
+  $node_rendered = drupal_render($view);
+  return $node_rendered;
+}
+
+/**
+ * Extends EntityFieldQuery class, creating a class that queries only shows.
+ */
+class CmShowEntityFieldQuery extends EntityFieldQuery {
+  public function __construct() {
+    $this->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'cm_show')
+      ->propertyCondition('status', 1);
+  }
+}
+
+/**
+ * Extends EntityFieldQuery class, creating a class that queries only articles.
+ */
+class CmbCustomBlocksArticleEntityFieldQuery extends EntityFieldQuery {
+  public function __construct() {
+    $this->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'article')
+      ->propertyCondition('status', 1);
+  }
+}
+
+/**
+ * Implements hook_menu_alter(&$items).
+ */
+function cm_bootstrap_custom_blocks_menu_alter(&$items) {
+  $items['taxonomy/term/%taxonomy_term']['page callback'] = 'cm_bootstrap_custom_blocks_term_page';
+}
+
+/**
+ * Callback for term page overide
+ */
+function cm_bootstrap_custom_blocks_term_page($term) {
+  switch ($term->vocabulary_machine_name) {
+    case 'tags':
+    // For ECAT
+    case 'vod_categories':
+      $taxonmy_term_block = module_invoke('cm_bootstrap_custom_blocks', 'block_view', 'cb_taxonomy_term');
+
+      if (isset($taxonmy_term_block['content'])) {
+        return render($taxonmy_term_block['content']);
+      }
+      else {
+        return '';
+      }
+      break;
+
+    case 'participants':
+      $taxonmy_term_block = module_invoke('cm_bootstrap_custom_blocks', 'block_view', 'cb_taxonomy_term_participants');
+
+      if (isset($taxonmy_term_block['content'])) {
+        return render($taxonmy_term_block['content']);
+      }
+      else {
+        return '';
+      }
+      break;
+
+    case 'blogs':
+      $taxonmy_term_block = module_invoke('cm_bootstrap_custom_blocks', 'block_view', 'cb_taxonomy_term_blog');
+
+      if (isset($taxonmy_term_block['content'])) {
+        return render($taxonmy_term_block['content']);
+      }
+      else {
+        return '';
+      }
+      break;
+
+    case 'channel':
+      $build = taxonomy_term_page($term);
+      return $build;
+      break;
+  }
+}

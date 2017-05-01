@@ -1,0 +1,5 @@
+name = CMB Landing Page
+description = CMB Landing Page
+core = 7.x
+package = CM Bootstrap: Content Types
+dependencies[] = cmb_landing_page_features

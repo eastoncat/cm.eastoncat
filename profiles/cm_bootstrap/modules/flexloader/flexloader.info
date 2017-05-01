@@ -1,0 +1,5 @@
+name = Flexloader
+description = Adds Flexload JS for lazy loading on Flexslider
+core = 7.x
+package = wluisi
+dependencies[] = libraries

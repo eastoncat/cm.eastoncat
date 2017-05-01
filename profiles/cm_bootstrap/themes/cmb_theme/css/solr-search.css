@@ -1,0 +1,126 @@
+#search-overlay {
+  position: absolute;
+  background: rgba(255,255,255,.95);
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  display:none;
+}
+
+/*#search-overlay .row {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1em 0;
+  border-bottom: 1px solid #000;
+}
+*/
+
+.search-overlay-icon-wrapper {
+  position: absolute;
+  top: 15px;
+  padding-left: 15px;
+}
+
+.search-overlay-icon-wrapper i {
+  font-size:1.5em;
+  color:#FFF;
+}
+
+#block-cm-bootstrap-custom-blocks-cmb-cb-sitename {
+  display:none;
+  opacity:0;
+}
+
+#search-overlay .search-overlay-close {
+  float:right;
+  padding-top: 20px;
+  font-size: 2em;
+}
+
+#block-views-solr-search-block-1 h2.block-title {
+  display:none;
+}
+
+.view-solr-search {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/*.view-solr-search .view-filters {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 40px 0;
+}*/
+
+/*.view-solr-search .views-ef-fieldset-container .form-item {
+  display:block !important;
+}*/
+
+/*.view-solr-search .views-ef-fieldset-container .fieldset-legend:before {
+  font-family: "fontello";
+  content: '\e801';
+  vertical-align: top;
+  padding: 0 5px;
+  font-size: 2em;
+  color: red;
+} 
+*/
+
+/*.view-solr-search .views-row {
+  margin:20px 0;
+  padding-bottom:20px;
+  border-bottom: 1px solid lightgray;
+}
+
+.view-solr-search ul {
+  list-style-type: none;
+}
+
+.view-solr-search ul h3 {
+  margin-top:0;
+  color:#000;
+}
+
+.view-solr-search ul .description {
+  color:#000;
+}
+
+.view-solr-search ul li a {
+  display:block;
+}
+
+.view-solr-search ul li .left-column {
+  
+}
+
+.view-solr-search ul li .right-column {
+  padding-left: 20px;
+}
+
+.view-solr-search ul li.views-row a,
+.view-solr-search ul li.views-row a:hover {
+  color:#000 !important;
+}
+
+.view-solr-search ul li.views-row a:hover {
+  text-decoration:none;
+  background:whitesmoke;
+}
+
+/*.view-solr-search ul .col-sm-12,
+.view-solr-search ul .col-md-6  {
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+*/
+
+@media all and (max-width: 600px) {
+  .search-overlay-icon-wrapper i {
+    font-size:1em;
+  }
+  .search-overlay-icon-wrapper {
+    position: absolute;
+    top: 10px;
+    padding-left: 15px;
+  }
+}

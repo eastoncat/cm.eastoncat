@@ -1,0 +1,5 @@
+name = ECAT Series Import
+description = ECAT Series Import
+package = ECAT
+core = 7.x
+dependencies[] = elysia_cron

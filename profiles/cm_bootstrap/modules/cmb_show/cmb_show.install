@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * Implements hook_install().
+ *
+ * @see http://anthonypower.com/notebook/programmatically-set-node-type-visibility-blocks
+ * Set block visibility by content/node type.
+ *
+ * hook_uninstall() is not needed here b/c node module takes care of cleaning up db.
+ */
+function cmb_show_install() {
+  // cmb_show_right_sidebar
+  $query = db_insert('block_node_type')
+    ->fields(array('type', 'module', 'delta'))
+    ->values(
+      array(
+        'type' => 'cm_show',
+        'module' => 'cmb_show',
+        'delta' => 'cmb_show_right_sidebar',
+      )
+    )
+    ->execute();
+
+    // Attach "cm_show_meta" to view mode to Show
+    $settings = field_bundle_settings('node', 'cm_show');
+    $settings['view_modes']['cm_show_meta']['custom_settings'] = TRUE;
+    field_bundle_settings('node', 'cm_show', $settings);
+
+    // Attach "full" to view mode to Show
+    $settings = field_bundle_settings('node', 'cm_show');
+    $settings['view_modes']['full']['custom_settings'] = TRUE;
+    field_bundle_settings('node', 'cm_show', $settings);
+}

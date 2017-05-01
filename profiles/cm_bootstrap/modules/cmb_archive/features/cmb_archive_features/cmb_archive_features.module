@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CMB Archive Features feature.
+ */
+
+include_once 'cmb_archive_features.features.inc';

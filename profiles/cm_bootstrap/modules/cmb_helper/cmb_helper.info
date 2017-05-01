@@ -1,0 +1,4 @@
+name = CMB Helper
+description = Helper functions for various CMB modules and themes.
+package = CM Bootstrap
+core = 7.x

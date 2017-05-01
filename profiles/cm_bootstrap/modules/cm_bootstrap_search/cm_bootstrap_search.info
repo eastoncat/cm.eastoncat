@@ -1,0 +1,9 @@
+name = CM Bootstrap Search
+description = Custom Search
+core = 7.x
+package = CM Bootstrap: Solr Search
+
+dependencies[] = search_api
+dependencies[] = search_api_views
+dependencies[] = search_api_solr
+dependencies[] = views_ef_fieldset

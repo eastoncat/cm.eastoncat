@@ -1,0 +1,56 @@
+<?php
+
+/**
+ * Implements hook_theme($existing, $type, $theme, $path).
+ */
+function cc_text_and_image_theme($existing, $type, $theme, $path) {
+  $theme = array();
+  
+  $theme['paragraphs_item__text_and_image'] = array(
+    'template' => 'paragraphs-item--text-and-image',
+    'path' => drupal_get_path('module', 'cc_text_and_image') . '/templates',
+   );
+   
+  return $theme;
+}
+
+/**
+ * Implements hook_preprocess_entity(&$variables).
+ */
+function cc_text_and_image_preprocess_entity(&$variables) {	
+	if ($variables['entity_type'] == 'paragraphs_item' && $variables['elements']['#bundle'] == 'text_and_image') {
+    $paragraph = $variables['paragraphs_item'];
+    
+    $text = FALSE;        
+    if (isset($paragraph->field_cc_tai_text[LANGUAGE_NONE])) {
+      $text = $paragraph->field_cc_tai_text[LANGUAGE_NONE][0]['value'];
+    }
+    
+    // Image
+    $img_src = FALSE;
+    if (isset($paragraph->field_cc_tai_image[LANGUAGE_NONE])) {
+      $img_src = image_style_url('cc_content_list_item', $paragraph->field_cc_tai_image[LANGUAGE_NONE][0]['uri']);
+    }
+    
+    // Image alignment
+    $image_alignment_class = 'img-align-right';        
+    if (isset($paragraph->field_cc_tai_image_align[LANGUAGE_NONE])) {
+      $image_alignment = $paragraph->field_cc_tai_image_align[LANGUAGE_NONE][0]['value'];
+      if ($image_alignment == 'right') {
+        $image_alignment_class = 'img-align-right';
+      }
+      else {
+        $image_alignment_class = 'img-align-left';
+      }
+    }
+    
+    $data = array(
+      'id' => $paragraph->item_id,
+      'field_cc_tai_text' => $text,
+      'img_src' => $img_src,
+      'image_alignment_class' => $image_alignment_class,
+    );
+    
+    $variables['text_and_image'] = $data;        
+  }
+}

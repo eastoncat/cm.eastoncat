@@ -1,0 +1,94 @@
+
+.view-solr-search {
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    li {
+      margin:20px 0;
+      padding-bottom:20px;
+      border-bottom: 1px solid lightgray;
+      a {
+        display:block;
+        color:#000 !important;
+        h3 {
+          margin-top:0;
+          color:#000;
+        }
+        img {
+          width:100%;
+          height:auto;
+        }
+      }
+      a:hover {
+        text-decoration:none;
+        background:whitesmoke;
+      }
+      .left-column {
+        padding-left:0px !important;
+      }
+      .right-column {
+        padding-left: 0px !important;
+      }
+    }
+  }
+}
+
+@media (max-width: 600px) {
+  .view-solr-search {
+    ul {
+      li {
+        a {
+          .sr-description {
+            padding-top: 1em;
+          }
+        }
+        .left-column {
+          padding-right:0px !important;
+        }
+      }
+    }
+  }
+}
+
+/*.views-row {
+  margin:20px 0;
+  padding-bottom:20px;
+  border-bottom: 1px solid lightgray;
+}
+*/
+/*.view-solr-search ul {
+  list-style-type: none;
+}
+
+.view-solr-search ul h3 {
+  margin-top:0;
+  color:#000;
+}*/
+
+/*.view-solr-search ul .description {
+  color:#000;
+}*/
+
+/*.view-solr-search ul li a {
+  display:block;
+}
+*/
+/*.view-solr-search ul li .left-column {
+  
+}
+
+.view-solr-search ul li .right-column {
+  padding-left: 20px;
+}
+*/
+
+/*.view-solr-search ul li.views-row a,
+.view-solr-search ul li.views-row a:hover {
+  color:#000 !important;
+}
+
+.view-solr-search ul li.views-row a:hover {
+  text-decoration:none;
+  background:whitesmoke;
+}*/

@@ -1,0 +1,6 @@
+name = Content Components
+description = Content Components Base Module
+package = Content Components
+core = 7.x
+
+dependencies[] = paragraphs

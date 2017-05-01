@@ -1,0 +1,4 @@
+name = ECAT Helper module
+description = Site specific overrides for ECAT site.
+package = ECAT
+core = 7.x

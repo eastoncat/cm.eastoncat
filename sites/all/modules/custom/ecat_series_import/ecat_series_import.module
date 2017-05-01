@@ -1,0 +1,424 @@
+<?php
+
+/* START: BATCH */
+
+/**
+ * Implements hook_menu().
+ */
+function ecat_series_import_menu() {
+  $items = array();
+
+  $items['admin/cmb-series-import-batch'] = array(
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('ecat_series_import_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  /*$items['admin/cmb-series-import-batch-test'] = array(
+    'page callback' => 'ecat_series_import_test',
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );*/
+
+  return $items;
+}
+
+/*function ecat_series_import_test() {
+  // Do 10 items at a time.
+  $limit = 10;
+  $queue_name = 'ecat_series_import_queue_collect';
+
+  $result = db_query_range("SELECT item_id, data, expire, created FROM {queue} WHERE name = :name ORDER BY item_id", 0, $limit,
+    array(
+      ':name' => $queue_name,
+      //':item_id' => $context['sandbox']['current_item'],
+    ),
+    array('fetch' => PDO::FETCH_ASSOC));
+    foreach ($result as $item) {
+      dpm(unserialize($item['data']));
+      //$series_title = unserialize($item['data']);
+    }
+
+  //dpm($items);
+
+  return 'ecat_series_import_test';
+}
+*/
+
+/**
+ * Form.
+ */
+function ecat_series_import_form($form, &$form_state) {
+  $form['vfm_message'] = array (
+		'#type' => 'item',
+		'#markup' => 'Clicking this button will run a batch process to create Series from Queue.',
+	);
+  $form['ecat_series_import_submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Submit'),
+  );
+
+  return $form;
+}
+
+/**
+ * Form Submit.
+ */
+function ecat_series_import_form_submit($form, &$form_state) {
+  // Get the queue.
+  //$queue = DrupalQueue::get('ecat_series_import_queue_collect');
+
+  /*$queue_name = 'ecat_series_import_queue_collect';
+
+  $items = array();
+  $result = db_query("SELECT item_id, data, expire, created FROM {queue} WHERE name = :name ORDER BY item_id",
+  array(':name' => $queue_name),
+  array('fetch' => PDO::FETCH_ASSOC));
+  foreach ($result as $item) {
+    $items[] = $item;
+  }
+  // Get max count
+  $max_count = count($items);*/
+
+  $queue = DrupalQueue::get('ecat_series_import_queue_collect');
+  // Get max count
+  $max_count = $queue->numberOfItems();
+
+  if ($max_count > 0) {
+    $form_values = array(
+  	  'max' => $max_count,
+    );
+
+    $operations[] = array('ecat_series_import_batch_op', array($form_values));
+
+    $batch = array(
+      'operations' => $operations,
+      'finished' => 'ecat_series_import_batch_finished',
+      'title' => t("Series Batch Process Queue"),
+      'init_message' => t('Processing...'),
+      'error_message' => t('Error!'),
+    );
+
+    batch_set($batch);
+  }
+  else {
+    drupal_set_message(t('No data!'));
+  }
+}
+
+/**
+ * Batch operation
+ */
+function ecat_series_import_batch_op($form_values, &$context) {
+  if (empty($context['sandbox'])) {
+    $context['sandbox']['progress'] = 0;
+    $context['sandbox']['current_item'] = 0;
+    $context['sandbox']['max'] = $form_values['max'];
+  }
+  // Do 10 items at a time.
+  $limit = 10;
+
+  if ($context['sandbox']['progress'] != $context['sandbox']['max']) {
+    $queue_name = 'ecat_series_import_queue_collect';
+
+    //$items = array();
+    $result = db_query_range("SELECT item_id, data, expire, created FROM {queue} WHERE item_id > :item_id AND name = :name ORDER BY item_id", 0, $limit,
+    array(
+      ':name' => $queue_name,
+      ':item_id' => $context['sandbox']['current_item'],
+    ),
+    array('fetch' => PDO::FETCH_ASSOC));
+    foreach ($result as $item) {
+      // Get the series title
+      $series_title = unserialize($item['data']);
+
+      // Check if series exists.
+      $series_exists = ecat_series_import_series_node_exists($series_title);
+
+      // Check if series exists.
+      if ($series_exists === FALSE) {
+        // Create series
+        $series = ecat_series_import_create_cm_project_node($series_title);
+        // Series was created, so do some other stuff.
+        if ($series) {
+          // Delete queue item.
+          db_delete('queue')
+          ->condition('item_id', $item['item_id'])
+          ->execute();
+
+          // Update context
+          $context['results'][] = $item['item_id'] . ' : ' . check_plain($item['item_id']);
+          $context['sandbox']['progress']++;
+          $context['sandbox']['current_item'] = $item['item_id'];
+          $context['message'] = 'Processed ' . $context['sandbox']['progress'] . ' of ' . $context['sandbox']['max'] . ' items.';
+          $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+        }
+      }
+      else {
+        // Delete queue item.
+        db_delete('queue')
+        ->condition('item_id', $item['item_id'])
+        ->execute();
+
+        // Update context
+        $context['results'][] = $item['item_id'] . ' : ' . check_plain($item['item_id']);
+        $context['sandbox']['progress']++;
+        $context['sandbox']['current_item'] = $item['item_id'];
+        $context['message'] = 'Processed ' . $context['sandbox']['progress'] . ' of ' . $context['sandbox']['max'] . ' items.';
+        $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+      }
+    }
+  }
+  else {
+    $context['finished'] = $context['sandbox']['progress'] / $context['sandbox']['max'];
+  }
+}
+
+/**
+ * Batch 'finished' callback
+ */
+function ecat_series_import_batch_finished($success, $results, $operations) {
+  if ($success) {
+    drupal_set_message(t('Data process is complete!'));
+  }
+  else {
+    // An error occurred.
+    // $operations contains the operations that remained unprocessed.
+    $error_operation = reset($operations);
+    drupal_set_message(
+      t('An error occurred while processing @operation with arguments : @args',
+        array(
+          '@operation' => $error_operation[0],
+          '@args' => print_r($error_operation[0], TRUE),
+        )
+      )
+    );
+  }
+}
+
+/* END BATCH */
+
+/**
+ * Implements hook_cronapi($op, $job = NULL).
+ */
+function ecat_series_import_cronapi($op, $job = NULL) {
+  $items = array();
+
+  $items['ecat_series_import_series_feed'] = array(
+    'description' => 'ECAT Series XML Feed',
+    'rule' => '0 */3 * * *',
+    'callback' => '_ecat_series_import_series_feed',
+    'weight' => 4,
+  );
+
+  $items['ecat_series_import_queue_collect'] = array(
+    'description' => 'Collects all series data into a queue.',
+    'rule' => '0 */3 * * *',
+    'callback' => 'ecat_series_import_queue_collect',
+    'weight' => 4,
+  );
+
+  $items['ecat_series_import_queue_process'] = array(
+    'description' => 'Process all series data from the queue.',
+    'rule' => '0 */3 * * *',
+    'callback' => 'ecat_series_import_queue_process',
+    'weight' => 4,
+  );
+
+  return $items;
+}
+
+function ecat_series_import_queue_collect() {
+  $url = 'http://cloudcast.telvue.com/api/mrss/v2/mrss/T01500.xml';
+
+  // Init curl and pull in rss feed.
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_URL, $url);
+  $xml = curl_exec($curl);
+  $channel = new SimpleXMLElement($xml);
+  $namespaces = $channel->getNamespaces(true);
+
+  foreach($channel->xpath('//item') as $item) {
+    // Get data in cloudcast: namespace
+    $cloudcast = $item->children($namespaces['cloudcast']);
+
+    $series_exists = ecat_series_import_series_node_exists( (string) $cloudcast->program );
+
+    // Only queue items that don't already exist.
+    if ($series_exists === FALSE) {
+      // Get queue
+      $queue = DrupalQueue::get('ecat_series_import_queue_collect');
+      // Create queue item.
+      $queue->createItem((string) $cloudcast->program);
+    }
+    else {
+      continue;
+    }
+  }
+
+  // Close curl
+  curl_close($curl);
+}
+
+function ecat_series_import_queue_process() {
+  // Get the queue.
+  $queue = DrupalQueue::get('ecat_series_import_queue_collect');
+
+  // Claim queue item.
+  while ($item = $queue->claimItem()) {
+    // Get the series title
+    $series_title = $item->data;
+
+    // Check if series exists.
+    $series_exists = ecat_series_import_series_node_exists($series_title);
+
+    // Check if series exists.
+    if ($series_exists === FALSE) {
+      // Create series
+      $series = ecat_series_import_create_cm_project_node($series_title);
+      // Series created, so delete the queue item.
+      if ($series) {
+        // Success! Delete queue item.
+        $queue->deleteItem($item);
+      }
+    }
+    else {
+      $queue->deleteItem($item);
+    }
+  }
+}
+
+/**
+ * Callback function for cron item.
+ */
+function _ecat_series_import_series_feed() {
+  $data = ecat_series_import_get_xml_feed();
+
+  if ($data) {
+    foreach($data as $item) {
+      // Check if Series exists
+      if (!$series_exists = ecat_series_import_series_node_exists($item['program'])) {
+        $series = ecat_series_import_create_cm_project_node($item['program']);
+
+        if ($series) {
+          // Log success to watchdogg
+          watchdog(
+            $type = 'ecat_series_import',
+            $message = 'Success! Created series for program: %program',
+            $variables = array('%program' => $item['program']),
+            $severity = WATCHDOG_INFO
+          );
+        }
+        else {
+          // Log failure to watchdog.
+          watchdog(
+            $type = 'ecat_series_import',
+            $message = 'Failure! Could not create series for program: %program',
+            $variables = array('%program' => $item['program']),
+            $severity = WATCHDOG_ALERT
+          );
+        }
+      }
+      // Series already exists, do nothing, but log to watchdogg.
+      else {
+        // Log failure to watchdog.
+        watchdog(
+          $type = 'ecat_series_import',
+          $message = 'Failure! Series exists, skipping program: %program',
+          $variables = array('%program' => $item['program']),
+          $severity = WATCHDOG_ALERT
+        );
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to get xml feed.
+ */
+function ecat_series_import_get_xml_feed() {
+  $url = 'http://cloudcast.telvue.com/api/mrss/v2/mrss/T01500.xml?recent=50';
+
+  // Init curl and pull in rss feed.
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_URL, $url);
+  $xml = curl_exec($curl);
+  $channel = new SimpleXMLElement($xml);
+  $namespaces = $channel->getNamespaces(true);
+
+  foreach($channel->xpath('//item') as $item) {
+    // Get data in cloudcast: namespace
+    $cloudcast = $item->children($namespaces['cloudcast']);
+
+    $data[] = array(
+      'program' => (string) $cloudcast->program,
+    );
+  }
+
+  // Close curl
+  curl_close($curl);
+
+  return $data;
+}
+
+/**
+ * Helper function to check if 'Series' node exists, based on GUID field.
+ */
+function ecat_series_import_series_node_exists($title) {
+  /*$query = new EntityFieldQuery;
+  $query->entityCondition('entity_type', 'node')
+    ->propertyCondition('type', 'cm_project')
+    ->propertyCondition('title', $title, '=');
+  $result = $query->execute();
+
+  if (isset($result['node'])) {
+    $nid = array_keys($result['node']);
+    $nid = $nid[0];
+    return $nid;
+  }
+  else {
+    return FALSE;
+  }*/
+  $nid = db_query("SELECT nid FROM {node} WHERE type = 'cm_project' AND title = :title",
+    array(
+      ':title' => $title)
+    )->fetchField();
+
+  if (!empty($nid)) {
+   return $nid;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to create Series Node.
+ */
+function ecat_series_import_create_cm_project_node($title) {
+  $node = new stdClass();
+  $node->title = $title;
+  $node->type = 'cm_project';
+  node_object_prepare($node);
+  $node->language = LANGUAGE_NONE;
+  $node->uid = 1;
+  $node->status = 1;
+  $node->promote = 0;
+  $node->comment = 0;
+
+  // Save node
+  $node = node_submit($node);
+
+  try {
+    node_save($node);
+    $success = TRUE;
+  }
+  catch (Exception $e) {
+    $success = FALSE;
+  }
+
+  return $success;
+}

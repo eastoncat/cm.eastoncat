@@ -1,0 +1,115 @@
+<?php
+
+/**
+ * Implements hook_entity_info_alter().
+ * The first attribute in the array defines an arbitrary label for the view mode machine name.
+ * 'custom settings' => TRUE displays the view mode as a default at the top of the display modes settings screen
+ */
+function cmb_show_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes'] += array(
+    'cm_show_meta' => array(
+      'label' => t('Show Meta Data'),
+      'custom settings' => FALSE,
+    ),
+  );
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function cmb_show_block_info() {
+  // Node type visibility set in cmb_show_install()
+  $blocks['cmb_show_right_sidebar'] = array(
+    'info' => t('cmb_show: Show Right Sidebar [ cmb_show_right_sidebar ]'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '14',
+    'title' => '<none>',
+    'region' => 'sidebar_second',
+    'status' => TRUE,
+    'visibility' => BLOCK_VISIBILITY_NOTLISTED,
+    'pages' => "node/*/edit\nnode/add/*",
+  );
+
+  // Not set through blocks UI
+  $blocks['cmb_show_recent_videos_sidebar'] = array(
+    'info' => t('cmb_show: Show Recent Videos [ cmb_show_recent_videos_sidebar ]'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+
+  // Not set through blocks UI
+  $blocks['cmb_show_air_dates'] = array(
+    'info' => t('cmb_show: Show Air Dates [ cmb_show_air_dates ]'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+
+  // Not set through blocks UI
+  $blocks['cmb_show_chapters'] = array(
+    'info' => t('cmb_show: Show Chapters [ cmb_show_chapters ]'),
+    'cache' => DRUPAL_NO_CACHE,
+    'weight' => '0',
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function cmb_show_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'cmb_show_right_sidebar':
+      $block['content'] = 'cmb_show_right_sidebar';
+      break;
+
+    case 'cmb_show_recent_videos_sidebar':
+      module_load_include('inc', 'cmb_show', 'blocks/cmb_show_recent_videos_sidebar');
+      $block['title'] = _cmb_show_recent_videos_sidebar_get_title();
+      $block['content'] = _cmb_show_recent_videos_sidebar();
+      break;
+
+    case 'cmb_show_air_dates':
+      module_load_include('inc', 'cmb_show', 'blocks/cmb_show_air_dates');
+      $block['content'] = _cmb_show_air_dates();
+      break;
+
+    case 'cmb_show_chapters':
+      module_load_include('inc', 'cmb_show', 'blocks/cmb_show_chapters');
+      $block['content'] = _cmb_show_chapters();
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function cmb_show_theme($existing, $type, $theme, $path) {
+	$theme = array();
+
+  $theme['cmb_show_recent_videos_sidebar'] = array(
+    'template' => 'cmb-show-recent-videos-sidebar',
+    'path' => $path . '/templates',
+  );
+
+  $theme['cmb_show_air_dates'] = array(
+		'template' => 'cmb-show-air-dates',
+		'path' => $path . '/templates',
+	);
+
+  $theme['cmb_show_chapters'] = array(
+    'template' => 'cmb-show-chapters',
+    'path' => $path . '/templates',
+  );
+
+  $theme['cmb_show_cue_points'] = array(
+    'template' => 'cmb-show-cue-points',
+    'path' => $path . '/templates',
+  );
+
+	return $theme;
+}

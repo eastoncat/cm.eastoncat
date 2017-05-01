@@ -1,0 +1,27 @@
+<?php
+
+// Includes
+module_load_include('inc', 'cm_bootstrap_community', 'cm_bootstrap_community_menus');
+
+/**
+ * Implements hook_enable().
+ */
+function cm_bootstrap_community_enable() {  
+  // User Add Content Menu
+  cm_bootstrap_community_install_user_add_content_menu();
+  // User Profile Menu
+  cm_bootstrap_community_install_user_profile_menu();  
+  // Clear menu cache
+  cache_clear_all('*', 'cache_menu', TRUE);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function cm_bootstrap_community_uninstall() {      
+  // User Add Content Menu
+  cm_bootstrap_community_uninstall_user_add_content_menu();
+  // User Profile Menu
+  cm_bootstrap_community_uninstall_user_profile_menu();
+}
+

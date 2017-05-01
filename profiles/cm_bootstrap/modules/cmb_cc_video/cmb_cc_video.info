@@ -1,0 +1,6 @@
+name = CMB Video
+description = CMB Video
+package = CM Bootstrap: Content Components
+core = 7.x
+dependencies[] = paragraphs
+dependencies[] = cmb_cc_video_features

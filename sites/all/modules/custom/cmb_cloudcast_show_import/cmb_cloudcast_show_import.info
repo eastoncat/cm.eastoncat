@@ -1,0 +1,5 @@
+name = CMB Cloudcast Show Import
+description = Use for importing all shows using queue to avoid php timeout.
+package = CM Bootstrap
+core = 7.x
+dependencies[] = elysia_cron

@@ -1,0 +1,4 @@
+name = CM Bootstrap Dropdown Menu
+description = Generates RETN style large dropdown menu
+core = 7.x
+package = CM Bootstrap

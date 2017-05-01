@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the CMB CT Custom Video List feature.
+ */
+
+include_once 'cmb_ct_custom_video_list.features.inc';
