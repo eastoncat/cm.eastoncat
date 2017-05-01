@@ -1,0 +1,408 @@
+<?php
+
+/**
+ * Implements hook_permission
+ */
+function telvue_airing_import_permission() {
+  return array(
+    'administer telvue airing import' => array(
+    'title' => t('Administer Telvue Airing Import'),
+    'description' => t('Provides access to change Telvue Airing Import Settings')
+  ));
+}
+
+/**
+ * Implements hook_menu().
+ */
+function telvue_airing_import_menu() {
+  $items = array();
+
+  $items['admin/config/telvue-airing-import'] = array(
+    'title' => 'Telvue Airing Import',
+    'description' => 'Settings for Telvue Airing Import',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('telvue_airing_import_settings_form'),
+    'access arguments' => array('administer telvue airing import'),
+    'file' => 'telvue_airing_import.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['admin/config/telvue-airing-import/delete-all'] = array(
+    'title' => 'Telvue Airing Import Delete All',
+    'description' => 'Deletes all airing entities and related field data.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('telvue_airing_import_delete_all_form'),
+    'access arguments' => array('administer telvue airing import'),
+    'file' => 'telvue_airing_import.admin.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  $items['telvue-airing-import/test'] = array(
+    'page callback' => 'telvue_airing_import_test',
+    'access callback' => TRUE,
+  );
+
+  return $items;
+}
+
+function telvue_airing_import_test() {
+  $url = 'http://mc.retn.org/xml/program_schedule_feed?channel_id=1';
+
+  // Init curl and pull in rss feed.
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_URL, $url);
+  $xml = curl_exec($curl);
+  $channel = new SimpleXMLElement($xml);
+  $namespaces = $channel->getNamespaces(true);
+
+  foreach($channel->xpath('//item') as $item) {
+    // Get data in psg namespace
+    $psg = $item->children($namespaces['psg']);
+
+    $data[] = array(
+      'guid' => (string) $item->{'guid'},
+      'title' => (string) $item->{'title'},
+      'link' => (string) $item->{'link'},
+      'description' => (string) $item->{'description'},
+      'pubDate' => (string) $item->{'pubDate'},
+      'end_datetime' => (string) $psg->end_datetime[0],
+    );
+  }
+
+  dpm((string) $channel->channel->title);
+
+  //dpm($data);
+
+  // Close curl
+  curl_close($curl);
+
+  return 'telvue_airing_import_test';
+}
+
+/**
+ * Implements hook_cronapi($op, $job = NULL).
+ */
+function telvue_airing_import_cronapi($op, $job = NULL) {
+  $items = array();
+
+  // Check if feed 1 url has a value, other set to false.
+  $feed_1 = variable_get('telvue_airing_import_xml_feed_url_1', FALSE);
+
+  // Only add cron task if feed 1 has a value.
+  // @todo confirm that this is a good idea/stable approach.
+  if ($feed_1) {
+    $items['telvue_airing_import_feed_1'] = array(
+      'description' => 'Telvue Airing Import Feed 1',
+      'rule' => '0 */3 * * *',
+      'callback' => '_telvue_airing_import_feed_1',
+      'weight' => 1,
+    );
+  }
+
+  // Feed 2
+  $feed_2 = variable_get('telvue_airing_import_xml_feed_url_2', FALSE);
+
+  if ($feed_2) {
+    $items['telvue_airing_import_feed_2'] = array(
+      'description' => 'Telvue Airing Import Feed 2',
+      'rule' => '0 */3 * * *',
+      'callback' => '_telvue_airing_import_feed_2',
+      'weight' => 1,
+    );
+  }
+
+  // Feed 3
+  $feed_3 = variable_get('telvue_airing_import_xml_feed_url_3', FALSE);
+
+  if ($feed_3) {
+    $items['telvue_airing_import_feed_3'] = array(
+      'description' => 'Telvue Airing Import Feed 3',
+      'rule' => '0 */3 * * *',
+      'callback' => '_telvue_airing_import_feed_3',
+      'weight' => 1,
+    );
+  }
+
+  // Feed 4
+  $feed_4 = variable_get('telvue_airing_import_xml_feed_url_4', FALSE);
+
+  if ($feed_4) {
+    $items['telvue_airing_import_feed_4'] = array(
+      'description' => 'Telvue Airing Import Feed 4',
+      'rule' => '0 */3 * * *',
+      'callback' => '_telvue_airing_import_feed_4',
+      'weight' => 1,
+    );
+  }
+
+  return $items;
+}
+
+/**
+ * Feed 1
+ */
+function _telvue_airing_import_feed_1() {
+  $url = variable_get('telvue_airing_import_xml_feed_url_1', FALSE);
+
+  if ($url) {
+    _telvue_airing_import_process_feed($url);
+  }
+}
+
+/**
+ * Feed 2
+ */
+function _telvue_airing_import_feed_2() {
+  $url = variable_get('telvue_airing_import_xml_feed_url_2', FALSE);
+
+  if ($url) {
+    _telvue_airing_import_process_feed($url);
+  }
+}
+
+/**
+ * Feed 3
+ */
+function _telvue_airing_import_feed_3() {
+  $url = variable_get('telvue_airing_import_xml_feed_url_3', FALSE);
+
+  if ($url) {
+    _telvue_airing_import_process_feed($url);
+  }
+}
+
+/**
+ * Feed 4
+ */
+function _telvue_airing_import_feed_4() {
+  $url = variable_get('telvue_airing_import_xml_feed_url_4', FALSE);
+
+  if ($url) {
+    _telvue_airing_import_process_feed($url);
+  }
+}
+
+/**
+ * Process feed function.
+ */
+function _telvue_airing_import_process_feed($url) {
+  // @todo should add something validates the RSS feed and rejects invalid feeds?
+  $data = _telvue_airing_import_get_feed($url);
+
+  if ($data) {
+    foreach($data as $item) {
+      // Check if airing exists
+      if (!$airing_exists = _telvue_airing_import_airing_exists($item['guid'])) {
+      $airing = _telvue_airing_import_create_airing($item/*, $channel*/);
+
+        if ($airing) {
+          // Log success to watchdogg
+          watchdog(
+            $type = 'telvue_airing_import',
+            $message = 'Success! Created airing for GUID: %guid',
+            $variables = array('%guid' => $item['guid']),
+            $severity = WATCHDOG_INFO
+          );
+        }
+        else {
+          // Log failure to watchdog.
+          watchdog(
+            $type = 'telvue_airing_import',
+            $message = 'Failure! Could not create airing for GUID: %guid',
+            $variables = array('%guid' => $item['guid']),
+            $severity = WATCHDOG_ALERT
+          );
+        }
+      }
+      else {
+        // Log duplicate attemp
+        watchdog(
+          $type = 'telvue_airing_import',
+          $message = 'Airing already exists for GUID: %guid',
+          $variables = array('%guid' => $item['guid']),
+          $severity = WATCHDOG_INFO
+        );
+      }
+    }
+  }
+}
+
+/**
+ * Helper function to get feed.
+ */
+function _telvue_airing_import_get_feed($url) {
+  // @todo add some logic to determine if we have a valid source.
+
+  // Init curl and pull in rss feed.
+  $curl = curl_init();
+  curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+  curl_setopt($curl, CURLOPT_URL, $url);
+  $xml = curl_exec($curl);
+  $channel = new SimpleXMLElement($xml);
+  $namespaces = $channel->getNamespaces(true);
+
+  // Get title for use later to match taxonomy term
+  $channel_name = (string) $channel->channel->title;
+
+  //foreach($channel->channel->item as $item) {
+  foreach($channel->xpath('//item') as $item) {
+    // Get data in psg namespace
+    $psg = $item->children($namespaces['psg']);
+
+    $data[] = array(
+      'guid' => (string) $item->{'guid'},
+      'title' => (string) $item->{'title'},
+      'link' => (string) $item->{'link'},
+      'description' => (string) $item->{'description'},
+      'pubDate' => (string) $item->{'pubDate'},
+      'end_datetime' => (string) $psg->end_datetime[0],
+      'episode' => (string) $psg->episode,
+      'channel_name' => $channel_name,
+    );
+  }
+
+  // Close curl
+  curl_close($curl);
+
+  return $data;
+}
+
+/**
+ * Helper function to check if airing exists, based on GUID field.
+ */
+function _telvue_airing_import_airing_exists($guid) {
+  $query = new EntityFieldQuery;
+  $query->entityCondition('entity_type', 'airing')
+    ->fieldCondition('field_airing_guid', 'value', $guid, '=');
+  $result = $query->execute();
+
+  if (isset($result['airing'])) {
+    $aid = array_keys($result['airing']);
+    return $aid;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to create airing entity.
+ */
+function _telvue_airing_import_create_airing($item/*, $channel*/) {
+  $airing = new stdClass();
+  $airing->type = 'airing';
+  $airing->uid = 1;
+  $airing->field_airing_title[LANGUAGE_NONE][]['value'] = $item['title'];
+  $airing->field_airing_guid[LANGUAGE_NONE][]['value'] = $item['guid'];
+
+  // Process Date
+  // Shouldn't the cm_airing just handle this in cm_airing_entity_presave() ?
+  //$airing->field_airing_date[LANGUAGE_NONE][]['value'] = $item['pubDate'];
+  //$airing->field_airing_date[LANGUAGE_NONE][]['value2'] = $item['end_datetime'];
+
+  // Special processing for start date
+  $mod_start_date = strtotime($item['pubDate']);
+  $airing->field_airing_date[LANGUAGE_NONE][]['value'] = date("Y-m-d H:i:s",$mod_start_date);
+
+  // Special processing for end date
+  $mod_end_date = strtotime($item['end_datetime']);
+  // Delta needs to be 0 for value2 or "end date"
+  $airing->field_airing_date[LANGUAGE_NONE][0]['value2'] = date("Y-m-d H:i:s",$mod_end_date);
+
+  // General date field
+  $airing->field_airing_date[LANGUAGE_NONE][]['timezone'] = 'UTC';
+  $airing->field_airing_date[LANGUAGE_NONE][]['timezone_db'] = 'UTC';
+  $airing->field_airing_date[LANGUAGE_NONE][]['offset'] = 0;
+  $airing->field_airing_date[LANGUAGE_NONE][]['offset2'] = 0;
+
+  // Match "episode" to a cm_show
+  $cm_show_nid = _telvue_airing_import_find_show_by_episode($item['episode']);
+
+  if ($cm_show_nid) {
+    $airing->field_airing_show_ref[LANGUAGE_NONE][]['target_id'] = $cm_show_nid;
+  }
+  // No airing show node match, add episode as plain text to field: field_no_reference_show
+  else {
+    $airing->field_no_reference_show[LANGUAGE_NONE][]['value'] = $item['episode'];
+  }
+
+  // Match "title" to a series (cm_project)
+  $cm_project_nid = _telvue_airing_import_find_series_by_title($item['title']);
+
+  if ($cm_project_nid) {
+    $airing->field_airing_project_ref[LANGUAGE_NONE][]['target_id'] = $cm_project_nid;
+  }
+  // No series node match, so populate field_no_reference_project with title.
+  else {
+    $airing->field_no_reference_project[LANGUAGE_NONE][]['value'] = $item['title'];
+  }
+
+  // Match channel name to taxonomy term id
+  $channel_tid = _telvue_airing_import_find_tid_by_channel($item['channel_name']);
+
+  if ($channel_tid) {
+    $airing->field_airing_channel[LANGUAGE_NONE][]['tid'] = $channel_tid;
+  }
+
+  // Save airing and return status
+  // We don't use cm_airing_save() b/c it doesn't return a value
+  // and it also doesn't really do anything.
+  if (entity_save('airing', $airing)) {
+    return TRUE;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to find show by title.
+ */
+function _telvue_airing_import_find_show_by_episode($episode) {
+  $nid = db_query("SELECT nid FROM {node} WHERE type = 'cm_show' AND title = :title",
+    array(
+      ':title' => $episode)
+    )->fetchField();
+
+  if (!empty($nid)) {
+   return $nid;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to find show by title.
+ */
+function _telvue_airing_import_find_series_by_title($title) {
+  $nid = db_query("SELECT nid FROM {node} WHERE type = 'cm_project' AND title = :title",
+    array(
+      ':title' => $title)
+    )->fetchField();
+
+  if (!empty($nid)) {
+   return $nid;
+  }
+  else {
+    return FALSE;
+  }
+}
+
+/**
+ * Helper function to find channel tid from channel name
+ */
+function _telvue_airing_import_find_tid_by_channel($channel_name) {
+  $tid = db_query("SELECT tid FROM {taxonomy_term_data} WHERE name = :name",
+    array(
+      ':name' => $channel_name)
+    )->fetchField();
+
+  if (!empty($tid)) {
+   return $tid;
+  }
+  else {
+    return FALSE;
+  }
+}

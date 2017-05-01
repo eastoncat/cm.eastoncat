@@ -1,0 +1,9 @@
+name = Telvue Airing Import
+description = Imports Telvue xml into Drupal as Airings.
+package = CM Bootstrap
+core = 7.x
+dependencies[] = elysia_cron
+dependencies[] = cm_airing
+dependencies[] = cm_show_airings
+dependencies[] = cm_airing_type
+;dependencies[] = cm_tv_schedules
