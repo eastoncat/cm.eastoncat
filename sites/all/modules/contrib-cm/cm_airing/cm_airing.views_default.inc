@@ -4,7 +4,7 @@
  * Implements hook_views_default_views().
  */
 function cm_airing_views_default_views() {
-  $view = new view();
+	$view = new view();
 	$view->name = 'airings';
 	$view->description = '';
 	$view->tag = 'default';
@@ -232,7 +232,6 @@ function cm_airing_views_default_views() {
 	$handler->display->display_options['menu']['title'] = 'Airings';
 	$handler->display->display_options['menu']['weight'] = '0';
 	$handler->display->display_options['menu']['context'] = 0;
-
 
   $views['airings'] = $view;
 

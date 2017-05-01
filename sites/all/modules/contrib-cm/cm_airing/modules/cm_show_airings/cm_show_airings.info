@@ -14,9 +14,9 @@ features[views_view][] = cm_cm_show_airings
 features_exclude[dependencies][features] = features
 features_exclude[dependencies][views] = views
 
-; Information added by Drupal.org packaging script on 2014-09-23
-version = "7.x-3.0-alpha4+2-dev"
+; Information added by Drupal.org packaging script on 2014-11-13
+version = "7.x-3.0-alpha4+3-dev"
 core = "7.x"
 project = "cm_airing"
-datestamp = "1411512834"
+datestamp = "1415912218"
 
