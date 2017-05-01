@@ -47,10 +47,17 @@ function _ecat_show_import_show_feed() {
           );
         }
       }
-      // Update
+      // Duplicate
       else {
+        // Log failure to watchdog.
+        watchdog(
+          $type = 'ecat_show_import',
+          $message = 'Failure! Show exists, skipping import for GUID: %guid',
+          $variables = array('%guid' => $item['guid']),
+          $severity = WATCHDOG_ALERT
+        );
         // Add function to update node anyway
-        $show = ecat_show_import_update_cm_show_node($item, $show_exists);
+        /*$show = ecat_show_import_update_cm_show_node($item, $show_exists);
 
         if ($show) {
           watchdog(
@@ -59,8 +66,8 @@ function _ecat_show_import_show_feed() {
             $variables = array('%guid' => $item['guid']),
             $severity = WATCHDOG_INFO
           );
-        }
-        else {
+        }*/
+        /*else {
           // Log failure to watchdog.
           watchdog(
             $type = 'ecat_show_import',
@@ -68,7 +75,7 @@ function _ecat_show_import_show_feed() {
             $variables = array('%guid' => $item['guid']),
             $severity = WATCHDOG_ALERT
           );
-        }
+        }*/
       }
     }
   }
@@ -146,26 +153,10 @@ function ecat_show_import_create_cm_show_node($item) {
   $node->comment = 0;
 
   // Create file
-
-  // @todo Need to figure how to programmatically generate this uri.
-  //$uri = 'cloudcast://id/T01500/video/306037';
-
-  //$embed_code = 'http://cvp.telvue.com/player?id=T01500&video=305951&mini=1';
-  //$uri = ecat_show_import_parse_embed($embedCode);
   $embed_code = $item['link'];
 
   $provider = media_internet_get_provider($embed_code);
   $file = $provider->save();
-
-  //dpm($uri);
-
-  /*$file = file_uri_to_object($uri, TRUE);
-
-  // Save
-  file_save($file);
-
-  //dpm($file);
-  */
 
   // Add Fields
   if ($file) {
@@ -213,7 +204,6 @@ function ecat_show_import_create_cm_show_node($item) {
     // GID is the NID of the series.
     // We get this by matching the cloudcast:program value to a series title.
     $gid = _ecat_show_import_find_series_by_title($item['program']);
-    //$gid = 84691;
 
     if ($gid) {
       $og_values = array(
@@ -237,7 +227,7 @@ function ecat_show_import_create_cm_show_node($item) {
  * Helper function to update Show Node.
  */
 function ecat_show_import_update_cm_show_node($item, $nid) {
-  $node = node_load($nid);
+  //$node = node_load($nid);
   // @todo add logic to check if source already matches what's in drupal, if so don't update.
 
   //$node->title = 'UPDATED! ' . $item['title'];
@@ -266,13 +256,15 @@ function ecat_show_import_update_cm_show_node($item, $nid) {
    //node_save($node);
 
    // Save node, if can't save, then return false.
-   try {
+   /*try {
      node_save($node);
      $success = TRUE;
    }
    catch (Exception $e) {
      $success = FALSE;
-   }
+   }*/
+
+   $success = TRUE;
 
    return $success;
 }
