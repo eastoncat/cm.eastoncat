@@ -149,11 +149,11 @@
 }
 .view-tv-schedules .view-header.sticky .date-prev,
 .view-tv-schedules .view-header.sticky .date-next {
-  color: #0099d9;
+  /*color: #0099d9;*/
 }
 .view-tv-schedules .view-header.sticky .date-prev a,
 .view-tv-schedules .view-header.sticky .date-next a {
-  color: #0099d9;
+  /*color: #0099d9;*/
   text-decoration: none;
 }
 .admin-menu .view-tv-schedules .view-header.sticky {

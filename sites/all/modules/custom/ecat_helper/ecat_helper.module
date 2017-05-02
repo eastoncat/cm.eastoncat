@@ -8,3 +8,46 @@ function ecat_helper_init() {
     drupal_add_css(drupal_get_path('module', 'ecat_helper') . '/css/ecat_helper.css');
   }
 }
+
+/**
+ * Implements hook_theme_registry_alter(&$theme_registry).
+ *
+ * Fixes issue w/ schdules needing different TPL based on site.
+ */
+function ecat_helper_theme_registry_alter(&$theme_registry) {
+  $path = drupal_get_path('module', 'ecat_helper') . '/templates/cm_tv_schedules/';
+  $theme_registry['calendar_day']['theme path'] = drupal_get_path('module', 'ecat_helper');
+  $theme_registry['calendar_day']['path'] = $path;
+}
+
+/**
+ * Implements hook_views_pre_render(&$view).
+ */
+function ecat_helper_views_pre_render(&$view) {
+  switch ($view->name) {
+    case 'tv_schedules':
+    foreach ($view->result as $key => &$result) {
+      // Special handling for no ref show and no ref project
+      if (isset($result->field_field_no_reference_show[0]['raw']['value'])) {
+        $show = $result->field_field_no_reference_show[0]['raw']['value'];
+
+        // Get no reference project
+        if (isset($result->field_field_no_reference_project[0]['raw']['value'])) {
+          $project = $result->field_field_no_reference_project[0]['raw']['value'];
+        }
+
+        // Overide output
+        $result->field_field_airing_project_ref[0]['rendered']['#markup'] = $project . " - " . $show;
+      }
+
+      // Alter times
+      $timestamp = strtotime($result->field_field_airing_date[0]['raw']['value']);
+      $hour = (int)date('h', $timestamp);
+      $minute = date('i', $timestamp);
+      $am_pm = date('a', $timestamp);
+      // Overide rendered output
+      $result->field_field_airing_date[0]['rendered']['#markup'] = $hour . ':' . $minute . ' ' . $am_pm;
+    }
+    break;
+  }
+}

@@ -49,7 +49,7 @@
     <?php foreach ($rows['items'] as $key => $hour): ?>
       <tr class="<?php print $hour['classes']; ?>">
         <td class="calendar-agenda-hour">
-          <span class="calendar-hour"><?php print date('g:i', strtotime($key)); ?></span><span class="calendar-ampm"> <?php print date('a', strtotime($key)); ?></span>
+          <span class="calendar-hour"><?php if($key == '05:00:00'){ print "Overnight"; }else{ print date('g:i', strtotime($key)); } ?></span><span class="calendar-ampm">&nbsp;<?php if($key != '05:00:00'){print $hour['ampm'];} ?></span>
         </td>
         <?php foreach ($columns as $column): ?>
           <td class="calendar-agenda-items single-day">
