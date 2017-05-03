@@ -44,6 +44,20 @@ function cm_tv_schedules_views_default_views() {
   $handler->display->display_options['style_options']['groupby_times'] = 'half';
   $handler->display->display_options['style_options']['groupby_field'] = 'field_airing_channel';
   $handler->display->display_options['row_plugin'] = 'calendar_entity';
+  /* Field: Airing: No Reference Series */
+  $handler->display->display_options['fields']['field_no_reference_project']['id'] = 'field_no_reference_project';
+  $handler->display->display_options['fields']['field_no_reference_project']['table'] = 'field_data_field_no_reference_project';
+  $handler->display->display_options['fields']['field_no_reference_project']['field'] = 'field_no_reference_project';
+  $handler->display->display_options['fields']['field_no_reference_project']['label'] = '';
+  $handler->display->display_options['fields']['field_no_reference_project']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_no_reference_project']['element_label_colon'] = FALSE;
+  /* Field: Airing: No Reference Show */
+  $handler->display->display_options['fields']['field_no_reference_show']['id'] = 'field_no_reference_show';
+  $handler->display->display_options['fields']['field_no_reference_show']['table'] = 'field_data_field_no_reference_show';
+  $handler->display->display_options['fields']['field_no_reference_show']['field'] = 'field_no_reference_show';
+  $handler->display->display_options['fields']['field_no_reference_show']['label'] = '';
+  $handler->display->display_options['fields']['field_no_reference_show']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_no_reference_show']['element_label_colon'] = FALSE;
   /* Field: Airing: Date */
   $handler->display->display_options['fields']['field_airing_date']['id'] = 'field_airing_date';
   $handler->display->display_options['fields']['field_airing_date']['table'] = 'field_data_field_airing_date';
@@ -54,7 +68,7 @@ function cm_tv_schedules_views_default_views() {
   $handler->display->display_options['fields']['field_airing_date']['element_default_classes'] = FALSE;
   $handler->display->display_options['fields']['field_airing_date']['hide_alter_empty'] = FALSE;
   $handler->display->display_options['fields']['field_airing_date']['settings'] = array(
-    'format_type' => 'short',
+    'format_type' => 'public_airtimes',
     'fromto' => 'value',
     'multiple_number' => '',
     'multiple_from' => '',
@@ -70,6 +84,7 @@ function cm_tv_schedules_views_default_views() {
   $handler->display->display_options['fields']['field_airing_channel']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_airing_channel']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['field_airing_channel']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_airing_channel']['type'] = 'taxonomy_term_reference_plain';
   $handler->display->display_options['fields']['field_airing_channel']['group_rows'] = FALSE;
   $handler->display->display_options['fields']['field_airing_channel']['delta_offset'] = '0';
   /* Field: Airing: Project */
@@ -77,7 +92,6 @@ function cm_tv_schedules_views_default_views() {
   $handler->display->display_options['fields']['field_airing_project_ref']['table'] = 'field_data_field_airing_project_ref';
   $handler->display->display_options['fields']['field_airing_project_ref']['field'] = 'field_airing_project_ref';
   $handler->display->display_options['fields']['field_airing_project_ref']['label'] = '';
-  $handler->display->display_options['fields']['field_airing_project_ref']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['field_airing_project_ref']['alter']['text'] = '[field_airing_project_ref] - ';
   $handler->display->display_options['fields']['field_airing_project_ref']['element_type'] = 'span';
   $handler->display->display_options['fields']['field_airing_project_ref']['element_class'] = 'tv-series';
@@ -92,6 +106,8 @@ function cm_tv_schedules_views_default_views() {
   $handler->display->display_options['fields']['field_airing_show_ref']['table'] = 'field_data_field_airing_show_ref';
   $handler->display->display_options['fields']['field_airing_show_ref']['field'] = 'field_airing_show_ref';
   $handler->display->display_options['fields']['field_airing_show_ref']['label'] = '';
+  $handler->display->display_options['fields']['field_airing_show_ref']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_airing_show_ref']['alter']['text'] = '- [field_airing_show_ref] <span class="glyphicon glyphicon-facetime-video" aria-hidden="true"></span>';
   $handler->display->display_options['fields']['field_airing_show_ref']['element_type'] = 'span';
   $handler->display->display_options['fields']['field_airing_show_ref']['element_class'] = 'tv-show';
   $handler->display->display_options['fields']['field_airing_show_ref']['element_label_colon'] = FALSE;
@@ -100,6 +116,15 @@ function cm_tv_schedules_views_default_views() {
   $handler->display->display_options['fields']['field_airing_show_ref']['settings'] = array(
     'link' => 1,
   );
+  /* Field: Airing: GUID */
+  $handler->display->display_options['fields']['field_airing_guid']['id'] = 'field_airing_guid';
+  $handler->display->display_options['fields']['field_airing_guid']['table'] = 'field_data_field_airing_guid';
+  $handler->display->display_options['fields']['field_airing_guid']['field'] = 'field_airing_guid';
+  $handler->display->display_options['fields']['field_airing_guid']['exclude'] = TRUE;
+  /* Sort criterion: Airing: Channel (field_airing_channel) */
+  $handler->display->display_options['sorts']['field_airing_channel_tid']['id'] = 'field_airing_channel_tid';
+  $handler->display->display_options['sorts']['field_airing_channel_tid']['table'] = 'field_data_field_airing_channel';
+  $handler->display->display_options['sorts']['field_airing_channel_tid']['field'] = 'field_airing_channel_tid';
   /* Sort criterion: Airing: Date -  start date (field_airing_date) */
   $handler->display->display_options['sorts']['field_airing_date_value']['id'] = 'field_airing_date_value';
   $handler->display->display_options['sorts']['field_airing_date_value']['table'] = 'field_data_field_airing_date';
@@ -109,6 +134,7 @@ function cm_tv_schedules_views_default_views() {
   $handler->display->display_options['arguments']['date_argument']['table'] = 'cm_airing';
   $handler->display->display_options['arguments']['date_argument']['field'] = 'date_argument';
   $handler->display->display_options['arguments']['date_argument']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['date_argument']['default_argument_type'] = 'date';
   $handler->display->display_options['arguments']['date_argument']['summary']['format'] = 'default_summary';
   $handler->display->display_options['arguments']['date_argument']['granularity'] = 'day';
   $handler->display->display_options['arguments']['date_argument']['date_fields'] = array(
@@ -122,6 +148,7 @@ function cm_tv_schedules_views_default_views() {
   $handler->display->display_options['menu']['weight'] = '3';
   $handler->display->display_options['menu']['context'] = 0;
   $handler->display->display_options['menu']['context_only_inline'] = 0;
+
   $export['tv_schedules'] = $view;
 
   return $export;

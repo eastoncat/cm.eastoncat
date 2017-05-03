@@ -5,4 +5,5 @@ core = 7.x
 dependencies[] = elysia_cron
 dependencies[] = cm_airing
 dependencies[] = cm_show_airings
-;dependencies[] = cm_tv_schedules
+dependencies[] = telvue_airing_import_features
+dependencies[] = cm_project_airings

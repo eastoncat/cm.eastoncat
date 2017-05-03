@@ -33,57 +33,57 @@ function cm_airing_views_default_views() {
 	$handler->display->display_options['pager']['options']['quantity'] = '9';
 	$handler->display->display_options['style_plugin'] = 'table';
 	$handler->display->display_options['style_options']['columns'] = array(
-		'views_bulk_operations' => 'views_bulk_operations',
-		'airing_id' => 'airing_id',
-		'field_airing_title' => 'field_airing_title',
-		'field_airing_date' => 'field_airing_date',
-		'nothing' => 'nothing',
-		'nothing_1' => 'nothing_1',
-		'nothing_2' => 'nothing_2',
+	  'views_bulk_operations' => 'views_bulk_operations',
+	  'airing_id' => 'airing_id',
+	  'field_airing_title' => 'field_airing_title',
+	  'field_airing_date' => 'field_airing_date',
+	  'nothing' => 'nothing',
+	  'nothing_1' => 'nothing_1',
+	  'nothing_2' => 'nothing_2',
 	);
 	$handler->display->display_options['style_options']['default'] = '-1';
 	$handler->display->display_options['style_options']['info'] = array(
-		'views_bulk_operations' => array(
-			'align' => '',
-			'separator' => '',
-			'empty_column' => 0,
-		),
-		'airing_id' => array(
-			'sortable' => 0,
-			'default_sort_order' => 'asc',
-			'align' => '',
-			'separator' => '',
-			'empty_column' => 0,
-		),
-		'field_airing_title' => array(
-			'sortable' => 1,
-			'default_sort_order' => 'asc',
-			'align' => '',
-			'separator' => '',
-			'empty_column' => 0,
-		),
-		'field_airing_date' => array(
-			'sortable' => 1,
-			'default_sort_order' => 'asc',
-			'align' => '',
-			'separator' => '',
-			'empty_column' => 0,
-		),
-		'nothing' => array(
-			'align' => '',
-			'separator' => '',
-			'empty_column' => 0,
-		),
-		'nothing_1' => array(
-			'align' => '',
-			'separator' => '',
-			'empty_column' => 0,
-		),
-		'nothing_2' => array(
-			'align' => '',
-			'separator' => '',
-			'empty_column' => 0,
-		),
+	  'views_bulk_operations' => array(
+	    'align' => '',
+	    'separator' => '',
+	    'empty_column' => 0,
+	  ),
+	  'airing_id' => array(
+	    'sortable' => 0,
+	    'default_sort_order' => 'asc',
+	    'align' => '',
+	    'separator' => '',
+	    'empty_column' => 0,
+	  ),
+	  'field_airing_title' => array(
+	    'sortable' => 1,
+	    'default_sort_order' => 'asc',
+	    'align' => '',
+	    'separator' => '',
+	    'empty_column' => 0,
+	  ),
+	  'field_airing_date' => array(
+	    'sortable' => 1,
+	    'default_sort_order' => 'asc',
+	    'align' => '',
+	    'separator' => '',
+	    'empty_column' => 0,
+	  ),
+	  'nothing' => array(
+	    'align' => '',
+	    'separator' => '',
+	    'empty_column' => 0,
+	  ),
+	  'nothing_1' => array(
+	    'align' => '',
+	    'separator' => '',
+	    'empty_column' => 0,
+	  ),
+	  'nothing_2' => array(
+	    'align' => '',
+	    'separator' => '',
+	    'empty_column' => 0,
+	  ),
 	);
 	/* Header: Global: Text area */
 	$handler->display->display_options['header']['area']['id'] = 'area';
@@ -109,55 +109,20 @@ function cm_airing_views_default_views() {
 	$handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
 	$handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
 	$handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-		'action::views_bulk_operations_delete_item' => array(
-			'selected' => 1,
-			'postpone_processing' => 0,
-			'skip_confirmation' => 0,
-			'override_label' => 0,
-			'label' => '',
-		),
-		'action::views_bulk_operations_script_action' => array(
-			'selected' => 0,
-			'postpone_processing' => 0,
-			'skip_confirmation' => 0,
-			'override_label' => 0,
-			'label' => '',
-		),
-		'action::views_bulk_operations_modify_action' => array(
-			'selected' => 0,
-			'postpone_processing' => 0,
-			'skip_confirmation' => 0,
-			'override_label' => 0,
-			'label' => '',
-			'settings' => array(
-				'show_all_tokens' => 1,
-				'display_values' => array(
-					'_all_' => '_all_',
-				),
-			),
-		),
-		'action::views_bulk_operations_argument_selector_action' => array(
-			'selected' => 0,
-			'skip_confirmation' => 0,
-			'override_label' => 0,
-			'label' => '',
-			'settings' => array(
-				'url' => '',
-			),
-		),
-		'action::system_send_email_action' => array(
-			'selected' => 0,
-			'postpone_processing' => 0,
-			'skip_confirmation' => 0,
-			'override_label' => 0,
-			'label' => '',
-		),
+	  'action::views_bulk_operations_delete_item' => array(
+	    'selected' => 1,
+	    'postpone_processing' => 0,
+	    'skip_confirmation' => 0,
+	    'override_label' => 0,
+	    'label' => '',
+	  ),
 	);
 	/* Field: Airing: Airing ID */
 	$handler->display->display_options['fields']['airing_id']['id'] = 'airing_id';
 	$handler->display->display_options['fields']['airing_id']['table'] = 'cm_airing';
 	$handler->display->display_options['fields']['airing_id']['field'] = 'airing_id';
 	$handler->display->display_options['fields']['airing_id']['exclude'] = TRUE;
+	$handler->display->display_options['fields']['airing_id']['separator'] = '';
 	/* Field: Airing: Title */
 	$handler->display->display_options['fields']['field_airing_title']['id'] = 'field_airing_title';
 	$handler->display->display_options['fields']['field_airing_title']['table'] = 'field_data_field_airing_title';
@@ -167,12 +132,12 @@ function cm_airing_views_default_views() {
 	$handler->display->display_options['fields']['field_airing_date']['table'] = 'field_data_field_airing_date';
 	$handler->display->display_options['fields']['field_airing_date']['field'] = 'field_airing_date';
 	$handler->display->display_options['fields']['field_airing_date']['settings'] = array(
-		'format_type' => 'short',
-		'fromto' => 'both',
-		'multiple_number' => '',
-		'multiple_from' => '',
-		'multiple_to' => '',
-		'show_repeat_rule' => 'hide',
+	  'format_type' => 'short',
+	  'fromto' => 'both',
+	  'multiple_number' => '',
+	  'multiple_from' => '',
+	  'multiple_to' => '',
+	  'show_repeat_rule' => 'hide',
 	);
 	$handler->display->display_options['fields']['field_airing_date']['delta_offset'] = '0';
 	/* Field: edit */
@@ -185,6 +150,7 @@ function cm_airing_views_default_views() {
 	$handler->display->display_options['fields']['nothing']['alter']['text'] = 'edit';
 	$handler->display->display_options['fields']['nothing']['alter']['make_link'] = TRUE;
 	$handler->display->display_options['fields']['nothing']['alter']['path'] = 'airing/[airing_id]/edit';
+	$handler->display->display_options['fields']['nothing']['alter']['strip_tags'] = TRUE;
 	$handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
 	/* Field: delete */
 	$handler->display->display_options['fields']['nothing_1']['id'] = 'nothing_1';
@@ -203,6 +169,16 @@ function cm_airing_views_default_views() {
 	$handler->display->display_options['fields']['nothing_2']['field'] = 'nothing';
 	$handler->display->display_options['fields']['nothing_2']['label'] = 'Operations';
 	$handler->display->display_options['fields']['nothing_2']['alter']['text'] = '[nothing] [nothing_1]';
+	/* Field: Airing: Airing ID */
+	$handler->display->display_options['fields']['airing_id_1']['id'] = 'airing_id_1';
+	$handler->display->display_options['fields']['airing_id_1']['table'] = 'cm_airing';
+	$handler->display->display_options['fields']['airing_id_1']['field'] = 'airing_id';
+	$handler->display->display_options['fields']['airing_id_1']['element_label_colon'] = FALSE;
+	$handler->display->display_options['fields']['airing_id_1']['separator'] = '';
+	/* Field: Airing: GUID */
+	$handler->display->display_options['fields']['field_airing_guid']['id'] = 'field_airing_guid';
+	$handler->display->display_options['fields']['field_airing_guid']['table'] = 'field_data_field_airing_guid';
+	$handler->display->display_options['fields']['field_airing_guid']['field'] = 'field_airing_guid';
 	/* Sort criterion: Airing: Date -  start date (field_airing_date) */
 	$handler->display->display_options['sorts']['field_airing_date_value']['id'] = 'field_airing_date_value';
 	$handler->display->display_options['sorts']['field_airing_date_value']['table'] = 'field_data_field_airing_date';
@@ -218,10 +194,10 @@ function cm_airing_views_default_views() {
 	$handler->display->display_options['filters']['field_airing_date_value']['expose']['operator'] = 'field_airing_date_value_op';
 	$handler->display->display_options['filters']['field_airing_date_value']['expose']['identifier'] = 'field_airing_date_value';
 	$handler->display->display_options['filters']['field_airing_date_value']['expose']['remember_roles'] = array(
-		2 => '2',
-		1 => 0,
-		4 => 0,
-		3 => 0,
+	  2 => '2',
+	  1 => 0,
+	  4 => 0,
+	  3 => 0,
 	);
 	$handler->display->display_options['filters']['field_airing_date_value']['form_type'] = 'date_popup';
 
