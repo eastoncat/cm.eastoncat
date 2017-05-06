@@ -35,7 +35,10 @@ function ecat_helper_views_pre_render(&$view) {
         if (isset($result->field_field_no_reference_project[0]['raw']['value'])) {
           $project = $result->field_field_no_reference_project[0]['raw']['value'];
         }
-
+        else {
+          $project = $result->field_field_airing_project_ref[0]['rendered']['#markup'];
+        }
+         
         // Overide output
         $result->field_field_airing_project_ref[0]['rendered']['#markup'] = $project . " - " . $show;
       }

@@ -331,7 +331,7 @@ function _telvue_airing_import_create_airing($item/*, $channel*/) {
   $cm_project_nid = _telvue_airing_import_find_series_by_title($item['title']);
 
   if ($cm_project_nid) {
-    $airing->field_airing_project_ref[LANGUAGE_NONE][]['target_id'] = $cm_project_nid;
+    $airing->field_airing_project_ref[LANGUAGE_NONE][]['nid'] = $cm_project_nid;
   }
   // No series node match, so populate field_no_reference_project with title.
   else {
