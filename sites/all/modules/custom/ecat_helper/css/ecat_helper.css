@@ -79,15 +79,15 @@ nav#site-wrapper-main-menu li.item-1 ul.third-level li a:hover {
 /* START: 3rd level */
 /* 3rd level item-1 */
 #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu li.item-1 ul.third-level {
-  background:#f16623;
+  background:#6c2417;
 }
 /* 3rd level item-2 */
 #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu li.item-2 ul.third-level {
-  background:f16623;
+  background: #6c2417;
 }
 
 #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu li.item-1 ul.third-level li a:hover {
-  background:#f16623;
+  background:#6c2417;
 }
 
 /* START: Book node */
