@@ -52,16 +52,17 @@ nav#site-wrapper-main-menu li.item-1 ul.third-level li a:hover {
 }
 /* second level, item 2 background color */
 #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li.item-2 ul.second-level {
-  background-color: #F16623;
+  background-color: #6c2417;
 }
 
 #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu ul.second-level li a {
   color:#FFF;
   font-size:.75em;
+  /*background: inherit !important;*/
 }
 
 #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu ul.second-level li.hover-color a {
-  background-color: #c86b6b;
+  background-color: #6c2417;
 }
 
 #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li.item-1 ul.second-level li a:hover {
@@ -69,7 +70,7 @@ nav#site-wrapper-main-menu li.item-1 ul.third-level li a:hover {
 }
 
 #block-cm-bootstrap-dropdown-menu-cmb-dropdown-menu nav ul.first-level li.item-2 ul.second-level li a:hover {
-  background-color:#6c2417;
+  background-color:#F16623;
 }
 
 #parent-trigger-2 ul li.item-2 ul.second-level li.hover-color a {
